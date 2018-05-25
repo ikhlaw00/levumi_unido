@@ -1,14 +1,14 @@
 # -*- encoding : utf-8 -*-
 # config valid only for current version of Capistrano
-lock '~> 3.4.0'
+lock '~> 3.10'
 
-set :application, 'levumi'
-set :deploy_user, 'levumi'
+set :application, 'levumi_unido'
+set :deploy_user, 'ikhlawi'
 
 set :scm, :git
-set :repo_url,  'levumi@levumi.informatik.uni-kiel.de:/var/git/levumi.git'
+set :repo_url,  'git@github.com:ikhlaw00/levumi_unido.git'
 
-set :deploy_to, "/var/www/levumi"
+set :deploy_to, "/var/www/levumi_unido"
 set :deploy_via, :remote_cache
 
 set :tests, []
@@ -28,7 +28,9 @@ set :pty, true
 SSHKit.config.command_map[:rake]  = "bundle exec rake"
 SSHKit.config.command_map[:rails] = "bundle exec rails"
 
-set :linked_dirs, fetch(:linked_dirs, []).push('log')
+#set :linked_dirs, fetch(:linked_dirs, []).push('log')
+append :linked_files, "config/database.yml", "config/secrets.yml"
+append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor/bundle", "public/system", "public/uploads"
 #set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/secrets.yml')
 
 # Default value for default_env is {}

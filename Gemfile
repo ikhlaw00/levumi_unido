@@ -35,11 +35,9 @@ gem 'bcrypt', '~> 3.1.7'
 # Use unicorn as the app server
 # gem 'unicorn'
 
-# Use Capistrano for deployment
-gem 'capistrano', '~> 3.4.0'
-#gem 'capistrano-rvm'
-gem 'capistrano-rails', '~> 1.1.3'
-gem 'capistrano-passenger'
+gem 'capistrano', '~> 3.10', '>= 3.10.2'
+gem 'capistrano-rails', '~> 1.3', '>= 1.3.1'
+gem 'capistrano-passenger', '~> 0.2.0'
 gem 'sshkit-sudo'
 
 # Use debugger
