@@ -34,8 +34,16 @@ namespace :custom do
 # after "deploy:symlink", "custom:symlink"
 
 namespace :deploy do
-	task :seed do
-		run "bundle exec rake db:seed RAILS_ENV=production"
-	end
   after :deploy, :'passenger:restart'
+end
+
+task :seed do
+ puts "\n=== Seeding Database ===\n"
+ on primary :db do
+  within current_path do
+    with rails_env: fetch(:stage) do
+      execute :rake, 'db:seed'
+    end
+  end
+ end
 end
