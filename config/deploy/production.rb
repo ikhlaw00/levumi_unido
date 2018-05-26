@@ -34,9 +34,8 @@ namespace :custom do
 # after "deploy:symlink", "custom:symlink"
 
 namespace :deploy do
+	task :seed do
+		run "bundle exec rake db:seed RAILS_ENV=production"
+	end
   after :deploy, :'passenger:restart'
-  desc "reload the database with seed data"
-  task :seed do
-    run "cd /home/ikhlawi/levumi_unido/current; bundle exec rake db:seed RAILS_ENV=production"
-  end
 end
