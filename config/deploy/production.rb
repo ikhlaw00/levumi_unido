@@ -35,4 +35,8 @@ namespace :custom do
 
 namespace :deploy do
   after :deploy, :'passenger:restart'
+  desc "reload the database with seed data"
+  task :seed do
+    run "cd /home/ikhlawi/levumi_unido/current; bundle exec rake db:seed RAILS_ENV=production"
+  end
 end
