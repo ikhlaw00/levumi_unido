@@ -1,7 +1,8 @@
 # -*- encoding : utf-8 -*-
 set :stage, :production
+#set :branch, 'deploy'
 
-server "129.217.235.9", roles: %w{web app db}, user: 'ikhlawi', password: 'levumi', :primary => true
+server "129.217.235.9", roles: %w{web app db}, user: 'ikhlawi', :primary => true # password: 'levumi', 
 
 set :web_user, 'www-data'
 
