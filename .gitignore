@@ -16,3 +16,7 @@
 /tmp
 
 .idea
+
+# ignore imprtant files
+/config/database.yml
+/config/secrets.yml

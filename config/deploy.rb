@@ -8,7 +8,7 @@ set :deploy_user, 'ikhlawi'
 set :scm, :git
 set :repo_url,  'git@github.com:ikhlaw00/levumi_unido.git'
 
-set :deploy_to, "/var/www/levumi_unido"
+set :deploy_to, "/home/ikhlawi/levumi_unido"
 set :deploy_via, :remote_cache
 
 set :tests, []
