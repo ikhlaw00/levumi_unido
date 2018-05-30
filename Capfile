@@ -3,6 +3,8 @@ require 'capistrano/setup'
 
 # Include default deployment tasks
 require 'capistrano/deploy'
+require "capistrano/scm/git"
+install_plugin Capistrano::SCM::Git
 
 # Include tasks from other gems included in your Gemfile
 #
@@ -21,6 +23,9 @@ require 'capistrano/deploy'
 require 'capistrano/bundler'
 require 'capistrano/rails'
 require 'capistrano/passenger'
+
+require 'capistrano/rails/collection'
+
 #require 'sshkit/sudo'
 
 # Load custom tasks from `lib/capistrano/tasks` if you have any defined
