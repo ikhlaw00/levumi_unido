@@ -7,4 +7,16 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-
+ desc "Run all files in db/seeds directory"
+ namespace :db do
+   task seeds: :environment do
+     Dir[File.join(Rails.root, 'db', 'seeds', 'tests', '*.rb')].each do |filename|
+       puts "seeding - #{filename}"
+       load(filename)
+     end
+     Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')].each do |filename|
+       puts "seeding - #{filename}"
+       load(filename)
+     end
+   end
+ end
