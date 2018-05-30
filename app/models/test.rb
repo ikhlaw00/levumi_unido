@@ -82,7 +82,7 @@ class Test < ActiveRecord::Base
       FROM tests JOIN assessments ON tests.id = test_id
         JOIN groups ON groups.id = group_id
         JOIN users ON users.id = user_id
-      WHERE export = \"t\"
+      WHERE export = '1'
       GROUP BY test_id;
     ")
     ids = temp.map{|x| x["test_id"]}
@@ -97,7 +97,7 @@ class Test < ActiveRecord::Base
       FROM measurements JOIN assessments ON assessments.id = assessment_id
         JOIN groups ON groups.id = group_id
         JOIN users ON users.id = user_id
-      WHERE export = \"t\"
+      WHERE export = '1'
       GROUP BY test_id;
     ")
     ids = temp.map{|x| x["test_id"]}
@@ -113,7 +113,7 @@ class Test < ActiveRecord::Base
         JOIN assessments ON assessments.id = assessment_id
         JOIN groups ON groups.id = group_id
         JOIN users ON users.id = user_id
-      WHERE export = \"t\"
+      WHERE export = '1'
       GROUP BY test_id;
     ")
     ids = temp.map{|x| x["test_id"]}

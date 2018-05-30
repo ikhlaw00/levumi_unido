@@ -151,7 +151,7 @@ class Result < ActiveRecord::Base
         JOIN tests ON tests.id = test_id
         JOIN groups ON groups.id = assessments.group_id
         JOIN users ON users.id = user_id
-      WHERE export = \"t\"
+      WHERE export = '1'
     "
 
     unless test.nil?
@@ -289,7 +289,7 @@ class Result < ActiveRecord::Base
         JOIN tests ON tests.id = test_id
         JOIN groups ON groups.id = assessments.group_id
         JOIN users ON users.id = user_id
-      WHERE export = \"t\" and tests.archive = \"f\" "
+      WHERE export = '1' and tests.archive = '0' "
 
     unless user.nil?
       statement = statement + " AND users.id = #{user}"
