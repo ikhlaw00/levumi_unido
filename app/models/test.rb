@@ -14,6 +14,12 @@ class Test < ActiveRecord::Base
   validates_presence_of :construct
   validates_presence_of :level
   after_create :set_defaults
+  serialize :generic_views, Hash  #"assessment_upperPart": render what you what at assessment show/show.pdf. Example graph
+                                  #"assessment_bottomPart": render what you what at assessment show/show.pdf. Example table
+                                  #"student_upperPart": render what you what at student show/show.pdf. Example graph
+                                  #"student_bottomPart": render what you what at student show/show.pdf. Example table
+                                  #"result_edit_direct": render how the direct change of answers should look like in direkt way
+                                  #"result_edit_student": render how the change of answers
 
   def set_defaults
     self.archive ||= false
@@ -76,7 +82,7 @@ class Test < ActiveRecord::Base
       FROM tests JOIN assessments ON tests.id = test_id
         JOIN groups ON groups.id = group_id
         JOIN users ON users.id = user_id
-      WHERE export = 1
+      WHERE export = \"t\"
       GROUP BY test_id;
     ")
     ids = temp.map{|x| x["test_id"]}
@@ -91,7 +97,7 @@ class Test < ActiveRecord::Base
       FROM measurements JOIN assessments ON assessments.id = assessment_id
         JOIN groups ON groups.id = group_id
         JOIN users ON users.id = user_id
-      WHERE export = 1
+      WHERE export = \"t\"
       GROUP BY test_id;
     ")
     ids = temp.map{|x| x["test_id"]}
@@ -107,7 +113,7 @@ class Test < ActiveRecord::Base
         JOIN assessments ON assessments.id = assessment_id
         JOIN groups ON groups.id = group_id
         JOIN users ON users.id = user_id
-      WHERE export = 1
+      WHERE export = \"t\"
       GROUP BY test_id;
     ")
     ids = temp.map{|x| x["test_id"]}

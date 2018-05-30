@@ -151,7 +151,7 @@ class Result < ActiveRecord::Base
         JOIN tests ON tests.id = test_id
         JOIN groups ON groups.id = assessments.group_id
         JOIN users ON users.id = user_id
-      WHERE export = 1
+      WHERE export = \"t\"
     "
 
     unless test.nil?
@@ -289,8 +289,7 @@ class Result < ActiveRecord::Base
         JOIN tests ON tests.id = test_id
         JOIN groups ON groups.id = assessments.group_id
         JOIN users ON users.id = user_id
-      WHERE export = 1 and tests.archive = 0
-    "
+      WHERE export = \"t\" and tests.archive = \"f\" "
 
     unless user.nil?
       statement = statement + " AND users.id = #{user}"
@@ -362,7 +361,7 @@ class Result < ActiveRecord::Base
       SELECT measurements.id FROM measurements 
       JOIN assessments on assessments.id=measurements.assessment_id
       JOIN groups on assessments.group_id = groups.id
-      WHERE assessments.test_id = #{test} AND export=1
+      WHERE assessments.test_id = #{test} AND export=\"t\"
       ORDER BY date ASC;")
 
     idStudents = [] # save ids of students in the current test

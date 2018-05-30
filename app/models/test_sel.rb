@@ -17,19 +17,15 @@ class TestSEL < Test
       if (categories.length == 0)
         categories = pools
       end
-      if ((itemset.size) > 0)        
-        count = 0
-        x = i.difficulty
-        while (count < 30) & (!categories.include? i.difficulty)
-          i = remaining.sample
-          count = count + 1
-        end
-      else 
-        categories = categories - [i.difficulty]
-      end    
+      count = 0
+      while (count < 30) & (!categories.include? i.difficulty)
+        i = remaining.sample
+        count = count + 1
+      end
+      categories = categories - [i.difficulty]
       itemset = itemset + [i]
+      print i.difficulty
     end
     return [intro_items.map{|i| i.id}, itemset.map{|i| i.id}, outro_items.map{|i| i.id}]
   end
 end
-  

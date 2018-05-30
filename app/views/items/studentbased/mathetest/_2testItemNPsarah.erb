@@ -1,0 +1,136 @@
+<% 
+	asked = item.shorthand 
+	toleranceValue = item.difficulty
+	lengthOfLine = item.itemtext
+%>
+<p style="font-size: 35px; font-family: fibel_nordregular;" class="text-center"> Wo ist die <%= asked %> ? Klicke.<p>
+<div id='divNumbersLine' class='row text-center'>
+		<canvas id='canvas' width='750' height='500'></canvas>
+</div>
+<br><br>
+
+<div class='row text-center'>					
+	<div class='col-md-4 col-md-offset-4'>
+		<button id='weiter' type='button' class='btn btn-lg btn-success'><span style='font-size: 30px; font-family: fibel_nordregular;'>Weiter</span></button>
+	</div>
+</div>
+
+<script type='text/javascript'>
+
+	var canvas = document.getElementById('canvas');
+	var ctx = canvas.getContext('2d');
+	var w = canvas.width-15;
+	var h = canvas.height;
+	var toleranceValue = parseInt(<%= toleranceValue %>);
+	var lineWidth = 5; // Needed for drawing
+	var lengthOfLine = parseInt(<%= lengthOfLine %>);
+	var interval = w / lengthOfLine;
+	var currentAnswer=[];
+	var answer = 0;
+	var askedNumber= <%= asked %>;
+
+	// Draw lines for the first time
+	drawLines();
+
+	$('#canvas').click(function (e){
+		var x = e.offsetX;
+		var y = e.offsetY;
+		if((y >= h/2 - 2*lineWidth) && (y <= h/2 + 16*lineWidth)){
+			answer = (x-x%interval)/interval;
+			if(x%interval <= interval/2)
+				showClickedPosition( answer);
+			else 
+				showClickedPosition( answer = answer + 1);
+		}
+	});
+
+	// detects whether the device is touch device to show the keyboard
+	function is_touch_device(){
+		return 'ontouchstart' in window || navigator.maxTouchPoints;
+	};
+
+	function drawLines(){
+		//horizontal line
+	    ctx.fillRect(0,h/2,w ,lineWidth);
+
+	    for (var i = 0; i <= lengthOfLine; i++) {
+			if(i%5 == 0){
+				ctx.fillRect(i*interval,(h/2), lineWidth, 16 * lineWidth);    		 
+			}
+			else{
+				ctx.fillRect(i*interval,(h/2), lineWidth/2, 8 * lineWidth);    		 
+			}
+		}
+
+		// Numbers 
+	    ctx.font = '20px Arial black';
+	    for (var i = 0; i <= lengthOfLine; i++) {
+	    	if (i%5==0 && i != parseInt(askedNumber) ) {
+	    		ctx.fillText(i, i * interval - (i*0.5), h/2 + 20*lineWidth);
+	    	}
+	    }
+	}
+
+	function showClickedPosition(answer){
+		/* Number to Position
+
+		if (currentAnswer.length > 0){
+			ctx.clearRect(currentAnswer[0]-10,currentAnswer[1],currentAnswer[2]+15,currentAnswer[3]);
+			ctx.fillStyle = 'black';
+			drawLines();
+		}
+
+		ctx.fillStyle = 'red';
+		var rect = [answer * interval - 2, h/2 - 3*lineWidth , 8, 19*lineWidth];
+		currentAnswer = rect;
+		ctx.fillRect(rect[0],rect[1],rect[2],rect[3]);
+		*/
+
+		// Position to number with rectangle below the number
+
+		if (currentAnswer.length > 0){
+			ctx.fillStyle = "white";
+			ctx.clearRect(0 , 0 , canvas.width, h);
+			ctx.fillStyle = 'black';
+			drawLines();
+		}
+
+
+		var rect;
+		answer %5 == 0? rect = [answer*interval -2, h/2 + 23*lineWidth, 5, 8*lineWidth] : rect = [answer*interval -2, h/2 + 13*lineWidth, 5, 17*lineWidth];
+		ctx.fillRect(rect[0],rect[1],rect[2],rect[3]);
+
+		var t = 10;
+		ctx.beginPath();
+		ctx.moveTo(rect[0]+3, rect[1]-t);
+		ctx.lineTo(rect[0]-t, rect[1]+t);
+		ctx.lineTo(rect[0]+t+6, rect[1]+t);
+		ctx.lineTo(rect[0]+3, rect[1]-t);
+		ctx.stroke();
+		ctx.fill();
+		ctx.closePath();
+
+		var rect = [(answer-1) * interval, h/2 + 28 *lineWidth , 2 * interval ,  2*interval];
+		currentAnswer = rect;
+		ctx.fillRect(rect[0],rect[1],rect[2],rect[3]);
+		ctx.clearRect(rect[0]+3,rect[1]+3,rect[2]-5,rect[3]-5);
+	}
+
+	$('#weiter').click(function(){
+		nextClicked();
+	});		
+
+	function nextClicked() {
+		actualAnswers = actualAnswers + answer + ',';
+		if(answer >= parseInt(askedNumber) - toleranceValue && answer <= parseInt(askedNumber) + toleranceValue){
+			currentResult = currentResult + '1,';
+		}
+		else {
+			currentResult = currentResult + '0,';
+		};
+		currentTimes = currentTimes + ( new Date() - stopwatch) + ',';
+		stopwatch = new Date();
+		nextItem();
+	};
+
+</script>

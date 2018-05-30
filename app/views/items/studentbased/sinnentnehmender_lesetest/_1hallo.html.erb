@@ -34,7 +34,7 @@
   </div>
 </div>
 <br><br><br><br>
-<div class='text-center' id='clickWeiter' style='font-size:30px; font-family:fibel_nordregular;'>
+<div class='text-center' id='hinweis' style='font-size:30px; font-family:fibel_nordregular;'>
 </div><br><br>
 <div class='row text-center' id='weiter'>
 
@@ -43,21 +43,29 @@
   </div>
 </div>
 <script>
+  var clicked = false;
+
   $('button').click(function(){
     if(this.id == 'next'){
+      if(clicked == false){
+        $("#hinweis").html("<p>Du musst ein Wort auswählen!</p>");
+      }
+      else{
         if(workTime!=-1) {
             timeoutId = window.setTimeout(timedOut, workTime);
             stopwatch = new Date();
-        }
-      nextItem();
+          }
+        nextItem();
+      }
     }
     else{
       buttonClicked(this.id);
     }
   });
   function buttonClicked(buttonID){
+    clicked = true;
     var text = $('#'+buttonID).text();
     $('#answer').html(text);
-    document.getElementById('clickWeiter').innerHTML = '<p>Keine Fragen mehr? Dann starte den Test.</p>';
+    document.getElementById('hinweis').innerHTML = '<p>Keine Fragen mehr? Dann starte den Test.</p>';
   };
 </script>

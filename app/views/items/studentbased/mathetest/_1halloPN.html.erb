@@ -7,8 +7,8 @@
       Welche Zahl stellt die rote Linie dar?
   </div>
 <div id='divNumbersLine' class='row text-center'>
-    <canvas id='canvas' width='750' height='150'></canvas>
-</div>
+    <canvas id='canvas' width='750' height='200'></canvas>
+</div><br><br>
 
   <div class="row text-center">
     <p style="font-size: 30px; font-family: fibel_nordregular;">Die rote Linie ist die Zahl:
@@ -44,7 +44,7 @@
 	var w = canvas.width - 50;
 	var h = canvas.height;
 	var toleranceValue = 0;
-	var lineWidth = 10; // Needed for drawing
+	var lineWidth = 5; // Needed for drawing
 	var lengthOfLine = parseInt(<%= lengthOfLine %>);
 	var interval = w / lengthOfLine;
 	var currentAnswer=[];
@@ -55,19 +55,33 @@
 
 	$('#result').focus();
 
-	ctx.fillRect(0,h/2,w ,lineWidth);
-	// first vertical line
-	ctx.fillRect(0,((h/2) - (3*lineWidth)), lineWidth, 7 * lineWidth);
-	// second vertical line
-	ctx.fillRect(w-lineWidth,((h/2) - (3*lineWidth)), lineWidth, 7 * lineWidth);
-	// Numbers on both sides
-	ctx.font = '20px Arial black';
-	ctx.fillText('0', 0, h/2 - 4*lineWidth);
-	ctx.fillText(lengthOfLine, w - 20, h/2 - 4*lineWidth);
+    //horizontal line
+    ctx.fillRect(0,h/2,w ,lineWidth);
+    // first vertical line
+    ctx.fillRect(0,(h/2), lineWidth, 16 * lineWidth);
+    // second vertical line
+    ctx.fillRect(w-lineWidth,(h/2), lineWidth, 16 * lineWidth);
+
+    for (var i = 1; i <= lengthOfLine - 1; i++) {
+    if(i%5 == 0){
+      ctx.fillRect(i*interval,(h/2), lineWidth, 16 * lineWidth);         
+    }
+    else{
+      ctx.fillRect(i*interval,(h/2), lineWidth/2, 8 * lineWidth);        
+    }
+  }
+
+    // Numbers on both sides
+    ctx.font = '20px Arial black';
+    for (var i = 0; i <= lengthOfLine; i++) {
+      if (i%5==0) {
+        ctx.fillText(i, i * interval - (i*0.5) , h/2 + 20*lineWidth);
+      }
+    }
 
     var positionOfRandomNumber = askedNumber * interval;
     ctx.fillStyle = 'red';
-    var rect = [positionOfRandomNumber, h/2 - 3*lineWidth , 7, 7*lineWidth];
+    var rect = [positionOfRandomNumber, h/2 - 3*lineWidth , 7, 19*lineWidth];
     currentAnswer = rect;
     ctx.fillRect(rect[0],rect[1],rect[2],rect[3]);
 
