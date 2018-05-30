@@ -7,7 +7,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-STDOUT.puts "Enter e-mail for admin:"
+=begin STDOUT.puts "Enter e-mail for admin:"
 email = STDIN.gets.strip.downcase
 STDOUT.puts "Enter password for admin:"
 pw = STDIN.gets.strip
@@ -21,3 +21,5 @@ else
   STDOUT.puts "Something went wrong!"
 end
 
+
+=end
