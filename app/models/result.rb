@@ -361,7 +361,7 @@ class Result < ActiveRecord::Base
       SELECT measurements.id FROM measurements 
       JOIN assessments on assessments.id=measurements.assessment_id
       JOIN groups on assessments.group_id = groups.id
-      WHERE assessments.test_id = #{test} AND export=\"t\"
+      WHERE assessments.test_id = #{test} AND export='1'
       ORDER BY date ASC;")
 
     idStudents = [] # save ids of students in the current test
