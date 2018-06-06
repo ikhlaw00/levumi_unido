@@ -19,7 +19,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: db/test.sqlite3
+  database: db/test.postgresql
 
 production:
   adapter: mysql2
@@ -28,3 +28,5 @@ production:
   username: levumi
   password: imuvel
   encoding: utf8
+
+

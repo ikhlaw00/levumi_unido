@@ -78,46 +78,46 @@ class Test < ActiveRecord::Base
   #Count number of assessments for each test by a direct SQL query, to save time. Returns a hash that maps test ids to counts.
   def self.get_assessment_count
     temp = ActiveRecord::Base.connection.exec_query("
-      SELECT test_id, COUNT(*) as Anzahl
+      SELECT test_id, COUNT(*) as anzahl
       FROM tests JOIN assessments ON tests.id = test_id
         JOIN groups ON groups.id = group_id
         JOIN users ON users.id = user_id
-      WHERE export = \"t\"
+      WHERE export = 't'
       GROUP BY test_id;
     ")
     ids = temp.map{|x| x["test_id"]}
-    count = temp.map{|x| x["Anzahl"]}
+    count = temp.map{|x| x["anzahl"]}
     return Hash[ids.zip(count)]
   end
 
   #Count number of measurements for each test by a direct SQL query, to save time. Returns a hash that maps test ids to counts.
   def self.get_measurement_count
     temp = ActiveRecord::Base.connection.exec_query("
-      SELECT test_id, COUNT(*) as Anzahl
+      SELECT test_id, COUNT(*) as anzahl
       FROM measurements JOIN assessments ON assessments.id = assessment_id
         JOIN groups ON groups.id = group_id
         JOIN users ON users.id = user_id
-      WHERE export = \"t\"
+      WHERE export = 't'
       GROUP BY test_id;
     ")
     ids = temp.map{|x| x["test_id"]}
-    count = temp.map{|x| x["Anzahl"]}
+    count = temp.map{|x| x["anzahl"]}
     return Hash[ids.zip(count)]
   end
 
   #Count number of results for each test by a direct SQL query, to save time. Returns a hash that maps test ids to counts.
   def self.get_result_count
     temp = ActiveRecord::Base.connection.exec_query("
-      SELECT test_id, COUNT(*) as Anzahl
+      SELECT test_id, COUNT(*) as anzahl
       FROM results JOIN measurements ON measurements.id = measurement_id
         JOIN assessments ON assessments.id = assessment_id
         JOIN groups ON groups.id = group_id
         JOIN users ON users.id = user_id
-      WHERE export = \"t\"
+      WHERE export = 't'
       GROUP BY test_id;
     ")
     ids = temp.map{|x| x["test_id"]}
-    count = temp.map{|x| x["Anzahl"]}
+    count = temp.map{|x| x["anzahl"]}
     return Hash[ids.zip(count)]
   end
 end

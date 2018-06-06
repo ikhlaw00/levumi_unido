@@ -12,7 +12,7 @@ class TestZR < Test
 				print firstdraw_items.length
 				items_of_rand_cat = firstdraw_items.where(difficulty: random_cat)
 				itemset = itemset + items_of_rand_cat
-				if(random_cat < 10)
+				if(random_cat < 7)
 					random_cat += 1
 				else
 					random_cat = 3 # Start with cat 3, also group A

@@ -61,44 +61,44 @@ class User < ActiveRecord::Base
   #Count number of assessments for each user by a direct SQL query, to save time. Returns a hash that maps test ids to counts.
   def self.get_assessment_count
     temp = ActiveRecord::Base.connection.exec_query("
-      SELECT user_id, COUNT(*) as Anzahl
+      SELECT user_id, COUNT(*) as anzahl
       FROM users JOIN groups ON user_id = users.id
         JOIN assessments ON group_id = groups.id
-      WHERE export = \"t\"
+      WHERE export = 't'
       GROUP BY user_id;")
     ids = temp.map{|x| x["user_id"]}
-    count = temp.map{|x| x["Anzahl"]}
+    count = temp.map{|x| x["anzahl"]}
     return Hash[ids.zip(count)]
   end
 
   #Count number of measurements for each user by a direct SQL query, to save time. Returns a hash that maps test ids to counts.
   def self.get_measurement_count
     temp = ActiveRecord::Base.connection.exec_query("
-      SELECT user_id, COUNT(*) as Anzahl
+      SELECT user_id, COUNT(*) as anzahl
       FROM users JOIN groups ON user_id = users.id
         JOIN assessments ON group_id = groups.id
         JOIN measurements ON assessment_id = assessments.id
-      WHERE export = \"t\"
+      WHERE export = 't'
       GROUP BY user_id;
      ")
     ids = temp.map{|x| x["user_id"]}
-    count = temp.map{|x| x["Anzahl"]}
+    count = temp.map{|x| x["anzahl"]}
     return Hash[ids.zip(count)]
   end
 
   #Count number of results for each user by a direct SQL query, to save time. Returns a hash that maps test ids to counts.
   def self.get_result_count
     temp = ActiveRecord::Base.connection.exec_query("
-      SELECT user_id, COUNT(*) as Anzahl
+      SELECT user_id, COUNT(*) as anzahl
       FROM users JOIN groups ON user_id = users.id
         JOIN assessments ON group_id = groups.id
         JOIN measurements ON assessment_id = assessments.id
         JOIN results ON measurement_id = measurements.id
-        WHERE export = \"t\"
+        WHERE export = 't'
         GROUP BY user_id;
     ")
     ids = temp.map{|x| x["user_id"]}
-    count = temp.map{|x| x["Anzahl"]}
+    count = temp.map{|x| x["anzahl"]}
     return Hash[ids.zip(count)]
   end
 end
