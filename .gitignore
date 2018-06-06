@@ -18,5 +18,5 @@
 .idea
 
 # ignore imprtant files
-/config/database.yml
-/config/secrets.yml
+config/database.yml
+config/secrets.yml
