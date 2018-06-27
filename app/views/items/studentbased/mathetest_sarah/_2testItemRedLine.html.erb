@@ -1,13 +1,12 @@
 <% 
-  asked = item.shorthand 
-  toleranceValue = item.difficulty
-  lengthOfLine = item.itemtext
+  asked = item.itemtext 
+  lengthOfLine = item.shorthand
 %>
 <div class='row text-center' id='question' style='font-size: 30px; margin: 20px'>
       Welche Zahl stellt die rote Linie dar?
-  </div><br><br>
+  </div>
 <div id='divNumbersLine' class='row text-center'>
-    <canvas id='canvas' width='750' height='200'></canvas>
+    <canvas id='canvas' width='750' height='250'></canvas>
 </div> <br><br>
 
   <div class="row text-center">
@@ -16,12 +15,12 @@
      </p><br><br>
   </div>
   <div class="text-center">
-    <% digits =  lengthOfLine.to_i - 1 %>
+    <% digits =  lengthOfLine.to_i  %>
     <% if (lengthOfLine.to_i <= 20) %>
       <script type="text/javascript">
         $('#result').attr('readonly', true);
       </script>
-      <% (1..digits).each do |x| %>
+      <% (0..digits).each do |x| %>
           <button id="<%= x %>" type="button" class="btn btn-lg btn-primary"><%= x %></button>
           <% if x == digits/2 %>
               <br>
@@ -42,7 +41,6 @@
   var ctx = canvas.getContext('2d');
   var w = canvas.width - 50;
   var h = canvas.height;
-  var toleranceValue = <%= toleranceValue %>;
   var lineWidth = 5; // Needed for drawing
   var lengthOfLine = parseInt(<%= lengthOfLine %>);
   var interval = w / lengthOfLine;
@@ -84,7 +82,7 @@
     if(event.target.id == "weiter"){
       var answer = parseInt($('#result').val());
       actualAnswers = actualAnswers + answer + ',';
-      if(answer >= askedNumber - toleranceValue && answer <= askedNumber + toleranceValue){
+      if(answer == askedNumber){
         currentResult = currentResult + '1,';
         }
       else {

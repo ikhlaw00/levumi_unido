@@ -1,0 +1,98 @@
+<%
+numbers = item.itemtext.split(',')
+lengthOfTest = item.shorthand
+%>
+<div class="row">
+	<div class="text-center">
+		<h1>Zahlzerlegung</h1>
+	</div>
+</div>
+<div class="row text-center" style="font-family: fibel_nordregular; font-size: 40px;">
+	<p>Welche Zahl passt?</p>
+</div>
+<div class="text-center">
+	<canvas id="canvas" height="300" width="600"></canvas>
+</div>
+<div class="row text-center">
+	<% (0..lengthOfTest.to_i).each do |x|  %>
+		<button class="btn btn-lg btn-primary" id=<%= x%> ><%= x%></button>
+	<% end %>
+</div>
+<br><br>
+<div class="row">
+	<p id="hinweis" class="text-center"><p>
+	<div class="text-center col-lg-4 col-md-offset-4">
+		<button class="btn btn-lg btn-success" id="next" style="font-size: 40px; font-family: fibel_nordregular;">Weiter</button>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	var canvas = document.getElementById("canvas");
+	var ctx = canvas.getContext("2d");
+	var answer=-1;
+	var links ;
+	parseInt(<%= numbers[4] %>) == 0 ? links = true : links = false; // checks whether the empty position is on the left or right side
+	var topNumber = parseInt(<%= numbers[0] %>);
+	var leftNumber = parseInt(<%= numbers[1] %>);
+	var rightNumber = parseInt(<%= numbers[2] %>);
+	var askedNumber;
+	if(links){
+		draw(topNumber, '', rightNumber)
+		askedNumber = leftNumber;
+	}else{
+		draw(topNumber, leftNumber, '');
+		askedNumber = rightNumber;
+	}
+
+	function draw(top, left, right){
+		ctx.clearRect(0,0,600,300);
+		ctx.lineWidth = 5;
+		// top number
+		ctx.font = "50px Comic Sans MS";
+		ctx.textAlign = "center";
+		ctx.fillText(top, 300,100);
+		//paths
+		ctx.beginPath();
+		ctx.moveTo(302,120);
+		ctx.lineTo(230,200);
+		ctx.stroke();
+		ctx.fill();
+		ctx.closePath();
+		ctx.beginPath();
+		ctx.moveTo(300,120);
+		ctx.lineTo(370,200);
+		ctx.stroke();
+		ctx.fill();
+		ctx.closePath();
+
+		ctx.textAlign = "center";
+		ctx.font = "50px Comic Sans MS";
+		ctx.fillStyle = "black";	
+		links ? ctx.strokeRect(200,200,60,60) : ctx.strokeRect(340,200,60,60);
+		ctx.fillText(right,370,245);
+		ctx.fillText(left, 230,245);
+	}
+
+	$('button').click(function(event){
+		var id = event.target.id;
+		if(id=="next"){
+			weiter();
+		}else{
+			answer = parseInt(id);
+			links ? draw(topNumber,id,rightNumber) : draw(topNumber,leftNumber,id); 
+		}
+	});
+
+	function weiter(){
+		actualAnswers =actualAnswers + answer + ',';
+		if (answer == askedNumber){
+			currentResult = currentResult + '1,';
+		}else{
+			currentResult = currentResult + '0,';
+		}
+		currentTimes = currentTimes + (new Date() - stopwatch) + ',';
+		stopwatch = new Date();
+		nextItem();
+	}
+</script> 

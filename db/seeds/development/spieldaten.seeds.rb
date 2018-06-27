@@ -15,6 +15,6 @@ s.save
 s = g.students.build(name: "Eva")
 s.save
 
-u = User.create(name: "Ibo", email: "test1@test.com", password: "123", password_confirmation: "123", capabilities: "admin")
+u = User.create(name: "Ibo", email: "test1@test.com", password: "123", password_confirmation: "123", capabilities: "admin", account_type: 2)
 u = User.create(name: "Alex", email: "test2@test.com", password: "123", password_confirmation: "123", capabilities: "admin")
 

@@ -1,0 +1,81 @@
+<%
+	numbers = item.itemtext.split(',')
+%>
+<div class="container">
+	<div class="row text-center">
+		<h1>Addition</h1>
+	</div>
+	<br>
+	<br>
+	<div class="row" style="font-size: 50px;">
+		<div class="col-md-1 col-md-offset-3 text-center" id="div1"></div>  
+		<div class="col-md-1 text-center" id="div2">+</div>
+		<div class="col-md-1 text-center" id="div3"></div>
+		<div class="col-md-1 text-center" id="div4">=</div>
+		<div class="col-md-2 text-center" id="div5"></div>
+	</div>
+	<br><br>
+	<div class="row">
+		<div class="text-center">
+			<% (0..9).each do |x| %>
+			<button id="<%=x%>" class="btn btn-lg btn-primary"> <%= x%></button>
+		<% end %>
+		</div>
+	</div><br><br>
+	<div class="row text-center">
+        <button class="btn btn-warning btn-lg" id="delete">
+           Löschen
+        </button>
+      </div>
+    </div>
+	<br><br>
+	<div class="row">
+		<div class="col-md-12">
+			<dir class="text-center col-md-4 col-md-offset-4">
+				<button class="btn btn-lg btn-success btn-block" id="next" ><span style="font-size:30px; font-family: fibel_nordregular;">Weiter</span></button>
+			</dir>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	var div = document.getElementById("assignment");
+	var p1 = document.getElementById("div1");
+	var p2 = document.getElementById("div3");
+	var p3 = document.getElementById("div5");
+	var askedNumber = parseInt(<%= numbers[0] %>) + parseInt(<%= numbers[1] %>);
+	var answer="";
+
+	show();
+
+	function show(){
+		p1.innerHTML = <%= numbers[0] %> + " ";
+		p2.innerHTML = <%= numbers[1] %> + " ";
+		p3.innerHTML += "<input type=\"input\" name=\"answer\" id=\"answer\" class='col-md-12' readonly>";
+	}
+
+	$('button').click(function(event){
+		var clicked = event.target.id;
+		if(clicked == "next"){
+			actualAnswers = actualAnswers + answer + ',';
+			if(parseInt(answer) == askedNumber){
+				currentResult = currentResult + '1,';
+			}else{
+				currentResult = currentResult + '0,';
+			}
+			currentTimes = currentTimes + (new Date() - stopwatch) + ',';
+			stopwatch = new Date();
+			nextItem();
+		} else if (clicked=="delete") {
+			if (answer.length > 0) {
+				answer = answer.slice(0,-1);
+				$('#answer').val(answer);
+			}
+		}else{
+			answer = $("#answer").val() + clicked;
+			$("#answer").val(answer);
+		}
+
+	});
+
+</script> 

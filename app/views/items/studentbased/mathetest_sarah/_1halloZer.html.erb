@@ -1,0 +1,87 @@
+<div class="row">
+	<div class="text-center">
+		<h1>Zahlzerlegung</h1>
+	</div>
+</div>
+<div class="row text-center" style="font-family: fibel_nordregular; font-size: 40px;">
+	<p>Welche Zahl passt?</p>
+</div>
+<div class="text-center">
+	<canvas id="canvas" height="300" width="600"></canvas>
+</div>
+<div class="row text-center">
+	<% length = 5 %>
+	<% (0..length).each do |x|  %>
+		<button class="btn btn-lg btn-primary" id=<%= x%> ><%= x%></button>
+	<% end %>
+</div>
+<br><br>
+<div class="row">
+	<p id="hinweis" class="text-center"><p>
+	<div class="text-center col-lg-4 col-md-offset-4">
+		<button class="btn btn-lg btn-primary btn-block" id="next" style="font-size: 40px; font-family: fibel_nordregular;">Jetzt starten!</button>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	var canvas = document.getElementById("canvas");
+	var ctx = canvas.getContext("2d");
+	var answer=-1;
+	
+	draw(5,3,' ');
+
+	function draw(top, left, right){
+		ctx.lineWidth = 5;
+		ctx.fillStyle = "black";
+		ctx.clearRect(200,200,60,60);
+		ctx.strokeRect(200,200,60,60);
+
+		ctx.font = "50px Comic Sans MS";
+		ctx.textAlign = "center";
+		ctx.fillText(top, 300,100);
+
+		ctx.beginPath();
+		ctx.moveTo(302,120);
+		ctx.lineTo(230,200);
+		ctx.stroke();
+		ctx.fill();
+		ctx.closePath();
+
+		ctx.beginPath();
+		ctx.moveTo(300,120);
+		ctx.lineTo(370,200);
+		ctx.stroke();
+		ctx.fill();
+		ctx.closePath();
+
+		ctx.textAlign = "center";
+		ctx.font = "50px Comic Sans MS";
+		ctx.fillText(left, 370,250);
+
+		ctx.fillText(right,230,245);
+	}
+
+	$('button').click(function(event){
+		var id = event.target.id;
+		if(id=="next"){
+			weiter();
+		}else{
+			answer = parseInt(id);
+			draw(5,3,id);
+			document.getElementById("hinweis").innerHTML = "Keine Fragen mehr? Dann starte den Test.";
+		}
+	});
+
+	function weiter(){
+		if(answer == -1){
+			document.getElementById("hinweis").innerHTML = "Du musst ein Button klicken";
+		}else{
+			if(workTime != -1){
+				timeoutId = window.setTimeout(timedOut, workTime);
+				stopwatch = new Date();
+			}
+			nextItem();
+		}
+	}
+</script>

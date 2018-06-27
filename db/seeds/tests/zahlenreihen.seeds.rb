@@ -63,7 +63,7 @@ all_items=[
 %w{	76743	76753	-	76773	76763	1	},
 %w{	477210	476210	475210	-	474210	2	},
 %w{	112930	-	112950	112960	112940	1	},
-%w{	544530	544430	544420	-	544410	2	},
+%w{	544530	544430	544330	-	544230	2	},
 %w{	-	28912	28913	28914	28911	1	},
 %w{	77443	77343	77243	-	77143	2	},
 %w{	984563	-	984565	984566	984564	1	},
@@ -160,7 +160,8 @@ it.save
 
 i = 0
 while i < all_items.length do
-	it = test1.items.build(itemtext: all_items[i].join(","), shorthand: all_items[i][4] , itemtype: 0, difficulty: all_items[i][5], itemview: "items/studentbased/zahlenreihen/2testItem")
+	it = test1.items.build(itemtext: all_items[i].join(","), shorthand: all_items[i][4] , itemtype: 0, difficulty: all_items[i][5],
+	 itemview: "items/studentbased/zahlenreihen/2testItem")
 	it.save
 	i = i + 1
 end

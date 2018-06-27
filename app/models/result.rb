@@ -32,6 +32,7 @@ class Result < ActiveRecord::Base
     self.extra_data["intro"] = drawn_items[0]
     self.items = drawn_items[1]
     self.extra_data["outro"] = drawn_items[2]
+    print "itemsize: " + drawn_items.to_s
     self.responses[self.items.size-1] = nil
     update_total
   end
