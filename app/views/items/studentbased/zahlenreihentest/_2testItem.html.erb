@@ -1,6 +1,6 @@
 <% 
   variables = item.itemtext.split(",")
-  correctAnswer = variables[4]
+  correctAnswer = variables[4].to_i
   possibleAnswers = variables[0,4]
   position_of_gap = possibleAnswers.index("-")
   possibleAnswers.delete("-")
@@ -102,7 +102,7 @@
     entered = true;
     var tempAnswer = document.getElementById('answer');
     actualAnswers = actualAnswers + tempAnswer.value + ',';
-    if(tempAnswer.value=='<%= item.shorthand%>'){
+    if(parseInt(tempAnswer.value)==(<%= correctAnswer%>)){
       currentResult = currentResult + '1,';
     }
     else {
