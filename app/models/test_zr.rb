@@ -35,3 +35,4 @@ class TestZR < Test
 		end		
 		return [intro_items.map{|i| i.id}, itemset.map{|i| i.id}, outro_items.map{|i| i.id}]
 	end
+end
