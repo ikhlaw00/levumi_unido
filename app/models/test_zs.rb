@@ -4,8 +4,8 @@ class TestZS < Test # This class will be used in zahlenstrahlen-Test, also in za
 		categories  = content_items.map {|x| x.difficulty}.uniq
 		pool = categories
 		all_items = content_items # all items
-		remaining = all_items - itemset
 		all_items.length.times do
+			remaining = all_items - itemset
 			if (pool.length == 0)
 				pool = categories
 			end

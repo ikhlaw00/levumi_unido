@@ -47,8 +47,12 @@ it = math.items.build(itemtext: "hallo", itemtype: -1, itemview: "items/studentb
 it.save
 i = 0
 while i<items_zer.length do
-	it = math.items.build(itemtext: items_zer[i].join(","), shorthand: 5, itemview: "items/studentbased/zahlzerlegungstest/2testItemZer",
-			itemtype: 0, difficulty: items_zer[i][3])
+	idx = 1
+	if items_zer[i][4] == "1"
+		idx = 2
+	end
+	it = math.items.build(itemtext: items_zer[i].join(",") + ",5", shorthand: items_zer[i][idx], itemview: "items/studentbased/zahlzerlegungstest/2testItemZer",
+				itemtype: 0, difficulty: items_zer[i][3])
 	it.save
 	i = i + 1
 end
@@ -157,8 +161,12 @@ it.save
 
 i = 0
 while i<all_items.length do
-	it = math.items.build(itemtext: all_items[i].join(","), shorthand: 10, itemview: "items/studentbased/mathetest_sarah/2testItemZer",
-			itemtype: 0, difficulty: all_items[i][3])
+	idx = 1
+	if all_items[i][4] == "1"
+		idx = 2
+	end
+	it = math.items.build(itemtext: all_items[i].join(",") + ",10" , shorthand: all_items[i][idx], itemview: "items/studentbased/mathetest_sarah/2testItemZer",
+				itemtype: 0, difficulty: all_items[i][3])
 	it.save
 	i = i + 1
 end

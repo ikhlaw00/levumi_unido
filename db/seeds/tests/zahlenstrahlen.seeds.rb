@@ -88,7 +88,7 @@ it.save
 
 i=0
 while i<all_items.length do
-	it = math.items.build(itemtext: all_items[i].join(","), shorthand: lineLength, difficulty: all_items[i][1], itemtype: 0, 
+	it = math.items.build(itemtext: all_items[i].join(",") + "," + lineLength.to_s, shorthand: all_items[i][0], difficulty: all_items[i][1], itemtype: 0, 
 	itemview: "items/studentbased/zahlenstrahltest/2testItemZahlenstrahl")
 	it.save
 	i= i+1
@@ -194,7 +194,7 @@ it.save
 
 i=0
 while i<all_items.length do
-	it = math.items.build(itemtext: all_items[i].join(","),shorthand: lineLength , difficulty: all_items[i][1], itemtype: 0, 
+	it = math.items.build(itemtext: all_items[i].join(",") + "," + lineLength.to_s,shorthand: all_items[i][0] , difficulty: all_items[i][1], itemtype: 0, 
 	itemview: "items/studentbased/zahlenstrahltest/2testItemZahlenstrahl")	
 	it.save
 	i= i+1

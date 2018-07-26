@@ -18,8 +18,8 @@ class TestZR < Test
 			categories = [1,2]
 			pool = [1,2]
 			all_items = content_items # all items
-			remaining = all_items - itemset
 			all_items.length.times do
+				remaining = all_items - itemset
 				if (pool.length == 0)
 					pool = categories
 				end
