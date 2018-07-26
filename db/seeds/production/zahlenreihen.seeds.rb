@@ -87,7 +87,7 @@ it.save
 
 i = 0
 while i < all_items.length do
-	it = test1.items.build(itemtext: all_items[i].join(","), shorthand: all_items[i][6] , itemtype: 0, difficulty: all_items[i][5], itemview: "items/studentbased/zahlenreihentest/2testItem")
+	it = test1.items.build(itemtext: all_items[i].join(","), shorthand: all_items[i][4] , itemtype: 0, difficulty: all_items[i][5], itemview: "items/studentbased/zahlenreihentest/2testItem")
 	it.save
 	i = i + 1
 end

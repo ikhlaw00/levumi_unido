@@ -27,6 +27,10 @@
            Löschen
         </button>
       </div>
+    </div><br>
+    <div class="row text-center">
+    	<p id="hinweis" class="text-center" style="font-size: 30px; font-family: fibel_nordregular;">
+    	</p>
     </div>
 	<br><br>
 	<div class="row">
@@ -44,6 +48,7 @@
 	var p2 = document.getElementById("div3");
 	var p3 = document.getElementById("div5");
 	var askedNumber = parseInt(<%= numbers[0] %>) + parseInt(<%= numbers[1] %>);
+	var answered = false;
 	var answer="";
 
 	show();
@@ -57,23 +62,33 @@
 	$('button').click(function(event){
 		var clicked = event.target.id;
 		if(clicked == "next"){
-			actualAnswers = actualAnswers + answer + ',';
-			if(parseInt(answer) == askedNumber){
-				currentResult = currentResult + '1,';
+			if(answered == true){
+				actualAnswers = actualAnswers + answer + ',';
+				if(parseInt(answer) == askedNumber){
+					currentResult = currentResult + '1,';
+				}else{
+					currentResult = currentResult + '0,';
+				}
+				currentTimes = currentTimes + (new Date() - stopwatch) + ',';
+				stopwatch = new Date();
+				nextItem();
 			}else{
-				currentResult = currentResult + '0,';
+				$('#hinweis').text("Bitte eine Zahl klicken!");
+				//document.getElementById("hinweis").innerHTML = "Bitte eine Zahl klicken!";
 			}
-			currentTimes = currentTimes + (new Date() - stopwatch) + ',';
-			stopwatch = new Date();
-			nextItem();
 		} else if (clicked=="delete") {
 			if (answer.length > 0) {
 				answer = answer.slice(0,-1);
 				$('#answer').val(answer);
 			}
+			if(answer.length == 0)
+				answered = false;
 		}else{
+			answered = true;
 			answer = $("#answer").val() + clicked;
 			$("#answer").val(answer);
+			//document.getElementById("hinweis").innerHTML = "Bitte eine Zahl klicken!";
+			$('#hinweis').text("");
 		}
 
 	});
