@@ -63,7 +63,7 @@ all_items=[
 ]
 
 
-addition = Test.create(name: "Addition 1-16", len: 61, time: 90, construct: "Sarahs Tests", subject: "Mathematik", archive: false,
+addition = TestZS.create(name: "Addition 1-16", len: 61, time: 90, construct: "Sarahs Tests", subject: "Mathematik", archive: false,
 			student_access: true, info: "Addition 1-16", shorthand: "ADD", level: "Niveaustufe 1")
 it = addition.items.build(itemtext:"Hello", itemtype: -1, itemview: "items/studentbased/additiontest/1halloAddition")
 it.save

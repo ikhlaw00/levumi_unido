@@ -1,4 +1,4 @@
-class TestZS < Test # This class will be used in zahlenstrahlen-Test, also in zahlenstrahen.seeds.rb
+class TestZS < Test # This class will be used in zahlenstrahen.seeds.rb, addition und zahlzerlegung
 	def draw_items(first)
 		itemset  = Array.new
 		categories  = content_items.map {|x| x.difficulty}.uniq

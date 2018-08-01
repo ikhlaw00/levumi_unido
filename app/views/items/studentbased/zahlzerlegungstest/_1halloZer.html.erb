@@ -1,3 +1,6 @@
+<%
+	testLength = item.shorthand
+%>
 <div class="row">
 	<div class="text-center">
 		<h1>Zahlzerlegung</h1>
@@ -10,7 +13,7 @@
 	<canvas id="canvas" height="300" width="600"></canvas>
 </div>
 <div class="row text-center">
-	<% length = 5 %>
+	<% length = testLength.to_i %>
 	<% (0..length).each do |x|  %>
 		<button class="btn btn-lg btn-primary" id=<%= x%> ><%= x%></button>
 	<% end %>
@@ -28,8 +31,8 @@
 	var canvas = document.getElementById("canvas");
 	var ctx = canvas.getContext("2d");
 	var answer=-1;
-	
-	draw(5,3,' ');
+	var testLength = <%= testLength %>;
+	draw(testLength,3,' ');
 
 	function draw(top, left, right){
 		ctx.lineWidth = 5;
@@ -68,7 +71,7 @@
 			weiter();
 		}else{
 			answer = parseInt(id);
-			draw(5,3,id);
+			draw(testLength,3,id);
 			document.getElementById("hinweis").innerHTML = "Keine Fragen mehr? Dann starte den Test.";
 		}
 	});
