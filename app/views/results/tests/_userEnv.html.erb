@@ -21,11 +21,20 @@
     </div>
 
     <div class="row">
+      <% construct = @measurement.assessment.test.construct %>
       <% @measurement.results.each do |r| %>
           <div class="col-md-4 col-sm-6 col-xs-12">
-            <div class="btn btn-default groupButton <% unless r.responses[0].nil? %> btn-success<% end %>" id="btn<%=r.id%>" onclick="prepareTest(<%=r.id%>)">
-              <%= r.student.name %>
-            </div>
+            <% if construct == "Fragebogen" %>
+              <%= link_to url_for(controller: 'questionnaires', action: 'show', id: r.student.id, measurement: @measurement.id) do%>
+                <div class="btn btn-default groupButton <% unless r.score == 0 %> btn-success<% end %>" id="btn<%=r.id%>" >
+                  <%= r.student.name %>
+                </div>  
+              <% end %>  
+            <% else %>
+                <div class="btn btn-default groupButton <% unless r.responses[0].nil? %> btn-success<% end %>" id="btn<%=r.id%>" onclick="prepareTest(<%=r.id%>);"> 
+                <%= r.student.name %>
+                </div>
+            <% end %>
           </div>
       <% end %>
     </div>
@@ -64,33 +73,24 @@
   ],
   <% end %>
   };
-
-
   var students = {
   <% @measurement.results.each do |r| %>
   <%= r.id%>: "<%= r.student.name%>",
   <% end %>
   };
-
   function prepareTest(student) {
       currentStudent = student;
       timedout = false;
       var curSize =110;
-
       currentItemIndex = 0;
       currentResult = "";
       currentTimes = "";
-
       if (timeoutId != -1) {
           window.clearTimeout(timeoutId);
       }
-
       $('#testEnviroment').html(itemView[studentData[currentStudent][currentItemIndex]]);
       $('#mainModal').modal('show');
   }
-
-
-
   $('#mainModal').on('hidden.bs.modal', function () {
 
       if (timeoutId != -1) {

@@ -15,7 +15,9 @@ class Result < ActiveRecord::Base
   #Calculate new running total of the fraction of correct items. Must be called everytime the responses change.
   #Not used from outside
   def update_total
-    if count_NA == responses.size
+    if measurement.assessment.test.construct == "Fragebogen"
+      self.total = responses.map{|x| x==nil ? 0:x}.sum
+    elsif count_NA == responses.size
       self.total = 0
     else
       self.total = responses.map{|x| x == nil ? 0:x}.sum.to_f/(responses - [nil]).size
@@ -32,8 +34,10 @@ class Result < ActiveRecord::Base
     self.extra_data["intro"] = drawn_items[0]
     self.items = drawn_items[1]
     self.extra_data["outro"] = drawn_items[2]
-    print "itemsize: " + drawn_items.to_s
     self.responses[self.items.size-1] = nil
+    if measurement.assessment.test.construct == "Fragebogen" 
+      self.responses.map!{|i| i = 0}
+    end
     update_total
   end
 
@@ -51,11 +55,27 @@ class Result < ActiveRecord::Base
   end
 
   #Parses a string of results in the form "1,0,1,1,..." where each 0/1 denotes the result of an item.
-  #Used to crate an update results
+  #Used to create an update results
+  # New update 15.08.18
+  # Method updated to accept values 0-7 which come fragebogen
   def parse_csv(data)
     if data.nil?
       self.responses[self.items.size-1] = nil
       return
+    elsif measurement.assessment.test.construct == "Fragebogen"
+      vals = data.split(',')
+      vals.length.times do |i|
+        self.responses[i] = case vals[i]
+        when "0" then 0
+        when "1" then 1 
+        when "2" then 2
+        when "3" then 3 
+        when "4" then 4 
+        when "5" then 5 
+        when "6" then 6 
+        when "7" then 7 
+        end
+      end
     else
       vals = data.split(',')
       vals.length.times do |i|
@@ -65,20 +85,80 @@ class Result < ActiveRecord::Base
     update_total
   end
 
+  # Parses a string comes from questionnaires. It doesn't contain correct/false answers
+  # But it contains numbers between 1 and 7
+  def parse_fragebogen(data)
+    if data.nil?
+      self.responses[self.items.size-1] = nil
+      return
+    else
+      vals = data.split(',')
+      vals.length.times do |i|
+        self.responses[i] = case vals[i]
+        when "1" then 1
+        when "2" then 2
+        when "3" then 3
+        when "4" then 4
+        when "5" then 5
+        when "6" then 6
+        when "7" then 7
+        else 0
+        end
+      end
+    end
+    update_total 
+  end
+
+  # sum of each category in SDQ questionnaire
+  def sdq(category)
+    if category == "SV"
+      return responses[0,3].map{|x| x.nil? ? 0:x}.sum
+    elsif category == "VP"
+      return responses[3,3].map{|x| x.nil? ? 0:x}.sum
+    elsif category == "HY"
+      return responses[6,3].map{|x| x.nil? ? 0:x}.sum
+    elsif category == "EP"
+      return responses[9,3].map{|x| x.nil? ? 0:x}.sum
+    end
+  end
+
   #Sets the result from a hash of (k, v) pairs where k denotes an item_id and v the 0/1 result for this item.
   #Used to update results
+  # Update 21.08.2018
+  # Update method to accept values from questionnaires,
+  # hash contains also numbers 1-7 for questionnaires
   def parse_Hash(hash)
     hash.each do |i, r|
       p = items.index(i.to_i)
-      responses[p] = (r == "1" ? 1 : (r == "0" ? 0 : nil)) unless p.nil?
+      if measurement.assessment.test.construct != "Fragebogen"
+        responses[p] = (r == "1" ? 1 : (r == "0" ? 0 : nil)) unless p.nil?
+      else
+        unless p.nil?
+          responses[p] = case r
+          when "1"  then 1
+          when "2"  then 2
+          when "3"  then 3
+          when "4"  then 4
+          when "5"  then 5
+          when "6"  then 6
+          when "7"  then 7
+          end
+        end
+      end
     end
     update_total
   end
 
   #Create a string in the form of "0,1,0,1,..." that denotes the result for each item in the respective order. If includeNA is false, every NA response will be transformed to 0 in the result.
   #Used for exporting the results.
+  # New 15.08.2018 
+  # Added new condition for Fragebogen. the string contains values between 0 and 7 and there is no "NA"
   def to_csv(includeNA)
-    responses.map{|x| (x == nil && includeNA)  ? 'NA': (x == nil ? 0 : x.to_s) }.join(",")
+    if measurement.assessment.test.construct == "Fragebogen"
+      responses.map{ |x| (x == nil) ? 0 : x.to_s}.join(",")
+    else  
+      responses.map{|x| (x == nil && includeNA)  ? 'NA': (x == nil ? 0 : x.to_s) }.join(",")
+    end
   end
 
   #Create an array representation of the results.
@@ -101,11 +181,19 @@ class Result < ActiveRecord::Base
   #Calculate the number of correct items.
   #Used for displaying the results
   def score
-    if responses.include?(1) | responses.include?(0)
+    if measurement.assessment.test.construct == "Fragebogen"
+      return score_fragebogen
+    elsif responses.include?(1) | responses.include?(0)
       return responses.map{|x| x == nil ? 0:x}.sum
     else
       return nil
     end
+  end
+
+  # Calculate the sum of all items of a questinnaire
+  # possible results are numbers between 1 and 7. Also there is no correct or false results
+  def score_fragebogen 
+    return responses.map{|x| x == nil ? 0:x}.sum
   end
 
   #Calculate ethe number of all items with a "1" response

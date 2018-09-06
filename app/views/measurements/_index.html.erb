@@ -23,7 +23,11 @@
     Anzahl Ergebnisse
   </th>
   <th>
-    Durchschnitt richtig gelöster Items
+    <% if !@assessment.test.construct == "Fragebogen" %>
+      Durchschnitt richtig gelöster Items
+    <% else %>
+      Durchschnittliches Verhalten aller Schüler
+    <% end %>
   </th>
   <th>
   </th>
@@ -37,7 +41,7 @@
 
         <%if !@assessment.test.student_access%>
           <td>
-
+ 
             <%= link_to new_user_group_assessment_measurement_results_path(@user, @group, @assessment, measurement, :format => :html),
                         :title => "Messung online durchführen", :data => {:remote => true} do %>
                 <span class="glyphicon glyphicon-expand"></span>
@@ -46,10 +50,10 @@
                         :title => "Messung offline durchführen", :data => {:remote => true} do %>
                 <span class="glyphicon glyphicon-print"></span>
             <% end %>
-          </td>
+          </td> 
         <%end%>
 
-        <td>
+        <td> 
           <% if measurement.results.count > 0 %>
               <%= link_to edit_user_group_assessment_measurement_results_path(@user, @group, @assessment, measurement), :title => "Ergebnisse bearbeiten", :data => {:remote => true} do %>
                   <%= measurement.real_results %>
@@ -85,4 +89,3 @@
     <%= link_to @assessment.test.student_access ? "Neuer Messzeitraum in sieben Tagen" : "Neuer Messzeitpunkt bis in sieben Tagen", {:controller => "measurements", :action => "create", :assessment_id => @assessment, :measurement =>{:date =>Date.today+7}}, method: :post, :class => "btn btn-default", :data => {:remote => true}%>
   <% end %>
 </div>
-

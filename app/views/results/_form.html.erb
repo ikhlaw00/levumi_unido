@@ -20,7 +20,11 @@
                 Schüler/-in
               </th>
               <th>
-                Ergebnisse: Pro Item des Tests einer der Werte 1, 0 oder NA für "richtig", "falsch", bzw. "kein Ergebnis vorhanden". Werte durch Komma getrennt.)
+                <% if !@assessment.test.construct == "Fragebogen" %>
+                  Ergebnisse: Pro Item des Tests einer der Werte 1, 0 oder NA für "richtig", "falsch", bzw. "kein Ergebnis vorhanden". Werte durch Komma getrennt.
+                <% else %>
+                  Ergebnisse: Pro Item des Fragebogen einer der Werte 1-7 für "Nie" bzw. "Immer". 0 ist "Kein Ergebnis vorhanden". Werte durch Komma getrennt.     
+                <% end %>
               </th>
               </thead>
               <tbody>
@@ -63,21 +67,32 @@
                         <p class="lead">
                           <%= tempItem.shorthand %>
                         </p>
-                        <div class="radio">
-                          <label>
-                            <%= radio_button_tag "results[#{r.student.id}[#{i}]]", '1', r.responses[index] == 1 %>Richtig<br/>
-                          </label>
-                        </div>
-                        <div class="radio">
-                          <label>
-                            <%= radio_button_tag "results[#{r.student.id}[#{i}]]", '0', r.responses[index] == 0 %>Falsch<br/>
-                          </label>
-                        </div>
-                        <div class="radio">
-                          <label>
-                            <%= radio_button_tag "results[#{r.student.id}[#{i}]]", 'NA', r.responses[index] == nil %><i>Nicht bearbeitet</i><br/>
-                          </label>
-                        </div>
+                        <% if @assessment.test.construct == "Fragebogen" %> <!-- just for questionnaires -->
+                          <div class="radio">
+                            <% (1..7).each do |x| %>
+                              <label>
+                                <%= radio_button_tag "results[#{r.student.id}[#{i}]]", x.to_s, r.responses[index] == x %><%= x%><br/>
+                              </label>
+                            <% end %>
+                          </div>  
+                        <% else %> 
+                          <!-- For all tests except questionnaire  -->
+                          <div class="radio">
+                            <label>
+                              <%= radio_button_tag "results[#{r.student.id}[#{i}]]", '1', r.responses[index] == 1 %>Richtig<br/>
+                            </label>
+                          </div>
+                          <div class="radio">
+                            <label>
+                              <%= radio_button_tag "results[#{r.student.id}[#{i}]]", '0', r.responses[index] == 0 %>Falsch<br/>
+                            </label>
+                          </div>
+                          <div class="radio">
+                            <label>
+                              <%= radio_button_tag "results[#{r.student.id}[#{i}]]", 'NA', r.responses[index] == nil %><i>Nicht bearbeitet</i><br/>
+                            </label>
+                          </div>
+                        <% end %>
                       </div>
                       <br/>
                     <% end %>

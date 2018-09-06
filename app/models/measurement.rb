@@ -41,6 +41,10 @@ class Measurement < ActiveRecord::Base
 
   def real_results
     x = results.map{|f| f.score} - [nil]
+    # Unlike in all tests is the score initially in questionnaires equal to 0. (score in all tests is initially nil)
+    if assessment.test.construct == "Fragebogen"
+      x = results.map{|f| f.score > 0 ? f.score : nil } - [nil]
+    end
     return x.count
   end
 

@@ -1,0 +1,58 @@
+<h1 class="text-center" style="font-style: fibel_nordregular;">Direct Behaviour Rating (DBR)</h1>
+<div class="row" style="font-size: 18px; font-style: fibel_nordregular; padding-left: 10px;">
+	Es bezieht sich auf das Verhalten der Schülerin bzw. des Schülers im Klassenraum, während eines Unterrichtstages oder eines Beobachtungszeitraumes. Ziel ist es mehrere vergleichbare Verhaltenseinschätzungen mit dem DBR zu bewerten. Dafür sollten die verschiedenen Beobachtungsräume gleich lang sein. Bitte beurteilen Sie die für die Schülerin bzw. den Schüler relevanten Punkt im letzten Beobachtungszeitraum (Maximal ein Unterrichtstag).
+</div><br>
+<br>
+<div class="row" style="font-style: fibel_nordregular; padding-left: 10px;">
+  <h2 id="hinweis"></h2>
+</div>
+<div class="row" >
+  <div class="col-sm-4 col-sm-offset-8" style="font-size: 16px;">
+    <label class="col-sm-2">Nie</label>
+    <label class="col-sm-2 col-sm-offset-5">Immer</label>
+  </div>
+<%= form_tag(url_for(:controller => 'questionnaires', :action => 'save_results'), :class => "form") do %>
+  <% (1..12).each do |x| %>
+    <div class="form-group row" style="font-family: fibel_nordregular; font-size: 20px; padding-left: 30px;" >
+      <div class="col-sm-8">
+        <label class="col-md-8 col-form-label" id="item<%=x%>" ><%= x %></label>
+      </div>
+      <div class="col-md-4 form-check form-check-inline">
+      <% (1..7).each do |i| %>
+        <%= i %> <%= radio_button_tag  x.to_s, i.to_s%> &nbsp &nbsp
+      <% end %>
+      </div>
+    </div>
+  <% end %>
+  <div class="row text-center" style="margin-bottom: 25px">
+    <div class="col-md-12">
+      <%= submit_tag 'Speichern', :class => "btn btn-primary btn-lg" %>
+    </div>
+  </div>
+<% end %>
+ 
+<script>
+  var currentStudent= <%= @student.id %>;
+  var currentStudentName = "<%= @student.name %>";
+  var items = {
+  	<% @measurement.assessment.test.items.each do |i| %>
+  	<%= i.id %> : "<%= i.itemtext %>",
+  	<% end %>
+  };
+
+  $('.btna').click(function(){
+      window.close();
+  });
+
+  var i = 1;
+  for (key in items){
+  	if(items[key] == "hallo")
+  		delete items[key]
+  	else{
+		document.getElementById('item'+i).innerHTML = i + ")  "+items[key];
+	  	i = i+1;
+  	}
+  }
+  document.getElementById("hinweis").innerHTML = currentStudentName;
+  document.getElementById('hinweis').innerHTML = "Sie füllen den Fragenbogen für <strong>"+ currentStudentName +"</strong> aus.<br> ";
+</script> 

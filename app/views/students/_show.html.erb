@@ -46,7 +46,12 @@
 
     <% @results.each do |key, val| %>
       <% test = Test.find(key) %>
-      <%= render file: 'students/_draw_graph', locals: {:student => @student, :test => test.id, :results => val}%>
+      // for the questionnaires we have another view
+      <% if test.construct == "Fragebogen" %>
+        <%= render file: 'students/_draw_graph_fragebogen', locals: {:student => @student, :test => test.id, :results => val}%>
+      <% else %>  
+        <%= render file: 'students/_draw_graph', locals: {:student => @student, :test => test.id, :results => val}%>
+      <% end %>
     <% end %>
 
     function print(id, test, details) {
@@ -67,8 +72,13 @@
         printWindow.document.title =  "Druckansicht";
         printWindow.focus();
         <% @results.each do |key, val| %>
-        <% test = Test.find(key) %>
-        <%= render file: 'students/_draw_graph', :locals =>  {:student => @student, :test => test.id, :results => val}%>
+          <% test = Test.find(key) %>
+          // another view for questionnaires
+          <% if test.construct == "Fragebogen" %>
+            <%= render file: 'students/_draw_graph_fragebogen', :locals =>  {:student => @student, :test => test.id, :results => val}%>
+          <% else %>
+              <%= render file: 'students/_draw_graph', :locals =>  {:student => @student, :test => test.id, :results => val}%>
+          <% end %>
         <% end %>
     };
 

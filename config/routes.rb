@@ -28,7 +28,8 @@ Rails.application.routes.draw do
   post 'frontend/logout' => 'frontend#logout'
   get 'frontend' => 'frontend#index'
   get 'frontend/:id' => 'frontend#start'
-
+  get 'questionnaires/show' => 'questionnaires#show'
+  post 'questionnaires/save_results' => 'questionnaires#save_results'
   resources :materials
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -1,0 +1,89 @@
+var chart<%=test%> = c3.generate({
+    bindto: '#chart<%=test%>',
+    data: {
+        x: 'x',
+        columns: [
+            ['x',
+                <% results.each do |r| %>
+                '<%= r.measurement.date.to_date %>',
+                <% end %>
+            ],
+            ['SV',
+                <% max = 0 %>
+                <% results.each do |r| %>
+                  <%if !r.measurement.max.nil? && r.measurement.max > max %>
+                    <% max = r.measurement.max %>
+                  <% end %>
+                <% unless r.nil? %>
+                <%= r.sdq('SV').nil? ? "null" : r.sdq('SV') %>
+                <% else %>
+                null
+                <% end %>,
+                <% end %>
+            ],
+            ['VP',
+                <% results.each do |r| %>
+                <% unless r.nil? %>
+                <%= r.sdq('VP').nil? ? "null" : r.sdq('VP') %>
+                <% else %>
+                null
+                <% end %>,
+                <% end %>
+            ],
+            ['HY',
+                <% results.each do |r| %>
+                <% unless r.nil? %>
+                <%= r.sdq('HY').nil? ? "null" : r.sdq('HY') %>
+                <% else %>
+                null
+                <% end %>,
+                <% end %>
+            ], 
+            ['EP',
+                <% results.each do |r| %>
+                <% unless r.nil? %>
+                <%= r.sdq('EP').nil? ? "null" : r.sdq('EP') %>
+                <% else %>
+                null
+                <% end %>,
+                <% end %>
+            ]
+        ],
+        names: {
+            SV: 'SV',
+            VP: 'VP',
+            HY: 'HY',
+            EP: 'EP'
+        },
+    },
+    color: {
+        pattern: ['#46B8DA', '#5CB85C', '#D9534F', '#F0AD4E']
+    },
+    axis: {
+        x: {
+            type: 'timeseries',
+            tick: {
+                fit: true,
+                format: "%e %b %y"
+            },
+            label: {
+                text: 'Testzeitpunkte',
+                position: 'outer-left'
+            }
+        },
+        y: {
+            label: {
+                text: 'Gutes Verhalten',
+                position: 'outer-top'
+            },
+            min: 1,
+            max: 28
+        }
+    },
+    line: {
+        connectNull: true
+    },
+    legend: {
+        hide: false
+    }
+});

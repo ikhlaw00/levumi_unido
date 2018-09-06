@@ -36,7 +36,11 @@
 <script>
   <% @results.each do |key, val| %>
     <% test = Test.find(key) %>
-    <%= render file: 'students/_draw_graph.js.erb', locals: {:student => @student, :test => test.id, :results => val}%>
+    <% if test.construct == "Fragebogen" %>
+      <%= render file: 'students/_draw_graph_fragebogen.js.erb', locals: {:student => @student, :test => test.id, :results => val}%>
+    <% else %>
+      <%= render file: 'students/_draw_graph.js.erb', locals: {:student => @student, :test => test.id, :results => val}%>
+    <% end %>
   <% end %>
 </script>
 
