@@ -23,7 +23,7 @@ class QuestionnairesController < ApplicationController
 		@assessment = @measurement.assessment
 		@group = @assessment.group
 		@user = @group.user
-		render "results/tests/Generisch",  :layout => 'layouts/plain'
+		#render "results/tests/Generisch",  :layout => 'layouts/plain'
 	end
 
 	# In all questionnaires there is no correct and false results, but good and bad

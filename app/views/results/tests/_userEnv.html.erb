@@ -25,6 +25,9 @@
       <% @measurement.results.each do |r| %>
           <div class="col-md-4 col-sm-6 col-xs-12">
             <% if construct == "Fragebogen" %>
+              <script type="text/javascript">
+                document.getElementById('notice').innerHTML = "Wählen Sie eine/-n Schüler/-in aus.";
+              </script>
               <%= link_to url_for(controller: 'questionnaires', action: 'show', id: r.student.id, measurement: @measurement.id) do%>
                 <div class="btn btn-default groupButton <% unless r.score == 0 %> btn-success<% end %>" id="btn<%=r.id%>" >
                   <%= r.student.name %>
