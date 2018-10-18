@@ -24,28 +24,28 @@ items = [
 
 items_abbrev = [
 	"Wut", 
-	"Klassenregeln", 
+	"Klassen- regeln", 
 	"Streitlust", 
 	
 	"Motorische Unruhe", 
-	"Durchhaltevermögen", 
+	"Durchhalte- vermögen", 
 	"Ablenkung", 
 	
 	"Sorgen", 
-	"Ängstlichkeit", 
+	"Ängstlich- keit", 
 	"Nervösität",
 
-	"Einzelgänger", 
+	"Einzel- gänger", 
 	"Mobbing", 
-	"Kontaktwahl", 
+	"Kontakt- wahl", 
 	
 	"Beteiligung", 
-	"Gesprächsregeln", 
+	"Gesprächs- regeln", 
 	"Konzentration", 
 	"Mitarbeit", 
 	
-	"Rüchsichtsnahme", 
-	"Hilfsbereitschaft",
+	"Rüchsichts- nahme", 
+	"Hilfs- bereitschaft",
 	"kooperativität"
 ]
 

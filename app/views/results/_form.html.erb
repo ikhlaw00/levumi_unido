@@ -65,7 +65,7 @@
                     <% if tempItem.itemtype == 0 %>
                       <div class="form-group">
                         <p class="lead">
-                          <%= tempItem.shorthand %>
+                          <%= tempItem.itemtext.split(';')[0] %>
                         </p>
                         <% if @assessment.test.construct == "Fragebogen" %> <!-- just for questionnaires -->
                           <div class="radio">
@@ -147,3 +147,5 @@
   </div>
 
 </div>
+
+

@@ -8,56 +8,23 @@ var chart<%=test%> = c3.generate({
                 '<%= r.measurement.date.to_date %>',
                 <% end %>
             ],
-            ['SV',
-                <% max = 0 %>
-                <% results.each do |r| %>
-                  <%if !r.measurement.max.nil? && r.measurement.max > max %>
-                    <% max = r.measurement.max %>
-                  <% end %>
-                <% unless r.nil? %>
-                <%= r.sdq('SV').nil? ? "null" : r.sdq('SV') %>
-                <% else %>
-                null
-                <% end %>,
-                <% end %>
-            ],
-            ['VP',
-                <% results.each do |r| %>
-                <% unless r.nil? %>
-                <%= r.sdq('VP').nil? ? "null" : r.sdq('VP') %>
-                <% else %>
-                null
-                <% end %>,
-                <% end %>
-            ],
-            ['HY',
-                <% results.each do |r| %>
-                <% unless r.nil? %>
-                <%= r.sdq('HY').nil? ? "null" : r.sdq('HY') %>
-                <% else %>
-                null
-                <% end %>,
-                <% end %>
-            ], 
-            ['EP',
-                <% results.each do |r| %>
-                <% unless r.nil? %>
-                <%= r.sdq('EP').nil? ? "null" : r.sdq('EP') %>
-                <% else %>
-                null
-                <% end %>,
-                <% end %>
-            ]
-        ],
-        names: {
-            SV: 'SV',
-            VP: 'VP',
-            HY: 'HY',
-            EP: 'EP'
-        },
+            <% cats = Test.find(test).get("cat_abbrev").uniq%>
+            <% cats.each do |x| %>
+                ['<%= x %>',
+                    <% results.each do |r| %>
+                    <% unless r.nil? %>
+                    <%= r.sum_cat(x).nil? ? "null" : r.sum_cat(x) %>
+                    <% else %>
+                    null
+                    <% end %>,
+                    <% end %>
+                ],
+            <% end %>
+        ]
     },
     color: {
-        pattern: ['#46B8DA', '#5CB85C', '#D9534F', '#F0AD4E']
+        pattern: [ '#208e38', '#ff0707','#2196F3', '#E040FB','#009688', '#FF9800',
+                      '#F44336']
     },
     axis: {
         x: {

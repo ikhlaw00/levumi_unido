@@ -109,6 +109,20 @@ class Result < ActiveRecord::Base
     update_total 
   end
 
+  def sum_cat(category)
+    cats = measurement.assessment.test.get("cat_abbrev")
+    sum = 0
+    (0..cats.length).each do |x|
+      if cats[x] == category
+        sum += responses[x]
+      end
+    end
+    print "---------\n\n"
+    print category + "  " + sum.to_s
+    print "---------\n\n"
+    return sum
+  end
+
   # sum of each category in SDQ questionnaire
   def sdq(category)
     if category == "SV"

@@ -31,7 +31,6 @@
       </p>
     </div>
   </div>
-
 <% @results.each do |key, val| %>
   <%= render partial: 'students/overview', locals: {:key => key, :val => val, :online => true, :without_table => false}%>
 <% end %>

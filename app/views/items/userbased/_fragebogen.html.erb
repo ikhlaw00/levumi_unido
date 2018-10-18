@@ -1,4 +1,9 @@
-<h1 class="text-center" style="font-style: fibel_nordregular;">Direct Behaviour Rating (DBR)</h1>
+<% 
+  fragebogen = @measurement.assessment.test
+  test_length = fragebogen.content_items.length
+  cat_abbrev = fragebogen.get("categories")
+%>
+<h1 class="text-center" style="font-style: fibel_nordregular;"><%= fragebogen.name + " - " + fragebogen.level%></h1>
 <div class="row" style="font-size: 18px; font-style: fibel_nordregular; padding-left: 10px;">
 	Dieser Fragebogen bezieht sich auf das Verhalten der Schülerin bzw. des Schülers im Klassenraum während eines Unterrichtstages oder eines Beobachtungszeitraumes. Ziel ist es, mehrere vergleichbare Verhaltenseinschätzungen mit dem DBR zu bewerten. Dafür sollten die verschiedenen Beobachtungsräume gleich lang sein. Bitte beurteilen Sie die für die Schülerin bzw. den Schüler relevanten Punkt im letzten Beobachtungszeitraum (Maximal ein Unterrichtstag).
 </div><br>
@@ -7,19 +12,23 @@
   <h2 id="hinweis"></h2>
 </div>
 <div class="row" >
-  <div class="col-sm-4 col-sm-offset-8" style="font-size: 16px;">
-    <label class="col-sm-2">Nie(1)</label>
-    <label class="col-sm-2 col-sm-offset-5">Immer(7)</label>
+  <div class="col-sm-offset-4" style="font-size: 16px;">
+    <label class="col-sm-offset-1">Nie(1)</label>
+    <label  class="col-sm-offset-4">Immer(7)</label>
   </div>
 <%= form_tag(url_for(:controller => 'questionnaires', :action => 'save_results'), :class => "form") do %>
-  <% (1..12).each do |x| %>
+<% actual_cat = "." %>
+  <% (1..test_length).each do |x| %>
+    <% if cat_abbrev[x-1] != actual_cat %>
+      <div class="row" style="font-size: 30px; padding-left: 25px; font-family: fibel_nordregular"> <%= actual_cat = cat_abbrev[x-1] %></div><br>
+    <% end %>
     <div class="form-group row" style="font-family: fibel_nordregular; font-size: 20px; padding-left: 30px;" >
-      <div class="col-sm-8">
-        <label class="col-md-8 col-form-label" id="item<%=x%>" ><%= x %></label>
+      <div class="col-sm-4">
+        <label class="col-form-label" id="item<%=x%>" ><%= x %></label>
       </div>
-      <div class="col-md-4 form-check form-check-inline">
+      <div class="col-sm-8 form-check form-check-inline">
       <% (1..7).each do |i| %>
-        <%= i %> <%= radio_button_tag  x.to_s, i.to_s%> &nbsp &nbsp
+        <div class="col-sm-1"><%= i %> <%= radio_button_tag  x.to_s, i.to_s%> &nbsp &nbsp</div>
       <% end %>
       </div>
     </div>
@@ -36,17 +45,17 @@
   var currentStudentName = "<%= @student.name %>";
   var items = {
   	<% @measurement.assessment.test.items.each do |i| %>
-  	<%= i.id %> : "<%= i.itemtext %>",
+  	<%= i.id %> : "<%= i.itemtext.split(';')[0] %>",
   	<% end %>
   };
 
-  $('.btn').click(function(){
+  /*$('.btn').click(function(){
       var list = document.getElementsByTagName("div");
       list[0].innerHTML = "<div class='text-center' style='font-size:30px;'> Ihre Antworten wurden erfolgreich gespeichert.</br></br> Sie können jetzt das Fenster schließen:</br></br>" +
                           "<input value='schließen' type='button' class='btn btn-primary btn-lg' onclick='window.close();'>" + 
                       "</div>";
   });
-
+  */
   var i = 1;
   for (key in items){
   	if(items[key] == "hallo")
