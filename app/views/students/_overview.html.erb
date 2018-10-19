@@ -120,21 +120,30 @@
                               <% sum = 0 %>
                               <% cat_abbrev = test.get("cat_abbrev") %>
                               <% current_cat = cat_abbrev[0] %>
+                              <% num_of_cat_items = 0 %>
                               <% for i in 0..r.items.size-1 do %>
                                 <!-- print out the sum of each group -->
                                 <% if current_cat != cat_abbrev[i] %>
-                                  <td style="font-weight: bold"><%= sum %></td>
+                                  <td style="font-weight: bold"><%= r.sum_cat(current_cat) %></td>
                                   <% sum = 0 %>
+                                  <% num_of_cat_items = 0 %>
                                   <% current_cat = cat_abbrev[i] %>
                                 <% end %>
+                                <% if r.responses[i] > 0 %>
+                                  <% num_of_cat_items +=1 %>
+                                <% end %>
+
                                 <!-- print out values of items -->
                                 <% sum = sum + r.responses[i].to_i %>
                                 <td><%= r.responses[i] %></td>  
+                                
                                 <!-- sum of the last one -->
                                 <% if i == r.items.size - 1 %>
-                                  <td style="font-weight: bold"><%= sum %></td>
+                                  <td style="font-weight: bold"><%= r.sum_cat(current_cat) %></td>
                                 <% end %>
+
                               <% end %>
+
                           </tr>
                       <% end %>
                   <% end %>

@@ -25,28 +25,28 @@ items = [
 items_abbrev = [
 	"Wut", 
 	"Klassen- regeln", 
-	"Streitlust", 
+	"Streit- lust", 
 	
-	"Motorische Unruhe", 
-	"Durchhalte- vermögen", 
-	"Ablenkung", 
+	"Motor- ische Unruhe", 
+	"Durch- halte- vermögen", 
+	"Ab- lenkung", 
 	
 	"Sorgen", 
-	"Ängstlich- keit", 
-	"Nervösität",
+	"Ängst- lich- keit", 
+	"Nervös- ität",
 
 	"Einzel- gänger", 
-	"Mobbing", 
+	"Mobb- ing", 
 	"Kontakt- wahl", 
 	
-	"Beteiligung", 
+	"Be- teiligung", 
 	"Gesprächs- regeln", 
-	"Konzentration", 
-	"Mitarbeit", 
+	"Konzent- ration", 
+	"Mit- arbeit", 
 	
-	"Rüchsichts- nahme", 
-	"Hilfs- bereitschaft",
-	"kooperativität"
+	"Rüch- sichts- nahme", 
+	"Hilfs- bereit- schaft",
+	"koo- perativ- ität"
 ]
 
 categories = [

@@ -8,15 +8,17 @@ var chart<%=test%> = c3.generate({
                 '<%= r.measurement.date.to_date %>',
                 <% end %>
             ],
+            <% max = 1 %>
             <% cats = Test.find(test).get("cat_abbrev").uniq%>
             <% cats.each do |x| %>
                 ['<%= x %>',
                     <% results.each do |r| %>
-                    <% unless r.nil? %>
-                    <%= r.sum_cat(x).nil? ? "null" : r.sum_cat(x) %>
-                    <% else %>
-                    null
-                    <% end %>,
+                        <% if r.nil? || r.sum_cat(x).nil? %>
+                            null
+                        <% else %>
+                            <%=  r.sum_cat(x) %>
+                            <% max = r.sum_cat(x) if r.sum_cat(x) > max %>
+                        <% end %>,
                     <% end %>
                 ],
             <% end %>
@@ -43,8 +45,8 @@ var chart<%=test%> = c3.generate({
                 text: 'Positives Verhalten',
                 position: 'outer-top'
             },
-            min: 1,
-            max: 28
+            min: 0,
+            max: <%= max %>
         }
     },
     line: {

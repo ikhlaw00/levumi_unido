@@ -15,9 +15,7 @@ class Result < ActiveRecord::Base
   #Calculate new running total of the fraction of correct items. Must be called everytime the responses change.
   #Not used from outside
   def update_total
-    if measurement.assessment.test.construct == "Fragebogen"
-      self.total = responses.map{|x| x==nil ? 0:x}.sum
-    elsif count_NA == responses.size
+    if count_NA == responses.size
       self.total = 0
     else
       self.total = responses.map{|x| x == nil ? 0:x}.sum.to_f/(responses - [nil]).size
@@ -112,28 +110,14 @@ class Result < ActiveRecord::Base
   def sum_cat(category)
     cats = measurement.assessment.test.get("cat_abbrev")
     sum = 0
+    count_of_items = 0
     (0..cats.length).each do |x|
-      if cats[x] == category
+      if cats[x] == category and responses[x] > 0
         sum += responses[x]
+        count_of_items +=1
       end
     end
-    print "---------\n\n"
-    print category + "  " + sum.to_s
-    print "---------\n\n"
-    return sum
-  end
-
-  # sum of each category in SDQ questionnaire
-  def sdq(category)
-    if category == "SV"
-      return responses[0,3].map{|x| x.nil? ? 0:x}.sum
-    elsif category == "VP"
-      return responses[3,3].map{|x| x.nil? ? 0:x}.sum
-    elsif category == "HY"
-      return responses[6,3].map{|x| x.nil? ? 0:x}.sum
-    elsif category == "EP"
-      return responses[9,3].map{|x| x.nil? ? 0:x}.sum
-    end
+    return count_of_items > 0 ? (sum.to_f/count_of_items).to_i : 0
   end
 
   #Sets the result from a hash of (k, v) pairs where k denotes an item_id and v the 0/1 result for this item.
@@ -194,6 +178,7 @@ class Result < ActiveRecord::Base
 
   #Calculate the number of correct items.
   #Used for displaying the results
+  #NOTE: score for questionnaire is the mean, because values vary between 0 and 7
   def score
     if measurement.assessment.test.construct == "Fragebogen"
       return score_fragebogen
@@ -204,10 +189,13 @@ class Result < ActiveRecord::Base
     end
   end
 
-  # Calculate the sum of all items of a questinnaire
+  # Calculate the mean of all items of a questinnaire
   # possible results are numbers between 1 and 7. Also there is no correct or false results
   def score_fragebogen 
-    return responses.map{|x| x == nil ? 0:x}.sum
+    if (responses - [0]).size == 0 
+      return 0
+    end
+    return (responses.map{|x| x == nil ? 0:x}.sum.to_f / (responses - [0]).size).round(1)
   end
 
   #Calculate ethe number of all items with a "1" response

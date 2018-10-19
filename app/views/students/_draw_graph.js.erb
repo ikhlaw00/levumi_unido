@@ -9,7 +9,7 @@ var chart<%=test%> = c3.generate({
                 <% end %>
             ],
             ['student',
-                <% max = 0 %>
+                <% max = 1 %>
                 <% results.each do |r| %>
                   <%if !r.measurement.max.nil? && r.measurement.max > max %>
                     <% max = r.measurement.max %>
@@ -76,7 +76,7 @@ var chart<%=test%> = c3.generate({
                 text: 'Anzahl richtiger Items',
                 position: 'outer-middle'
             },
-            min: 1,
+            min: 0,
             max: <%= max %>
         }
     },

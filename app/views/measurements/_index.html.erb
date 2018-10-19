@@ -46,9 +46,15 @@
                         :title => "Messung online durchführen", :data => {:remote => true} do %>
                 <span class="glyphicon glyphicon-expand"></span>
             <% end %>
-            <%= link_to new_user_group_assessment_measurement_results_path(@user, @group, @assessment, measurement, :format => :text),
-                        :title => "Messung offline durchführen", :data => {:remote => true} do %>
-                <span class="glyphicon glyphicon-print"></span>
+            <% if @assessment.test.construct == "Fragebogen" %>
+                <%= link_to asset_path("Fragebogen.pdf"), :title => "Messung offline durchführen", :target => "_blank" do %>
+                  <span class="glyphicon glyphicon-print"></span>
+                <% end %>
+            <% else %> 
+              <%= link_to new_user_group_assessment_measurement_results_path(@user, @group, @assessment, measurement, :format => :text),
+                          :title => "Messung offline durchführen", :data => {:remote => true} do %>
+                  <span class="glyphicon glyphicon-print"></span>
+              <% end %>
             <% end %>
           </td> 
         <%end%>
