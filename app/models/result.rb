@@ -117,7 +117,7 @@ class Result < ActiveRecord::Base
         count_of_items +=1
       end
     end
-    return count_of_items > 0 ? (sum.to_f/count_of_items).to_i : 0
+    return count_of_items > 0 ? sum.to_i : 0
   end
 
   #Sets the result from a hash of (k, v) pairs where k denotes an item_id and v the 0/1 result for this item.

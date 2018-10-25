@@ -62,12 +62,14 @@ categories = [
 t = Fragebogen.create(name:'Fragebogen Verhaltensmessung', student_access: false, archive: false, info: "", len: 20, shorthand: "FB", subject: "Fragebogen", 
 	construct: "Fragebogen", level:"Schule")
 
-it = t.items.build(itemtext:'hallo', itemtype: -1, itemview: 'items/userbased/fragebogen_void', difficulty: 0)
+# difficulty of this item means the dimension, also the answers will be [1,7]
+it = t.items.build(itemtext:'hallo', itemtype: -1, itemview: 'items/userbased/fragebogen_void', difficulty: 7) 
 it.save
 
 i = 0
 while i < items.length do 
-	it = t.items.build(itemtext: items[i][0] + ";" + categories[items[i][1]] + ";" + items[i][2].to_s	 , shorthand: items_abbrev[i], itemtype: 0, itemview: "items/userbased/fragebogen_void")
+	it = t.items.build(itemtext: items[i][0] + ";" + categories[items[i][1]] + ";" + items[i][2].to_s	 , shorthand: items_abbrev[i],
+		 itemtype: 0, itemview: "items/userbased/fragebogen_void", difficulty: items[i][2]) # difficulty = 1 means recode, 0 means don't recode
 	it.save
 	i = i+1
 end

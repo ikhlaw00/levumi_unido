@@ -31,12 +31,14 @@ class QuestionnairesController < ApplicationController
 	end
 
 	# In all questionnaires there is no correct and false results, but positive and negative
-	# items 4,5,6,7,9,10,11,12 have to be recoded, high value means bad results 
+	# items where difficulty=1 have to be recoded, in these items high value means bad results 
 	def recodeDBR(results)
 		coding = @test.get("code") # is needed to check which items should be recoded
+		#Saves the number of dimensions, e.g. possible answers on each item. Sometimes 1 to 7, other times 1 to 4. This is saved in difficulty of hallo item
+		num_of_dimensions = Item.where(:test_id => @test.id).first.difficulty
 		results.length.times do |i|
 			if coding[i] == "1" && results[i] != 0
-				results[i] = 8 -results[i]
+				results[i] = num_of_dimensions- results[i] 
 			end
 		end
 		return results
