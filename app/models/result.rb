@@ -107,17 +107,37 @@ class Result < ActiveRecord::Base
     update_total 
   end
 
-  def sum_cat(category)
+  #Finds the mean of a category in questionnaires
+  #Means of categories should be without recoding, therefore firstly undo the recoding 
+  def mean_cat(category)
     cats = measurement.assessment.test.get("cat_abbrev")
     sum = 0
+    antworten = self.responses.dup
+    antworten = recodeDBR(antworten)
     count_of_items = 0
     (0..cats.length).each do |x|
-      if cats[x] == category and responses[x] > 0
-        sum += responses[x]
+      if cats[x] == category and antworten[x] > 0
+        sum += antworten[x]
         count_of_items +=1
       end
     end
-    return count_of_items > 0 ? sum.to_i : 0
+    return count_of_items > 0 ? (sum.to_f / count_of_items).to_i : 0
+  end
+
+  # In all questionnaires there is no true or false results, but positive and negative
+  # items where difficulty=1 have to be recoded, in these items (where difficulty=1) high value means bad results, therefore they should be recoded 
+  def recodeDBR(results)
+    rs = results.dup
+    code = []
+    measurement.assessment.test.content_items.map { |e|  code += [e.difficulty]}
+    #Saves the number of dimensions, e.g. possible answers on each item. Sometimes 1 to 7, other times 1 to 4. This is saved in difficulty of hallo item
+    num_of_dimensions = Item.where(:test_id => measurement.assessment.test.id).first.difficulty + 1
+    (0..rs.length-1).each do |i|
+      if code[i] == 1 && rs[i] != 0
+        rs[i] = num_of_dimensions - rs[i]
+      end
+    end
+    return rs
   end
 
   #Sets the result from a hash of (k, v) pairs where k denotes an item_id and v the 0/1 result for this item.

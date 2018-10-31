@@ -13,11 +13,11 @@ var chart<%=test%> = c3.generate({
             <% cats.each do |x| %>
                 ['<%= x %>',
                     <% results.each do |r| %>
-                        <% if r.nil? || r.sum_cat(x).nil? %>
+                        <% if r.nil? || r.mean_cat(x).nil? %>
                             null
                         <% else %>
-                            <%=  r.sum_cat(x) %>
-                            <% max = r.sum_cat(x) if r.sum_cat(x) > max %>
+                            <%=  r.mean_cat(x) %>
+                            <% max = r.mean_cat(x) if r.mean_cat(x) > max %>
                         <% end %>,
                     <% end %>
                 ],

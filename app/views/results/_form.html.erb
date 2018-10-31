@@ -68,10 +68,13 @@
                           <%= tempItem.itemtext.split(';')[0] %>
                         </p>
                         <% if @assessment.test.construct == "Fragebogen" %> <!-- just for questionnaires -->
+                        <% num_of_items = Item.where(:test_id => @assessment.test.id).first.difficulty %>
+                        <% responses = r.responses.dup %>
+                        <% responses = r.recodeDBR(responses) %>
                           <div class="radio">
-                            <% (1..7).each do |x| %>
+                            <% (1..num_of_items).each do |x| %>
                               <label>
-                                <%= radio_button_tag "results[#{r.student.id}[#{i}]]", x.to_s, r.responses[index] == x %><%= x%><br/>
+                                <%= radio_button_tag "results[#{r.student.id}[#{i}]]", x.to_s, responses[index] == x %><%= x%><br/>
                               </label>
                             <% end %>
                           </div>  

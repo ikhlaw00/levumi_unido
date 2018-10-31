@@ -12,7 +12,7 @@ class Fragebogen < Test
 		itemset = content_items
 		text = []
 		categories = []
-		code = []
+		code = [] 
 		categories_abbrev = [] # Abkürzung der Kategorien
 		itemset.each do |x|
 			splitted = x.itemtext.split(";")
@@ -21,7 +21,7 @@ class Fragebogen < Test
 			categories_abbrev += [(splitted[1].split("(")[1]).chomp(")")]
 			code += [splitted[2]]
 		end
-		if searched == "code"
+		if searched == "code" # This shouldn't be needed in new questionnaires. code will be saved as difficulty of each item.
 			return code
 		elsif searched == "text"
 			return text
