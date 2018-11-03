@@ -1,0 +1,106 @@
+<%
+	numbers = item.itemtext.split(',')
+	zeichen = "+"
+	if numbers[1].to_i == 0
+		zeichen = "-"
+	end
+%>
+<div class="container">
+	<div class="row text-center">
+		<h1>Addition</h1>
+	</div>
+	<br>
+	<br>
+	<div class="row" style="font-size: 50px;">
+		<div class="col-md-1 col-md-offset-3 text-center" id="div1"></div>  
+		<div class="col-md-1 text-center" id="div2"><%= zeichen %></div>
+		<div class="col-md-1 text-center" id="div3"></div>
+		<div class="col-md-1 text-center" id="div4">=</div>
+		<div class="col-md-2 text-center" id="div5"></div>
+	</div>
+	<br><br>
+	<div class="row">
+		<div class="text-center">
+			<% (0..9).each do |x| %>
+			<button id="<%=x%>" class="btn btn-lg btn-primary"> <%= x%></button>
+		<% end %>
+		</div>
+	</div><br><br>
+	<div class="row text-center">
+        <button class="btn btn-warning btn-lg" id="delete">
+           Löschen
+        </button>
+      </div>
+    </div><br>
+    <div class="row text-center">
+    	<p id="hinweis" class="text-center" style="font-size: 30px; font-family: fibel_nordregular;">
+    	</p>
+    </div>
+	<br><br>
+	<div class="row">
+		<div class="col-md-12">
+			<dir class="text-center col-md-4 col-md-offset-4">
+				<button class="btn btn-lg btn-success btn-block" id="next" ><span style="font-size:30px; font-family: fibel_nordregular;">Weiter</span></button>
+			</dir>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	var div = document.getElementById("assignment");
+	var p1 = document.getElementById("div1");
+	var p2 = document.getElementById("div3");
+	var p3 = document.getElementById("div5");
+	first_nr = parseInt(<%= numbers[0] %>);
+	second_nr = parseInt(<%= numbers[2] %>);
+	var askedNumber = 0
+	if (parseInt(<%= numbers[1] %>) == 1)
+		askedNumber = first_nr + second_nr;
+	else 
+		askedNumber = first_nr - second_nr;
+	var answered = false;
+	var answer="";
+
+	show();
+
+	function show(){
+		p1.innerHTML = first_nr + " ";
+		p2.innerHTML = second_nr + " ";
+		p3.innerHTML += "<input type=\"input\" name=\"answer\" id=\"answer\" class='col-md-12' readonly>";
+	}
+
+	$('button').click(function(event){
+		var clicked = event.target.id;
+		if(clicked == "next"){
+			if(answered == true){
+				actualAnswers = actualAnswers + answer + ',';
+				if(parseInt(answer) == askedNumber){
+					currentResult = currentResult + '1,';
+				}else{
+					currentResult = currentResult + '0,';
+				}
+				currentTimes = currentTimes + (new Date() - stopwatch) + ',';
+				stopwatch = new Date();
+				nextItem();
+			}else{
+				$('#hinweis').text("Bitte eine Zahl klicken!");
+				//document.getElementById("hinweis").innerHTML = "Bitte eine Zahl klicken!";
+			}
+		} else if (clicked=="delete") {
+			if (answer.length > 0) {
+				answer = answer.slice(0,-1);
+				$('#answer').val(answer);
+			}
+			if(answer.length == 0)
+				answered = false;
+		}else{
+			answered = true;
+			answer = $("#answer").val() + clicked;
+			$("#answer").val(answer);
+			//document.getElementById("hinweis").innerHTML = "Bitte eine Zahl klicken!";
+			$('#hinweis').text("");
+		}
+
+	});
+
+</script> 
