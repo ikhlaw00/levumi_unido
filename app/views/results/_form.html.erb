@@ -23,7 +23,7 @@
                 <% if !@assessment.test.construct == "Fragebogen" %>
                   Ergebnisse: Pro Item des Tests einer der Werte 1, 0 oder NA für "richtig", "falsch", bzw. "kein Ergebnis vorhanden". Werte durch Komma getrennt.
                 <% else %>
-                  Ergebnisse: Pro Item des Fragebogen einer der Werte 1-7 für "Nie" bzw. "Immer". 0 ist "Kein Ergebnis vorhanden". Werte durch Komma getrennt.     
+                  Ergebnisse: Pro Item des Fragebogen einer der Werte 1-<%= Item.where(:test_id => @assessment.test.id).first.difficulty %> für "Nie" bzw. "Immer". 0 ist "Kein Ergebnis vorhanden". Werte durch Komma getrennt.     
                 <% end %>
               </th>
               </thead>
@@ -67,7 +67,8 @@
                         <p class="lead">
                           <%= tempItem.itemtext.split(';')[0] %>
                         </p>
-                        <% if @assessment.test.construct == "Fragebogen" %> <!-- just for questionnaires -->
+                        <!-- just for questionnaires, namely PIQ and DBR -->
+                        <% if @assessment.test.construct == "Fragebogen" %> 
                         <% num_of_items = Item.where(:test_id => @assessment.test.id).first.difficulty %>
                         <% responses = r.responses.dup %>
                         <% responses = r.recodeDBR(responses) %>

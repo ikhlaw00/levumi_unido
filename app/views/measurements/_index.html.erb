@@ -50,8 +50,14 @@
                 <span class="glyphicon glyphicon-expand"></span>
             <% end %>
             <% if @assessment.test.construct == "Fragebogen" %>
-                <%= link_to asset_path("Fragebogen.pdf"), :title => "Messung offline durchführen", :target => "_blank" do %>
-                  <span class="glyphicon glyphicon-print"></span>
+                <% if @assessment.test.shorthand == "FB" %> <!-- For DBR --> 
+                  <%= link_to asset_path("Fragebogen.pdf"), :title => "Messung offline durchführen", :target => "_blank" do %>
+                      <span class="glyphicon glyphicon-print"></span>
+                  <% end %>
+                <% else %> <!-- For PIQ-Lehrerversion -->
+                  <%= link_to asset_path("piq-lehrer.pdf"), :title => "Messung offline durchführen", :target => "_blank" do %>
+                      <span class="glyphicon glyphicon-print"></span>
+                  <% end %>
                 <% end %>
             <% else %> 
               <%= link_to new_user_group_assessment_measurement_results_path(@user, @group, @assessment, measurement, :format => :text),

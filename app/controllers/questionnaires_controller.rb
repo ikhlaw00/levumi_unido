@@ -11,7 +11,11 @@ class QuestionnairesController < ApplicationController
 		session[:s_id] = params[:id]
 		session[:m_id] = params[:measurement]
 		session[:t_id] = @test.id
-		render 'items/userbased/_fragebogen', :layout => 'layouts/plain'
+		if @test.shorthand == "FB" # First questinnaire, also DBR
+			render 'items/userbased/_fragebogen', :layout => 'layouts/plain'
+		else # hier shorthand="FB-PIQ", second questionnaire PIQ
+			render 'items/userbased/_fragebogen_PIQ', :layout => 'layouts/plain'
+		end
 	end 
 
 	def save_results

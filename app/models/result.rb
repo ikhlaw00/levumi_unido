@@ -113,7 +113,10 @@ class Result < ActiveRecord::Base
     cats = measurement.assessment.test.get("cat_abbrev")
     sum = 0
     antworten = self.responses.dup
-    antworten = recodeDBR(antworten)
+    # In case of DBR, recoding in student view is necessary. But in case of PIQ it isn't necessary.
+    if measurement.assessment.test.shorthand == "FB"  
+      antworten = recodeDBR(antworten)
+    end
     count_of_items = 0
     (0..cats.length).each do |x|
       if cats[x] == category and antworten[x] > 0
