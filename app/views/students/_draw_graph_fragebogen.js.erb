@@ -1,3 +1,4 @@
+<% act_test = Test.find(test) %>
 var chart<%=test%> = c3.generate({
     bindto: '#chart<%=test%>',
     data: {
@@ -9,7 +10,7 @@ var chart<%=test%> = c3.generate({
                 <% end %>
             ],
             <% max = 1 %>
-            <% cats = Test.find(test).get("cat_abbrev").uniq%>
+            <% cats = act_test.get("cat_abbrev").uniq%>
             <% cats.each do |x| %>
                 ['<%= x %>',
                     <% results.each do |r| %>
@@ -42,7 +43,7 @@ var chart<%=test%> = c3.generate({
         },
         y: {
             label: {
-                text: 'Positives Verhalten',
+                text: 'Verhalten',
                 position: 'outer-top'
             },
             min: 0,

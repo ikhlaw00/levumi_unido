@@ -114,9 +114,10 @@ class Result < ActiveRecord::Base
     sum = 0
     antworten = self.responses.dup
     # In case of DBR, recoding in student view is necessary. But in case of PIQ it isn't necessary.
-    if measurement.assessment.test.shorthand == "FB"  
-      antworten = recodeDBR(antworten)
-    end
+    # Change on 07.11.18: all student views should be origina, also recode all for the second time
+    antworten = recodeDBR(antworten)
+    #if measurement.assessment.test.shorthand == "FB"  
+    #end
     count_of_items = 0
     (0..cats.length).each do |x|
       if cats[x] == category and antworten[x] > 0

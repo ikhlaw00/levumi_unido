@@ -28,10 +28,6 @@
 
       <div id="chart<%=key%>" style="width: 100%" >
       </div>
-      <!-- This should be shown just for PIQ questionnaire -->
-      <% if test.shorthand == "FB-PIQ" %>
-          <div class="alert alert-warning" style="margin-top:10px;"><strong>Achtung</strong>: Negativ formulierte Fragen werden automatisch für die Auswertung zu positiven Verhalten umgerechnet.</div>
-      <% end %>
       <div id="table<%=key%>">
       <% if test.construct != "Fragebogen" %>
         <p>
@@ -122,10 +118,13 @@
                               <!-- For student view of DBR the items should be original without recoding, so here they will be recoded for -->
                               <!-- the second time, thus we get the original values without changes -->
                               <!-- For the PIQ the items shouldn't be recoded for the second time -->
+                              <!-- Change on 07.11: all student views should be recoded not just DBR -->
                               <% responses = r.responses.map { |e| e} %>
-                              <% if test.shorthand == "FB" %> <!-- FB is shorthand of DBR --> 
-                                <% responses = r.recodeDBR(responses) %> 
-                              <% end %>
+                              <% responses = r.recodeDBR(responses) %> 
+                              <!-- 
+                              <% if test.shorthand == "FB" %>  FB is shorthand of DBR 
+                              <% end %> 
+                              -->
                               <% sum = 0 %>
                               <% cat_abbrev = test.get("cat_abbrev") %>
                               <% current_cat = cat_abbrev[0] %>
