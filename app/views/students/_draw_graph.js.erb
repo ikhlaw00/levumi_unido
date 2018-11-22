@@ -9,7 +9,7 @@ var chart<%=test%> = c3.generate({
                 <% end %>
             ],
             ['student',
-                <% max = 40 %>
+                <% max = 1 %>
                 <% results.each do |r| %>
                   <%if !r.measurement.max.nil? && r.measurement.max > max %>
                     <% max = r.measurement.max %>
