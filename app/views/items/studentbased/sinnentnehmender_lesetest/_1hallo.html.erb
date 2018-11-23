@@ -6,9 +6,11 @@
 <br /><br /><br />
 </br></br></br></br></br></br>
 <div class='row text-center'>
-  <div><label class='control-label' style='font-size: 60px; font-family: fibel_nordregular;'> Mit einem &nbsp</label>
-    <label id='answer' class='control-label' style='font-size: 60px; font-family: fibel_nordregular;'>...........</label>
-    <label class='control-label' style='font-size: 60px; font-family: fibel_nordregular;'> &nbsp kann man fahren.</label></div>
+  <div>
+      <label id='answer' class='control-label' style='font-size: 60px; font-family: fibel_nordregular;'> 
+        Mit einem ........... kann man fahren.
+      </label>
+  </div>
 </div>
 <br><br>
 <div class='row' id='rowButtons' >
@@ -65,7 +67,7 @@
   function buttonClicked(buttonID){
     clicked = true;
     var text = $('#'+buttonID).text();
-    $('#answer').html(text);
+    $('#answer').html("Mit einem " + "<span style='text-decoration:underline; text-decoration-style: dotted;'>" +text + "</span>" + " kann man fahren.");
     document.getElementById('hinweis').innerHTML = '<p>Keine Fragen mehr? Dann starte den Test.</p>';
   };
 </script>
