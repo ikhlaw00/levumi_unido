@@ -28,12 +28,12 @@ class StudentsController < ApplicationController
     @results = @student.getResults
     if params.has_key?(:test)
       @results = {params[:test].to_i => @results[params[:test].to_i]}
-      @construct = Test.find(params[:test]).construct
+      @subject = Test.find(params[:test]).subject
     end
     respond_to do |format|
       format.js {}
       format.pdf { 
-        if @construct.nil? || @construct != "Fragebogen"
+        if @subject.nil? || @subject != "Fragebogen"
           render pdf: @student.name, template: "students/show.pdf.erb"
         else
           render pdf: @student.name, template: "students/show.pdf.erb",

@@ -2,6 +2,7 @@
   before_gap = item.itemtext.split("{")[0]
   after_gap = item.itemtext.split("}")[1]
   alternatives = item.itemtext.split("{")[1].split("}")[0].split(",")
+  alternatives.shuffle!
   #satz = before_gap + " ........ " + after_gap
 %>
 <div>

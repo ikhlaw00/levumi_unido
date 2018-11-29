@@ -3,7 +3,7 @@
       <p>Achtung: Für diesen Test muss der Schülerzugang verwendet werden!</p>
     </div>
 <% end %>
-<% if @assessment.test.construct == "Fragebogen" %>
+<% if @assessment.test.subject == "Fragebogen" %>
     <div class="alert alert-warning" style="margin-top:10px;"><strong>Achtung</strong>: Negativ formulierte Fragen werden automatisch für die Auswertung zu positiven Verhalten umgerechnet.</div>
 <% end %>
 <table class="table table-striped">
@@ -26,7 +26,7 @@
     Anzahl Ergebnisse
   </th>
   <th>
-    <% if !@assessment.test.construct == "Fragebogen" %>
+    <% if !@assessment.test.subject == "Fragebogen" %>
       Durchschnitt richtig gelöster Items
     <% else %>
       Durchschnittliches Verhalten aller Schüler
@@ -49,7 +49,7 @@
                         :title => "Messung online durchführen", :data => {:remote => true} do %>
                 <span class="glyphicon glyphicon-expand"></span>
             <% end %>
-            <% if @assessment.test.construct == "Fragebogen" %>
+            <% if @assessment.test.subject == "Fragebogen" %>
                 <% if @assessment.test.shorthand == "FB" %> <!-- For DBR --> 
                   <%= link_to asset_path("Fragebogen.pdf"), :title => "Messung offline durchführen", :target => "_blank" do %>
                       <span class="glyphicon glyphicon-print"></span>

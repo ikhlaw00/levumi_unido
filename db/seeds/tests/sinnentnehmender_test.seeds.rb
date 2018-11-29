@@ -320,7 +320,7 @@ categories_n4 = %W{
 	1
 }
 
-t = TestSEL.create(name: "Sinnentnehmendes Lesen",  info: "Sinnentnehmendes Lesen N4", shorthand: "SEL4",len: 63, time: 480, subject: "Deutsch", construct: "Sinnentnehmendes Lesen", student_access:true, archive: false, level: "N4")
+t = TestSEL.create(name: "Sinnentnehmendes Lesen",  info: "Sinnentnehmendes Lesen N4", shorthand: "SEL4",len: 63, time: 300, subject: "Deutsch", construct: "Sinnentnehmendes Lesen", student_access:true, archive: false, level: "N4")
 
 i = t.items.build(itemtext: "Hallo", difficulty: 0, itemtype:-1, itemview: "items/studentbased/sinnentnehmender_lesetest/1hallo")
 i.save
@@ -688,7 +688,7 @@ categories_n2 = %w{
 
 
 tN2 = TestSEL.create(name: "Sinnentnehmendes Lesen", len: 68, info: "Sinnentnehmendes Lesen N2", shorthand: "SEL2",
-										 subject: "Deutsch", construct: "Sinnentnehmendes Lesen", student_access:true, archive: false, level: "N2", time: 480)
+										 subject: "Deutsch", construct: "Sinnentnehmendes Lesen", student_access:true, archive: false, level: "N2", time: 300)
 i = tN2.items.build(itemtext: "Hallo", difficulty: 0, itemtype:-1, itemview: "items/studentbased/sinnentnehmender_lesetest/1hallo")
 i.save
 
@@ -1092,7 +1092,7 @@ item_alternatives_n6 = [
 
 
 tN6 = TestSEL.create(name: "Sinnentnehmendes Lesen", len: 95, info: "Sinnentnehmendes Lesen N6", shorthand: "SEL6",
-										 subject: "Deutsch", construct: "Sinnentnehmendes Lesen", student_access:true, archive: false, level: "N6", time: 480)
+										 subject: "Deutsch", construct: "Sinnentnehmendes Lesen", student_access:true, archive: false, level: "N6", time: 300)
 i = tN6.items.build(itemtext: "Hallo", difficulty: 0, itemtype:-1, itemview: "items/studentbased/sinnentnehmender_lesetest/1hallo")
 i.save
 

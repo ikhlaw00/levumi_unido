@@ -33,7 +33,7 @@ class Result < ActiveRecord::Base
     self.items = drawn_items[1]
     self.extra_data["outro"] = drawn_items[2]
     self.responses[self.items.size-1] = nil
-    if measurement.assessment.test.construct == "Fragebogen" 
+    if measurement.assessment.test.subject == "Fragebogen" 
       self.responses.map!{|i| i = 0}
     end
     update_total
@@ -60,7 +60,7 @@ class Result < ActiveRecord::Base
     if data.nil?
       self.responses[self.items.size-1] = nil
       return
-    elsif measurement.assessment.test.construct == "Fragebogen"
+    elsif measurement.assessment.test.subject == "Fragebogen"
       vals = data.split(',')
       vals.length.times do |i|
         self.responses[i] = case vals[i]
@@ -152,7 +152,7 @@ class Result < ActiveRecord::Base
   def parse_Hash(hash)
     hash.each do |i, r|
       p = items.index(i.to_i)
-      if measurement.assessment.test.construct != "Fragebogen"
+      if measurement.assessment.test.subject != "Fragebogen"
         responses[p] = (r == "1" ? 1 : (r == "0" ? 0 : nil)) unless p.nil?
       else
         unless p.nil?
@@ -176,7 +176,7 @@ class Result < ActiveRecord::Base
   # New 15.08.2018 
   # Added new condition for Fragebogen. the string contains values between 0 and 7 and there is no "NA"
   def to_csv(includeNA)
-    if measurement.assessment.test.construct == "Fragebogen"
+    if measurement.assessment.test.subject == "Fragebogen"
       responses.map{ |x| (x == nil) ? 0 : x.to_s}.join(",")
     else  
       responses.map{|x| (x == nil && includeNA)  ? 'NA': (x == nil ? 0 : x.to_s) }.join(",")
@@ -204,7 +204,7 @@ class Result < ActiveRecord::Base
   #Used for displaying the results
   #NOTE: score for questionnaire is the mean, because values vary between 0 and 7
   def score
-    if measurement.assessment.test.construct == "Fragebogen"
+    if measurement.assessment.test.subject == "Fragebogen"
       return score_fragebogen
     elsif responses.include?(1) | responses.include?(0)
       return responses.map{|x| x == nil ? 0:x}.sum

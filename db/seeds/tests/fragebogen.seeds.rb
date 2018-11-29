@@ -60,7 +60,7 @@ categories = [
 
 # DBR questinnaire
 t = Fragebogen.create(name:'Fragebogen Verhaltensmessung', student_access: false, archive: false, info: "", len: 20, shorthand: "FB", subject: "Fragebogen", 
-	construct: "Fragebogen", level:"Schule")
+	construct: "Verhalten", level:"Schule")
 
 # difficulty of this item means the dimension, also the answers will be [1,7]
 it = t.items.build(itemtext:'hallo', itemtype: -1, itemview: 'items/userbased/fragebogen_void', difficulty: 7) 
@@ -98,7 +98,7 @@ categories = [
 ]
 
 items_abbrev = [
-	"Schul- freude",
+	"Schulfreude",
 	"Unlust",
 	"Gefallen",
 	"Spaß",
@@ -106,15 +106,15 @@ items_abbrev = [
 	"Mitschüler",
 	"Allein",
 	"Vertragen",
-	"Schnell",
-	"Stark",
+	"Schnelligkeit",
+	"Leistungsstärke",
 	"Gut",
-	"Schwer"
+	"Überforderung"
 ]
 
 # Fragebogen PIQ
-t = Fragebogen.create(name: "Fragebogen: Wahrnehmung von Inklusion aus Lehrersicht", student_access: false, archive: false, info: "", len: 13, shorthand:"FB-PIQ",
-		subject: "Fragebogen", construct: "Fragebogen", level: "Schule")
+t = Fragebogen.create(name: "Fragebogen zum Selbstkonzept in der Schule (PIQ)", student_access: false, archive: false, info: "", len: 13, shorthand:"FB-PIQ",
+		subject: "Fragebogen", construct: "Selbstkonzept", level: "Schule")
 
 
 it = t.items.build(itemtext: "hallo", itemtype: -1, itemview: 'items/userbased/fragebogen_void', difficulty: 4) #difficulty: stimmt gar nicht, ..., stimmt
@@ -130,18 +130,18 @@ end
 t.save 
 
 items_abbrev = [
-	"Schul- freude",
+	"Schulfreude",
 	"Freunde",
-	"Schnell",
+	"Schnelligkeit",
 	"Unlust",
 	"Mitschüler",
-	"Stark",
+	"Leistungsstärke",
 	"Gefallen",
 	"Allein",
 	"Gut",
 	"Spaß",
 	"Vertragen",
-	"Schwer"
+	"Überforderung"
 ]
 
 items = [
@@ -159,8 +159,8 @@ items = [
 	["In der Schule ist mir vieles zu schwierig.",									2,1]
 ]
 
-t = Fragebogen.create(name: "Fragebogen: Wahrnehmung von Inklusion aus Schülersicht", student_access: true, archive: false, info: "", len: 13,
-	shorthand: "FB-PIQ", subject: "Fragebogen", construct: "Fragebogen", level: "Schule")
+t = Fragebogen.create(name: "Fragebogen zum Selbstkonzept in der Schule (PIQ)", student_access: true, archive: false, info: "", len: 13,
+	shorthand: "FB-PIQ", subject: "Fragebogen", construct: "Selbstkonzept", level: "Schule")
 
 it = t.items.build(itemtext: "hallo", itemtype: -1, itemview: 'items/studentbased/fragebogen/hallo_piq', difficulty: 4) # difficulty stands for possible answers
 it.save

@@ -29,7 +29,7 @@
       <div id="chart<%=key%>" style="width: 100%" >
       </div>
       <div id="table<%=key%>">
-      <% if test.construct != "Fragebogen" %>
+      <% if test.subject != "Fragebogen" %>
         <p>
           <b>Höchste Lösungswahrscheinlichkeit (viertes Quartil):</b>
           <% if val.size < 3 %>
@@ -69,7 +69,7 @@
         <% end %>
         <% unless without_table %>
         <!-- just for questionnaire -->
-            <% if test.construct == "Fragebogen" %>
+            <% if test.subject == "Fragebogen" %>
             <% colors = [ '#208e38', '#ff0707','#2196F3', '#E040FB','#009688', '#FF9800',
                       '#F44336'] %>
                   <table class="table table-bordered table-striped text-center">

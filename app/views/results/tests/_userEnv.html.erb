@@ -21,10 +21,10 @@
     </div>
 
     <div class="row">
-      <% construct = @measurement.assessment.test.construct %>
+      <% subject = @measurement.assessment.test.subject %>
       <% @measurement.results.each do |r| %>
           <div class="col-md-4 col-sm-6 col-xs-12">
-            <% if construct == "Fragebogen" %>
+            <% if subject == "Fragebogen" %>
               <script type="text/javascript">
                 document.getElementById('notice').innerHTML = "Wählen Sie eine/-n Schüler/-in aus.";
               </script>
