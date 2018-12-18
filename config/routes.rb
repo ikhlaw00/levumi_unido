@@ -10,7 +10,11 @@ Rails.application.routes.draw do
           resource :results
         end
       end
-      resources :students
+      resources :students do
+      end
+    end
+    member do
+      put :multi_update
     end
   end
 

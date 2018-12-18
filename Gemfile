@@ -55,6 +55,4 @@ gem 'seedbank'
 gem 'spreadsheet'
 
 # Print html to pdf
-
-gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary'
+gem 'canvgjs'

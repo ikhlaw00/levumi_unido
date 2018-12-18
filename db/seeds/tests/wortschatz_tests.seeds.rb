@@ -273,7 +273,7 @@ wachen
 Wald
 schlafen
 als
-Bürder
+Brüder
 rennen
 muss
 nie

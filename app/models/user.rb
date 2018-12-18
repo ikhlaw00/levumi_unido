@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 
   validates_presence_of :name
 
-  validates_numericality_of :account_type, greater_than_or_equal_to: 0, less_than_or_equal_to: 2
+  validates_numericality_of :account_type, greater_than_or_equal_to: -1, less_than_or_equal_to: 2
 
   after_create :create_test_group
 
@@ -38,14 +38,19 @@ class User < ActiveRecord::Base
   #0 - Normaler "aktiver" Account
   #1 - Neuer Account, noch nicht benutzt
   #2 - Alter Account, schon lange nicht mehr benutzt (> 3 Monate kein Login)
+  # -1 - Account wurde gelöscht
   def status
     if tcaccept.nil?
       return 1
     else
-      if last_login.nil? || last_login < 3.months.ago
-        return 2
+      if account_type == -1
+        return -1
       else
-        return 0
+        if last_login.nil? || last_login < 3.months.ago
+          return 2
+        else
+          return 0
+        end
       end
     end
   end
@@ -58,23 +63,38 @@ class User < ActiveRecord::Base
     self.groups.create(:name => "Testklasse", :export => false, :archive => false, :demo => true)
   end
 
+  #Persönliche Daten der Lehrkraft löschen, in Account kann nicht mehr eingeloggt werden.
+  def delete
+    self.email= User.generate_slug(42)
+    self.name = User.generate_slug(8)
+    self.school= nil
+    self.tcaccept= DateTime.now
+    self.last_login=nil
+    self.capabilities=nil
+    self.account_type = -1
+    self.state =nil
+    self.occupation =nil
+    self.created_at= DateTime.now
+    self.save
+  end
+
   #Count number of assessments for each user by a direct SQL query, to save time. Returns a hash that maps test ids to counts.
   def self.get_assessment_count
     temp = ActiveRecord::Base.connection.exec_query("
-      SELECT user_id, COUNT(*) as anzahl
+      SELECT user_id, COUNT(*) as Anzahl
       FROM users JOIN groups ON user_id = users.id
         JOIN assessments ON group_id = groups.id
       WHERE export = 't'
       GROUP BY user_id;")
     ids = temp.map{|x| x["user_id"]}
-    count = temp.map{|x| x["anzahl"]}
+    count = temp.map{|x| x["Anzahl"]}
     return Hash[ids.zip(count)]
   end
 
   #Count number of measurements for each user by a direct SQL query, to save time. Returns a hash that maps test ids to counts.
   def self.get_measurement_count
     temp = ActiveRecord::Base.connection.exec_query("
-      SELECT user_id, COUNT(*) as anzahl
+      SELECT user_id, COUNT(*) as Anzahl
       FROM users JOIN groups ON user_id = users.id
         JOIN assessments ON group_id = groups.id
         JOIN measurements ON assessment_id = assessments.id
@@ -82,14 +102,14 @@ class User < ActiveRecord::Base
       GROUP BY user_id;
      ")
     ids = temp.map{|x| x["user_id"]}
-    count = temp.map{|x| x["anzahl"]}
+    count = temp.map{|x| x["Anzahl"]}
     return Hash[ids.zip(count)]
   end
 
   #Count number of results for each user by a direct SQL query, to save time. Returns a hash that maps test ids to counts.
   def self.get_result_count
     temp = ActiveRecord::Base.connection.exec_query("
-      SELECT user_id, COUNT(*) as anzahl
+      SELECT user_id, COUNT(*) as Anzahl
       FROM users JOIN groups ON user_id = users.id
         JOIN assessments ON group_id = groups.id
         JOIN measurements ON assessment_id = assessments.id
@@ -98,7 +118,13 @@ class User < ActiveRecord::Base
         GROUP BY user_id;
     ")
     ids = temp.map{|x| x["user_id"]}
-    count = temp.map{|x| x["anzahl"]}
+    count = temp.map{|x| x["Anzahl"]}
     return Hash[ids.zip(count)]
   end
+
+  def self.generate_slug(count)
+    Digest::SHA1.hexdigest(rand(36**8).to_s(36))[1..count].to_s
+  end
+
+
 end

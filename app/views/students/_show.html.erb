@@ -5,17 +5,22 @@
     .c3-line-n25, .c3-line-n50, .c3-line-n75 {
         stroke-dasharray: 10,10;
     }
+    /*Imitate a link*/
+    .myHover:hover{
+      cursor: pointer;
+    }
 </style>
-
+<script>
+  //Initialisation needed before 'students/overview' is rendered
+  var studentsCrypt = JSON.parse(sessionStorage['students']);
+</script>
 <div class="groupCard">
 
   <div class="row">
     <div class="col-sm-12">
       <p class="lead text-right">
-
-      <%= link_to user_group_student_path(@user, @group, @student, format: 'pdf') , :title => "Alles drucken", :target => "_blank" do%>
-          <span class="glyphicon glyphicon-print"></span>
-      <% end %>
+        <!-- Imitate a link-->
+        <span class="glyphicon glyphicon-print myHover" onclick="generateAll()" style="color: #337ab7" title="Alles drucken"></span>
 
         <%= link_to '#', :title => "Zurück", :onclick => "cancel()" do%>
             <span class="glyphicon glyphicon-th"></span>
@@ -26,59 +31,231 @@
 
   <div class = "row">
     <div class="col-sm-12">
-      <p class="lead text-center">
-        <%= @student.name %>
+      <p class="lead text-center" id="<%=@student.id%>">
       </p>
     </div>
   </div>
-<% @results.each do |key, val| %>
-  <%= render partial: 'students/overview', locals: {:key => key, :val => val, :online => true, :without_table => false}%>
-<% end %>
+
+  <!--Canvas for drawing the svg-graph-->
+  <canvas id="drawingArea" style="display: none"></canvas>
+  <%keyList = []%>
+  <% @results.each do |key, val| %>
+    <%= render partial: 'students/overview', locals: {:key => key, :val => val, :online => true, :without_table => false}%>
+      <% keyList = keyList + [key]%>
+  <% end %>
+  <% keyList = keyList.uniq%>
+
 
 </div>
 
 <script type="text/javascript" charset="utf-8">
+    $('#' + <%=@student.id%>).html(studentsCrypt['<%=@group.id%>'][<%=@student.id%>])
+    var keyList = {
+      <%keyList.each do |key|%>
+        <%test = Test.find(key)%>
+        <%= key%>: '<%=test.name%> - <%=test.level%>',
+      <%end%>
+  }
 
-    function cancel() {
-        $('#students').html("<%= escape_javascript(render 'index') %>");
-    };
+  function cancel() {
+      $('#students').html("<%= escape_javascript(render 'index') %>");
+  };
 
-    <% @results.each do |key, val| %>
-      <% test = Test.find(key) %>
-      // for the questionnaires we have another view
-      <% if test.subject == "Fragebogen" %>
-        <%= render file: 'students/_draw_graph_fragebogen', locals: {:student => @student, :test => test.id, :results => val}%>
-      <% else %>  
-        <%= render file: 'students/_draw_graph', locals: {:student => @student, :test => test.id, :results => val}%>
-      <% end %>
-    <% end %>
+  //Genrate a PDF with all Tests
+  function generateAll(){
+      var docDefinition = {
+          pageSize: 'A4',
+          content: [
+              {
+                  columns:[
+                      {
+                          width:'auto',
+                          stack:[
+                              {image: levumiPic,
+                                  width: 40
+                              }
+                          ]
+                      },
+                      {text:
+                          'Levumi Schüleransicht ' + studentsCrypt['<%=@group.id%>'][<%=@student.id%>],
+                          fontSize: 15,
+                          margin: [0, 10, 0, 0]
+                      }
+                  ]
+              }],
+          styles: {
+              subheader: {
+                  fontSize: 13,
+                  margin: [50, 0, 5, 5]
+              }
+          }
+      };
+      keyArray = Object.keys(keyList);
+      keyArrayLength = Object.keys(keyList).length
+      var count = 0
+      while (count<keyArrayLength){
+          generateGraph(docDefinition, keyArray[count])
+          if(count+1 == keyArrayLength){
+              generateTable(docDefinition, keyArray[count], false)
+          }
+          else{
+              generateTable(docDefinition, keyArray[count], true)
+          }
+          count = count+1;
+      }
 
-    function print(id, test, details) {
-        var old = document.body.innerHTML;
-        document.body.innerHTML = $("#c" + id).html();
-        if (!details)
-            $("#table" + id).html("");
-        $("#p" + id).html("<p class='lead text-middle'><%= @student.name %> - " + test + "</p>");
-        $("#p" + id).removeClass("dropdown");
-        $("#p" + id).removeClass("text-right");
-        $("#p" + id).addClass("text-center");
-        var content = document.documentElement.outerHTML;
-        document.body.innerHTML = old;
-        printWindow = window.open();
-        printWindow.location = '';
-        printWindow.document.write(content);
-        printWindow.document.close();
-        printWindow.document.title =  "Druckansicht";
-        printWindow.focus();
-        <% @results.each do |key, val| %>
-          <% test = Test.find(key) %>
-          // another view for questionnaires
-          <% if test.subject == "Fragebogen" %>
-            <%= render file: 'students/_draw_graph_fragebogen', :locals =>  {:student => @student, :test => test.id, :results => val}%>
-          <% else %>
-              <%= render file: 'students/_draw_graph', :locals =>  {:student => @student, :test => test.id, :results => val}%>
-          <% end %>
-        <% end %>
-    };
+      //open PDF in new window
+      //Alternativen:
+      //print the PDF
+      //  pdfMake.createPdf(docDefinition).print();
+      //open PDF in viewer
+      //pdfMake.createPdf(docDefinition).open();
+      // download the PDF
+      pdfMake.createPdf(docDefinition).download('Schüleransicht ' + studentsCrypt['<%=@group.id%>'][<%=@student.id%>]+' - Komplett.pdf');
+
+  }
+  //Genrate Picture (generate all)
+  function generateGraph(docDefinition, key) {
+      d3.selectAll("path").attr("fill", "none");
+      d3.selectAll(".tick line, path.domain").attr("stroke", "black");
+      d3.selectAll(".c3-line-student").attr("stroke-width", "3px");
+      d3.selectAll(".c3-line-n25").attr("stroke-dasharray", "10,10");
+      d3.selectAll(".c3-line-n50").attr("stroke-dasharray", "10,10");
+      d3.selectAll(".c3-line-n75").attr("stroke-dasharray", "10,10");
+      //Convert SVG to PNG
+      canvas = document.getElementById("drawingArea");
+      //Hier kann man versuchen das Bild noch etwas "klarer" zu machen
+      //temporary resize of svg, otherwise canvas and png is as big as svg
+      eval("chart"+key).resize({width:700, height:300});
+      canvg(canvas, $('#svgFor' + key)[0].outerHTML.trim());
+      eval("chart"+key).resize({height:320});
+      eval("chart"+key).resize();
+      var data = canvas.toDataURL("image/png");
+
+      graph = [
+          {text:
+              keyList[key],
+              style: 'subheader'
+          },
+          {image: data,
+              width: 480,
+              height: 250,
+              margin: [0,15,0,0]
+          }
+      ]
+      docDefinition["content"] = docDefinition["content"].concat(graph)
+  }
+  //Generate table for pdf-export
+  function generateTable(docDefinition, key, pageBreak) {
+      //headers
+      var header= [
+          {text:"Zeitpunkt", alignment:'center', fontSize:11, bold:true},
+          {text:"Richtig gelöste Items", alignment:'center',colSpan: 2, fontSize:11, bold:true, width:20},
+          {},
+          {text:"Falsch gelöste Items", alignment:'center',colSpan: 2, fontSize:11, bold:true},
+          {},
+          {text:"Anzahl richtig gelöster Items", alignment:'center', fontSize:11,bold:true},
+          {text:"Anzahl falsch gelöster Items",  alignment:'center', fontSize:11,bold:true},
+          {text:"Lösungs- wahrschein- lichkeit in %", alignment:'center', fontSize:11, bold:true}
+      ];
+      //get a JSON-Representation of Table and parse it to pdfmake-representation
+      var tableJSON = tableToJson($('#table'+key).get(0));
+      var fullTable = createDataBody(tableJSON);
+      fullTable[0] = header
+
+      if(pageBreak){
+          var table = [
+              {
+                  table: {
+                      widths: [65,45,45, 45, 45, 60, 60, 60],
+                      body: fullTable,
+                      dontBreakRows: true
+                  },
+                  pageBreak: 'after',
+                  margin: [0,20,0,0] ,
+                  layout: {
+                      fillColor: function (i, node) {
+                          return (i === 0) ? '#46B8DA' : null;
+                      }
+                  }
+              }
+          ];
+      }
+      else{
+          var table = [
+              {
+                  table: {
+                      widths: [65,45,45, 45, 45, 60, 60, 60],
+                      body: fullTable,
+                      dontBreakRows: true
+                  },
+                  margin: [0,20,0,0] ,
+                  layout: {
+                      fillColor: function (i, node) {
+                          return (i === 0) ? '#46B8DA' : null;
+                      }
+                  }
+              }
+          ];
+      }
+
+      //optional styles
+      var tableStyle = {}
+
+      docDefinition["content"] = docDefinition["content"].concat(table)
+      docDefinition["styles"] = $.extend({},docDefinition["styles"] , tableStyle);
+  }
+  function tableToJson(table) {
+      var data = [];
+      // first row needs to be headers
+      var headers = [];
+      for (var i=0; i<table.rows[0].cells.length; i++) {
+          headers[i] = table.rows[0].cells[i].innerHTML.trim();
+      }
+      data.push(headers);
+      // go through cells
+      for (var i=1; i<table.rows.length; i++) {
+          var tableRow = table.rows[i];
+          var rowData = {};
+          for (var j=0; j<tableRow.cells.length; j++) {
+              rowData[ headers[j] ] = tableRow.cells[j].innerHTML.trim();
+          }
+          data.push(rowData);
+      }
+      return data;
+  }
+  //Parse JSON-representation of Table in pdfmake-representation
+  function createDataBody(table) {
+      var data = [];
+      $.each(table, function(i, row){
+          var temp = [];
+          var count = 0
+          if(i==0){}
+          else {
+              $.each(row, function(j, cell){
+                  //count 1 and 3 are colums for showing (in-)correct items
+                  if(count == 1||count == 3){
+                      temp[count]= {text:cell, colSpan:2, fontSize:10};
+                      count = count + 1;
+                      temp[count]={};
+                  }
+                  //count 5,6,7 are only one number and looks better centered
+                  else if(count == 5||count == 6||count == 7){
+                      temp[count]= {text:cell, alignment: 'center', fontSize:10};
+                  }
+                  else{
+                      temp[count]= {text:cell, fontSize:10};
+                  }
+
+                  count++;
+              });
+          }
+          data[i] = temp;
+          temp = []
+      });
+      return data
+  }
+
+
 
 </script>

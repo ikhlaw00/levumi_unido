@@ -12,6 +12,13 @@ class Result < ActiveRecord::Base
                                   #-intro: Intro Items für den Test
                                   #-outro: Outro Items für den Test
 
+  after_update :check_result
+
+  #Check if special treatment is needed for the result.
+  def check_result
+    self.update_column(:extra_data, self.measurement.assessment.test.check_result(self))
+  end
+
   #Calculate new running total of the fraction of correct items. Must be called everytime the responses change.
   #Not used from outside
   def update_total
@@ -20,7 +27,10 @@ class Result < ActiveRecord::Base
     else
       self.total = responses.map{|x| x == nil ? 0:x}.sum.to_f/(responses - [nil]).size
     end
+    #Turn off/on callback to prevent "double"-call of check_result
+    Result.skip_callback(:update, :after, :check_result)
     save
+    Result.set_callback(:update, :after, :check_result)
   end
 
   #Create an empty set of results, but already draw the items that will be used.
@@ -244,7 +254,7 @@ class Result < ActiveRecord::Base
   #Used for generating student feedback after a measurement.
   def getPriorResult()
     measurements = Measurement.where("assessment_id = ? AND created_at < ?", measurement.assessment, measurement.created_at)
-    res = Result.where(:measurement => measurements, :student => student).order(created_at: :desc).first
+    res = Result.where(:measurement => measurements, :student => student).order(updated_at: :desc).first
     if res.nil?
       return -1
     else

@@ -4,10 +4,10 @@
     <div class="col-sm-12">
       <p class="lead text-right">
         <%= link_to user_group_assessments_path(@user, @group), :title => "Zurück", :data => {:remote => true} do%>
-        <span class="glyphicon glyphicon-th"></span>
+            <span class="glyphicon glyphicon-th"></span>
         <% end %>
         <%= link_to user_group_assessment_path(@user, @group, @assessment), :title => "Test Löschen", :method => :delete, :data => {:confirm => "Damit gehen alle Messungen des Tests in dieser Klasse verloren!\n\nSind Sie sicher?"} do %>
-        <span class="glyphicon glyphicon-trash"></span>
+            <span class="glyphicon glyphicon-trash"></span>
         <% end %>
       </p>
     </div>
@@ -16,25 +16,20 @@
   <div class = "row">
     <div class="col-sm-12">
       <p class="lead text-center">
-        <%= Test.find(@assessment.test_id).short_name %>
+        <%= @assessment.test.short_name %>
       </p>
     </div>
   </div>
 
   <div class = "row">
     <div id="print" class="col-sm-12">
-      <p id="head" class="lead text-right">
 
-        <%= link_to user_group_assessment_path(@user, @group, @assessment, format: 'pdf'),  :title => "Drucken" , target: '_blank' do %>
-        <span class="glyphicon glyphicon-print"></span>
-        <% end %>
+      <%if @assessment.test.generic_views["assessment"].nil? || @assessment.test.generic_views["assessment"].blank?%>
+        <%= render 'tests/generic_views/standard/assessment_overview',online: true%>
+      <%else%>
+        <%= render 'tests/generic_views/' + @assessment.test.generic_views["assessment"] ,online: true%>
+      <%end%>
 
-     <%= link_to user_group_assessment_path(@user, @group, @assessment), :title => "Graph neu laden", :data => {:remote => true} do%>
-          <span class="glyphicon glyphicon-refresh"></span>
-        <% end %>       
-      
-      </p>
-      <div id="chart"></div>
     </div>
   </div>
 
@@ -47,7 +42,68 @@
     </div>
   </div>
 </div>
+<canvas id="canvas" style="display: none"></canvas>
 
-<script type="text/javascript" charset="utf-8">
-  <%= render file: 'assessments/_draw_graph'%>
+<script>
+    //Generate the pdf
+    function generatePDF() {
+        //Bugfix canvg
+        d3.selectAll("path").attr("fill", "none");
+        d3.selectAll(".tick line, path.domain").attr("stroke", "black");
+        d3.selectAll(".c3-line-student").attr("stroke-width", "3px");
+        d3.selectAll(".c3-line-n25").attr("stroke-dasharray", "10,10");
+        d3.selectAll(".c3-line-n50").attr("stroke-dasharray", "10,10");
+        d3.selectAll(".c3-line-n75").attr("stroke-dasharray", "10,10");
+        //Convert SVG to PNG
+        canvas = document.getElementById("canvas");
+        //Hier kann man versuchen das Bild noch etwas "klarer" zu machen
+        //temporary change of size for snapshot
+        chart.resize({width:940, height:350});
+        //get svg
+        canvg(canvas, $('#svgOfAssessement')[0].outerHTML.trim());
+        chart.resize({height:320});
+        chart.resize();
+
+        var data = canvas.toDataURL("image/png");
+        //create PDF-page
+        var docDefinition = {
+            pageSize: 'A4',
+            pageOrientation: 'landscape',
+            pageMargins: [24, 25, 24, 23],
+            content: [
+                {
+                    columns:[
+                        {
+                            width:'auto',
+                            stack:[
+                                {image: levumiPic,
+                                    width: 40
+                                }
+                            ]
+                        },
+                        {text:
+                            'Levumi Klassenübersicht <%=@group.name%> - <%= @assessment.test.name%>',
+                            fontSize: 15,
+                            margin: [0, 10, 0, 0]
+                        }
+                    ]
+                },
+                {
+                    image: data,
+                    width: 700,
+                    height: 260,
+                    margin: [0, 80, 0, 0]
+                }
+            ]
+        }
+        //open PDF in new window
+            //Alternativen:
+                //print the PDF
+                  //  pdfMake.createPdf(docDefinition).print();
+                //open pdfviewer
+                  //  pdfMake.createPdf(docDefinition).open();
+        // download the PDF
+        pdfMake.createPdf(docDefinition).download('Klassenübersicht der <%=@group.name%> - <%= @assessment.test.name%>.pdf');
+
+    }
 </script>

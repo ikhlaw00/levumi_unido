@@ -24,7 +24,6 @@ class TestSEL < Test
       end
       categories = categories - [i.difficulty]
       itemset = itemset + [i]
-      print i.difficulty
     end
     return [intro_items.map{|i| i.id}, itemset.map{|i| i.id}, outro_items.map{|i| i.id}]
   end

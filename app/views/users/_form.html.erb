@@ -29,6 +29,7 @@
       <%= f.label :state, class: "control-label" %><br>
       <%= f.select(:state, federal_states, {}, {class: "form-control"}) %>
     </div>
+  <%if @login_user == @user%>
     <div class="form-group">
       <%= f.label :password, class: "control-label" %><br>
       <%= f.password_field :password, class: "form-control" %>
@@ -37,6 +38,7 @@
       <%= f.label :password_confirmation, class: "control-label" %><br>
       <%= f.password_field :password_confirmation, class: "form-control" %>
     </div>
+  <% end %>
     <% if @login_user.hasCapability?("user") %>
       <div class="form-group">
         <%= f.radio_button :account_type, 0 %>
@@ -48,7 +50,7 @@
       </div>
     <% end %>
     <div class="form-group">
-      <%= f.submit :class => "btn btn-primary"%>
+      <%= f.submit :class => "btn btn-primary", id:"submitButton"%>
       <% if @user.id.nil? || (@login_user.id != @user.id) %>
         <%= link_to "Abbrechen", users_path, :class => "btn btn-default"%>
       <% else %>
@@ -56,3 +58,34 @@
       <% end %>
     </div>
 <% end %>
+<%if @login_user == @user%>
+    <script>
+        $(function() {
+            $('#submitButton').click(function (e) {
+                e.preventDefault();
+                if($('#user_password').val()!="" & $('#user_password').val()==$('#user_password_confirmation').val()){
+                    sessionStorage['encryptKey']= $('#user_password').val();
+                    var students = JSON.parse(sessionStorage['students']);
+                    var encryptedStudents = {}
+                    Object.keys(students).forEach(function(keyGroup) {
+                        encryptedStudents[keyGroup] = {}
+                        Object.keys(students[keyGroup]).forEach(function(keyStudent) {
+                            encryptedStudents[keyGroup][keyStudent] = sjcl.encrypt(sessionStorage['encryptKey'], students[keyGroup][keyStudent])
+                        });
+                    });
+                    jQuery.ajax({
+                        type: "PUT",
+                        url: "<%= multi_update_user_path(@user) %>",
+                        data: {students: encryptedStudents},
+                        success: function(result) {$('#edit_user_' + '<%=@user.id%>').submit();}
+                    })
+                }
+                else {
+                    //let backend handle Error
+                    $('#edit_user_' + '<%=@user.id%>').submit();
+                }
+                return false;
+            });
+        });
+    </script>
+<%end%>

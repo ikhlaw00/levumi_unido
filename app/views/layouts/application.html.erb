@@ -2,8 +2,10 @@
 <html>
 <head>
   <title>Levumi</title>
-  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
+  <%= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.33/pdfmake.js"%>
+  <%= javascript_include_tag "https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"%>
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -23,38 +25,38 @@
 
     <div class="collapse navbar-collapse" id="navbar-collapse-main">
       <ul class="nav navbar-nav navbar-left">
-        <li><%= link_to "Meine Klassen", user_groups_path(@login_user)%></li>
-        <li><%= link_to "Fördermaterial", materials_path%></li>
+        <li><%= link_to 'Meine Klassen', user_groups_path(@login_user)%></li>
+        <li><%= link_to 'Fördermaterial', materials_path%></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Weiteres Material<span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><%= link_to "Elternbrief", asset_path("Elternbrief.docx")%></li>
+            <li><%= link_to 'Elternbrief', asset_path('Elternbrief.docx')%></li>
             <li role="separator" class="divider"></li>
-            <li><%= link_to "Druckvorlage A4: Levumi normal", asset_path("A4 Levumi normal.pdf")%></li>
-            <li><%= link_to "Druckvorlage A4: Levumi jubelt", asset_path("A4 Levumi jubelt.pdf")%></li>
-            <li><%= link_to "Druckvorlage A4: Levumi liest", asset_path("A4 Levumi liest.pdf")%></li>
-            <li><%= link_to "Druckvorlage A3: Levumi normal", asset_path("A3 Levumi normal.pdf")%></li>
-            <li><%= link_to "Druckvorlage A3: Levumi jubelt", asset_path("A3 Levumi jubelt.pdf")%></li>
-            <li><%= link_to "Druckvorlage A3: Levumi liest", asset_path("A3 Levumi liest.pdf")%></li>
+            <li><%= link_to 'Druckvorlage A4: Levumi normal', asset_path('A4 Levumi normal.pdf')%></li>
+            <li><%= link_to 'Druckvorlage A4: Levumi jubelt', asset_path('A4 Levumi jubelt.pdf')%></li>
+            <li><%= link_to 'Druckvorlage A4: Levumi liest', asset_path('A4 Levumi liest.pdf')%></li>
+            <li><%= link_to 'Druckvorlage A3: Levumi normal', asset_path('A3 Levumi normal.pdf')%></li>
+            <li><%= link_to 'Druckvorlage A3: Levumi jubelt', asset_path('A3 Levumi jubelt.pdf')%></li>
+            <li><%= link_to 'Druckvorlage A3: Levumi liest', asset_path('A3 Levumi liest.pdf')%></li>
           </ul>
         </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Informationen<span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><%= link_to "Verfügbare Tests", tests_path%></li>
+            <li><%= link_to 'Verfügbare Tests', tests_path%></li>
             <li role="separator" class="divider"></li>
-            <li><%= link_to "Videohilfen + Häufige Fragen", url_for(:controller => "application", :action => "static", :page => "help")%></li>
-            <li><%= link_to "Lehrerhandbuch", asset_path("LEVUMI_Lehrerhandbuch.pdf")%></li>
-            <li><%= link_to "Hinweise Schülerzugang", asset_path("Nutzungshinweise_Schülerzugang.pdf")%></li>
+            <li><%= link_to 'Videohilfen + Häufige Fragen', url_for(controller: 'application', action: 'static', page: 'help')%></li>
+            <li><%= link_to 'Lehrerhandbuch', asset_path('LEVUMI_Lehrerhandbuch.pdf')%></li>
+            <li><%= link_to 'Hinweise Schülerzugang', asset_path('Nutzungshinweise_Schülerzugang.pdf')%></li>
             <li role="separator" class="divider"></li>
-            <li><%= link_to "Datenschutzerklärung", url_for(:controller => "application", :action => "static", :page => "privacy")%></li>
-            <li><%= link_to "Impressum", url_for(:controller => "application", :action => "static", :page => "imprint")%></li>
+            <li><%= link_to 'Datenschutz', url_for(controller: 'application', action: 'static', page: 'privacy')%></li>
+            <li><%= link_to 'Impressum', url_for(controller: 'application', action: 'static', page: 'imprint')%></li>
           </ul>
         </li>
       </ul>
-      <form class="navbar-form navbar-right" method="post" action="<%=url_for(:controller => "application", :action => "logout")%>">
+      <form class="navbar-form navbar-right" method="post" action="<%=url_for(controller: 'application', action: 'logout')%>">
         <%= token_tag nil %>
-        <button type="submit" class="btn btn-default">Ausloggen</button>
+        <button type="submit" class="btn btn-default" onclick="sessionStorage.clear()">Ausloggen</button>
       </form>
       <ul class="nav navbar-nav navbar-right">
         <li><%= link_to("Meine Daten", user_path(@login_user))%></li>
@@ -62,8 +64,8 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Messungen exportieren<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><%= link_to "XLS", user_path(@login_user, format: "xml") %></li>
-                <li><%= link_to "CSV", user_path(@login_user, format: "txt") %></li>
+                <li><%= link_to 'XLS', user_path(@login_user, format: 'xml') %></li>
+                <li><%= link_to 'CSV', user_path(@login_user, format: 'txt') %></li>
               </ul>
             </li>
         <% end %>
@@ -71,11 +73,11 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">System<span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <% if @login_user.hasCapability?("user") %>
-                  <li><%= link_to("Benutzerverwaltung", users_path)%></li>
+              <% if @login_user.hasCapability?('user') %>
+                  <li><%= link_to('Benutzerverwaltung', users_path)%></li>
               <% end %>
-              <% if @login_user.hasCapability?("export") %>
-                  <li><%= link_to("Datenexport",  url_for(:controller => "application", :action => "export"))%></li>
+              <% if @login_user.hasCapability?('export') %>
+                  <li><%= link_to('Datenexport',  url_for(controller: 'application', action: 'export'))%></li>
               <% end %>
             </ul>
           </li>
@@ -85,6 +87,75 @@
   </div>
 </nav>
 
+<script>
+    function tryDecrypt(key, name, id) {
+        var student = "";
+        try{
+            student = sjcl.decrypt(key, name);
+        }
+        catch(e){
+            console.error(e.toString())
+            console.log("Entschlüsselung fehlgeschlagen")
+            student = "Kind" + id;
+        }
+        return student;
+    }
+
+    <%if !@login_user.tcaccept.nil?%>
+      <%if !@user.nil? && @user.id != @login_user.id%>
+        sessionStorage['studentsOwn'] = "false";
+        var students = {
+            <%@user.groups.each do |group| %>
+            '<%=group.id%>': {
+                <%group.students.each do |s|%>
+                '<%=s.id%>': "Kind" +'<%= s.id%>',
+                <%end%>
+            },
+            <%end%>
+        }
+        //Don't overide my own students
+        sessionStorage['students'] = JSON.stringify(students);
+      <%else%>
+        if(typeof sessionStorage['students'] === 'undefined'||sessionStorage['students'] === null ||sessionStorage['studentsOwn'] == "false" ){
+            var students = {
+                <%@login_user.groups.each do |group| %>
+                '<%=group.id%>': {
+                    <%group.students.each do |s|%>
+                    '<%=s.id%>': tryDecrypt(sessionStorage['encryptKey'], '<%=raw s.name%>', '<%=s.id%>'),
+                    <%end%>
+                },
+                <%end%>
+            }
+            sessionStorage['studentsOwn'] = "true";
+            sessionStorage['students'] = JSON.stringify(students);
+        }
+      <%end%>
+    <%end%>
+    //load pic only once
+    var levumiPic=""
+    //Getting the Levumi picture "data:image/png... "-reprensaentation
+    function getDataUri(url, callback) {
+        var image = new Image();
+
+        image.onload = function () {
+            var canvas = document.createElement('canvas');
+            canvas.width = this.naturalWidth;
+            canvas.height = this.naturalHeight;
+            canvas.getContext('2d').drawImage(this, 0, 0);
+
+            // ... or get as Data URI
+            callback(canvas.toDataURL('image/png'));
+        };
+
+        image.src = url;
+    }
+    if(levumiPic ===""){
+        getDataUri('/images/shared/Levumi-normal-blau.jpg', function(dataUri) {
+            // Do whatever you'd like with the Data URI!
+            levumiPic = dataUri
+        });
+    }
+</script>
 
 <div class="container-fluid">
   <div id="content">

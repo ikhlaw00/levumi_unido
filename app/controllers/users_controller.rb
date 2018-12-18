@@ -1,7 +1,9 @@
 # -*- encoding : utf-8 -*-
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :multi_update]
   before_action :is_allowed, except: [:show]
+
+  skip_before_action :check_accept, only: [:multi_update]
 
   # GET /users
   # GET /users.json
@@ -42,6 +44,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    @groups = @user.groups
   end
 
   # POST /users
@@ -99,9 +102,48 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user.destroy
+    backend = true
+    if (@user.account_type == -1) || (@user.id != session[:user_id])
+      @user.destroy    #Löschen im Backend => Final löschen
+    else
+      @user.delete     #Löschen als User => Daten löschen, Einloggen verhindern
+      backend = false
+    end
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'Benutzer wurde gelöscht.' }
+      format.html {
+        if backend
+          redirect_to users_url, notice: 'Benutzer wurde gelöscht.'
+        else
+          if !session[:user_id].nil?
+            session[:user_id] = nil
+            @login_user = nil
+          end
+          redirect_to root_url, notice: 'Ihr Benutzer wurde erfolgreich gelöscht. Vielen Dank, dass Sie Levumi verwendet haben.'
+        end
+      }
+    end
+  end
+
+  def multi_update                                     #TODO Gehört eigentlich in Student...
+    if params.has_key?(:students)
+      params[:students].each do |keyGroup, valueGroup|
+        valueGroup.each do |keyStudent, valueStudent|
+          s = Student.find(keyStudent)
+          if s.group.user.id != @login_user.id
+            if(!session[:user_id].nil?)
+              session[:user_id] = nil
+              @login_user = nil
+            end
+            redirect_to root_url
+          else
+            s.name = valueStudent
+            s.save
+          end
+        end
+      end
+      head :ok
+    else
+      head :ok
     end
   end
 

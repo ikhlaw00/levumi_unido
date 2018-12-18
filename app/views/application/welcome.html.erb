@@ -2,16 +2,16 @@
   <h1><%= image_tag('Levumi-klein-blau.png', size: "120")%> Levumi Testsystem TU Dortmund </h1>
   <h3>Lernverlaufs-Monitoring</h3>
   <br/>
-  <%= form_tag(url_for(:controller => 'application', :action => 'login'), :class => "form") do %>
+  <%= form_tag(url_for(controller: 'application', action: 'login'), class: 'form', id: 'loginForm') do %>
       <div class="form-group">
         <label class="sr-only" for="email">Email-Adresse</label>
-        <%= text_field_tag "email", nil, type: "email", class: "form-control", placeholder: "E-Mail Adresse"%>
+        <%= text_field_tag 'email', nil, type: 'email', class: 'form-control', placeholder: 'E-Mail Adresse'%>
       </div>
       <div class="form-group">
-        <label class="sr-only" for="email">Passwort</label>
-        <%= text_field_tag "password", nil, type: "password", class: "form-control", placeholder: "Passwort"%>
+        <label class="sr-only" for="password">Passwort</label>
+        <%= text_field_tag 'password', nil, type: 'password', class: 'form-control', id: 'password', placeholder: 'Passwort'%>
       </div>
-      <%= submit_tag 'Einloggen', :class => "btn btn-primary" %>
+      <%= submit_tag 'Einloggen', class: 'btn btn-primary', id: 'submitButton' %>
   <% end %>
   <br/>
   <p>
@@ -25,3 +25,14 @@
     Erlauben Sie bitte außerdem Cookies und Popups für diese Seite!
   </p>
 </div>
+
+<script>
+    sessionStorage.clear();
+    $(function() {
+        $('#submitButton').click(function (e) {
+            e.preventDefault();
+            sessionStorage['encryptKey'] = $('#password').val();
+            $('#loginForm').submit();
+        })
+    });
+</script>

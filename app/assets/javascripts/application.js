@@ -10,7 +10,13 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
+//= require jquery3
 //= require jquery_ujs
 //= require bootstrap-sprockets
+//Import client-side encryption
+//= require sjcl
+//Draw SVG to Canvas
+//= require rgbcolor
+//= require StackBlur
+//= require canvg
 //= require_tree .

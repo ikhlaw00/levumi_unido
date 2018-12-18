@@ -88,11 +88,12 @@
           <%= link_to edit_user_group_assessment_measurement_path(@user, @group, @assessment, measurement), :title => "Messung bearbeiten", :data => {:remote => true} do %>
               <span class="glyphicon glyphicon-pencil"></span>
           <% end %>
-          <%= link_to user_group_assessment_measurement_path(@user, @group, @assessment, measurement), :title => "Löschen", :method => :delete, :data => {:remote => true, :confirm => "Damit gehen alle Ergebnisse dieser Messung verloren!\n\nSind Sie sicher?"} do %>
-              <span class="glyphicon glyphicon-trash"></span>
-          <% end %>
-        </td>
-      </tr>
+          <%= link_to user_group_assessment_measurement_path(@user, @group, @assessment, measurement), :title => "Löschen", 
+:method => :delete, :data => {:remote => true, :confirm => "Damit gehen alle Ergebnisse dieser Messung verloren!\n\nSind Sie sicher?"} do %>
+          <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+      </td>
+    </tr>
   <% end %>
   </tbody>
 </table>
