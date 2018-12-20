@@ -68,7 +68,7 @@ all_items = [
 %w{76743  76753  -  76773  76763  7  1},
 %w{477210  476210  475210  -  474210  7  2},
 %w{112930  -  112950  112960  112940  7  1},
-%w{544530  544430  544420  -  544410  7  2},
+%w{544530  544430  544330  -  544230  7  2},
 %w{-  28912  28913  28914  28911  7  1},
 %w{77443  77343  77243  -  77143  7  2},
 %w{984563  -  984565  984566  984564  7  1},
@@ -80,8 +80,8 @@ test_info = "Dieser Test erfordert die Fähigkeit,
 Gesetzmäßigkeiten von Zahlenfolgen zu erkennen und die jeweils fehlende Zahl der
 dargebotenen Zahlenreihe zu identifizieren."
 
-test1 = TestZR.create(name: "Zahlenreihen", short_info: test_info, len: 72, time:600, subject: "Mathematik", 
-	student_access: true, construct: "Zahlenreihen",archive: false, shorthand: "ZR", level: "bis 1.000.000")
+test1 = TestZR.create(name: "Zahlenreihen fortsetzen", short_info: test_info, len: 72, time:600, subject: "Mathematik", 
+	student_access: true, construct: "Zahlenreihen",archive: false, shorthand: "ZR", level: "Niveaustufe 5a")
 it = test1.items.build(itemtext: "hallo", itemtype: -1,  itemview: "items/studentbased/zahlenreihentest/1hallo")
 it.save
 

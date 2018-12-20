@@ -1,0 +1,46 @@
+<div class='modal-content'>
+  <div class='modal-header'>
+    <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+    <h4 class='modal-title' id='mainModalHeader'></h4>
+  </div>
+  <div class='modal-body' id='modalBody'>
+    <br/>
+    <br/>
+    <br/>
+    <p class='text-center'>
+      <img id='pic' style='width: 250px;'/>
+      <br/>
+      <br/>
+      <br/>
+    </p>
+    <p class='text-center' style='font-size: 24px' id='status'>
+      <br/>
+      <br/>
+      <br/>
+    </p>
+    <br/>
+    <br/>
+    <br/>
+  </div>
+  <div class='modal-footer' style='text-align: center'>
+    <button id='cButton' type='button' class='btn btn-default btn-lg disabled'>Richtig (Taste: 1)</button>
+    <button id='sButton' type='button' class='btn btn-default disabled'>Test starten</button>
+    <button id='iButton' type='button' class='btn btn-default btn-lg disabled'>Falsch (Taste: 0)</button>
+  </div>
+</div>
+<script>
+    var tempStatus = (document.getElementById('status'));
+
+    var answers_c = 0;
+    var answers_f = 0;
+    currentResult.split('1').length > 0 ? answers_c = currentResult.split('1').length - 1 : '';
+    currentResult.split('0').length > 0 ? answers_f = currentResult.split('0').length - 1 : '';
+    if(answers_f == 0){
+      tempStatus.innerHTML = 'Sie haben alle Items richtig beantwortet.';
+    }else if(answers_c == 0) {
+      tempStatus.innerHTML = 'Sie haben alle Items falsch beantwortet.';
+    }else{
+      tempStatus.innerHTML = 'Sie haben ' + answers_c + ' richtige und ' + answers_f + ' falsche Antworten.';
+    }
+    $('#mainModalHeader').html(students[currentStudent]);
+</script>

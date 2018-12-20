@@ -73,16 +73,7 @@ class Result < ActiveRecord::Base
     elsif measurement.assessment.test.subject == "Fragebogen"
       vals = data.split(',')
       vals.length.times do |i|
-        self.responses[i] = case vals[i]
-        when "0" then 0
-        when "1" then 1 
-        when "2" then 2
-        when "3" then 3 
-        when "4" then 4 
-        when "5" then 5 
-        when "6" then 6 
-        when "7" then 7 
-        end
+        self.responses[i] = vals[i].to_i
       end
     else
       vals = data.split(',')
@@ -102,16 +93,7 @@ class Result < ActiveRecord::Base
     else
       vals = data.split(',')
       vals.length.times do |i|
-        self.responses[i] = case vals[i]
-        when "1" then 1
-        when "2" then 2
-        when "3" then 3
-        when "4" then 4
-        when "5" then 5
-        when "6" then 6
-        when "7" then 7
-        else 0
-        end
+        self.responses[i] = vals[i].to_i
       end
     end
     update_total 
@@ -123,11 +105,6 @@ class Result < ActiveRecord::Base
     cats = measurement.assessment.test.get("cat_abbrev")
     sum = 0
     antworten = self.responses.dup
-    # In case of DBR, recoding in student view is necessary. But in case of PIQ it isn't necessary.
-    # Change on 07.11.18: all student views should be origina, also recode all for the second time
-    antworten = recodeDBR(antworten)
-    #if measurement.assessment.test.shorthand == "FB"  
-    #end
     count_of_items = 0
     (0..cats.length).each do |x|
       if cats[x] == category and antworten[x] > 0
@@ -166,14 +143,12 @@ class Result < ActiveRecord::Base
         responses[p] = (r == "1" ? 1 : (r == "0" ? 0 : nil)) unless p.nil?
       else
         unless p.nil?
-          responses[p] = case r
-          when "1"  then 1
-          when "2"  then 2
-          when "3"  then 3
-          when "4"  then 4
-          when "5"  then 5
-          when "6"  then 6
-          when "7"  then 7
+          item_diff = Item.where(:id => i).select(:difficulty)[0].difficulty
+          if item_diff == 1
+            num_of_dimensions = Item.where(:test_id => measurement.assessment.test.id).first.difficulty + 1
+            responses[p] = num_of_dimensions - r.to_i
+          else
+            responses[p] = r.to_i
           end
         end
       end

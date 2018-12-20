@@ -58,9 +58,9 @@ categories = [
 	"Prosoziales Verhalten (PS)"
 ]
 
-# DBR questinnaire
+# DBR questionnaire
 t = Fragebogen.create(name:'Fragebogen Verhaltensmessung', student_access: false, archive: false, info: "", len: 20, shorthand: "FB", subject: "Fragebogen", 
-	construct: "Verhalten", level:"Schule")
+	construct: "Verhalten", level:"Schule", :generic_views => {"assessment" => 'questionnaire/assessment_overview.html.erb', "student" => 'questionnaire/student_overview.html.erb'})
 
 # difficulty of this item means the dimension, also the answers will be [1,7]
 it = t.items.build(itemtext:'hallo', itemtype: -1, itemview: 'items/userbased/fragebogen_void', difficulty: 7) 
@@ -113,8 +113,8 @@ items_abbrev = [
 ]
 
 # Fragebogen PIQ
-t = Fragebogen.create(name: "Fragebogen zum Selbstkonzept in der Schule (PIQ)", student_access: false, archive: false, info: "", len: 13, shorthand:"FB-PIQ",
-		subject: "Fragebogen", construct: "Selbstkonzept", level: "Schule")
+t = Fragebogen.create(name: "Fragebogen zur Wahrnehmung der Inklusion in der Schule (PIQ)", student_access: false, archive: false, info: "", len: 13, shorthand:"FB-PIQ",
+		subject: "Fragebogen", construct: "Selbstkonzept", level: "Schule", :generic_views => {"assessment" => 'questionnaire/assessment_overview.html.erb', "student" => 'questionnaire/student_overview.html.erb'})
 
 
 it = t.items.build(itemtext: "hallo", itemtype: -1, itemview: 'items/userbased/fragebogen_void', difficulty: 4) #difficulty: stimmt gar nicht, ..., stimmt
@@ -129,6 +129,7 @@ while i < items.length do
 end
 t.save 
 
+=begin
 items_abbrev = [
 	"Schulfreude",
 	"Freunde",
@@ -160,7 +161,7 @@ items = [
 ]
 
 t = Fragebogen.create(name: "Fragebogen zum Selbstkonzept in der Schule (PIQ)", student_access: true, archive: false, info: "", len: 13,
-	shorthand: "FB-PIQ", subject: "Fragebogen", construct: "Selbstkonzept", level: "Schule")
+	shorthand: "FB-PIQ", subject: "Fragebogen", construct: "Selbstkonzept", level: "Schule", :generic_views => {"assessment" => 'questionnaire/assessment_overview.html.erb', "student" => 'questionnaire/student_overview.html.erb'})
 
 it = t.items.build(itemtext: "hallo", itemtype: -1, itemview: 'items/studentbased/fragebogen/hallo_piq', difficulty: 4) # difficulty stands for possible answers
 it.save
@@ -176,7 +177,6 @@ t.save
 
 
 # This is the right order of the PIQ-questionnaire
-=begin
 Er/Sie geht gerne in die Schule.
 Er/Sie hat sehr viele Freundinnen oder Freunde in seiner/ihrer Klasse.
 Er/Sie lernt schnell.

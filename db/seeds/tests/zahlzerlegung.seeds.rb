@@ -41,8 +41,8 @@ items_zer = [
 %w{	5	2	3	2	0}
 ]
 
-math = TestZS.create(name: "Zahlzerlegung (5)", info:"Zahlzerlegung (5)", len: 40,shorthand: "ZZ1", time: 90, subject: "Mathematik",
- construct: "Sarahs Tests", student_access: true, archive: false, level: "Niveaustufe 1-2")
+math = TestZS.create(name: "Zahlzerlegung", info:"Zahlzerlegung", len: 40,shorthand: "ZZ1", time: 90, subject: "Mathematik",
+ construct: "Zahlzerlegung", student_access: true, archive: false, level: "Niveaustufe 1")
 it = math.items.build(itemtext: "hallo", itemtype: -1, shorthand: "5",  itemview: "items/studentbased/zahlzerlegungstest/1halloZer")
 it.save
 i = 0
@@ -154,8 +154,8 @@ all_items = [
 %w{	10	10	0	3	0	}
 ]
 
-math = TestZS.create(name: "Zahlzerlegung (6-10)", info:"Zahlzerlegung 6-10", len: 91,shorthand: "ZZ2", time: 90, subject: "Mathematik",
- construct: "Sarahs Tests", student_access: true, archive: false, level: "Niveaustufe 1-3")
+math = TestZS.create(name: "Zahlzerlegung", info:"Zahlzerlegung", len: 91,shorthand: "ZZ2", time: 90, subject: "Mathematik",
+ construct: "Zahlzerlegung", student_access: true, archive: false, level: "Niveaustufe 2")
 it = math.items.build(itemtext: "hallo", itemtype: -1, shorthand: 10, itemview: "items/studentbased/zahlzerlegungstest/1halloZer")
 it.save
 

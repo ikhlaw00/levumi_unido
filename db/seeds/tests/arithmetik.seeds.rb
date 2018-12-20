@@ -87,20 +87,23 @@ all_items=[
 ]
 
 
-addition = TestArithmetik.create(name: "Addieren und Subtrahieren im Zahlenraum bis 100", len: 82, time: 600, construct: "Arithmetik", subject: "Mathematik", archive: false,
-			student_access: true, info: "Addieren und Subtrahieren im Zahlenraum bis 100", shorthand: "ARTH", level: "NS1")
+addition = TestArithmetik.create(name: "Zahlen addieren und subtrahieren", len: 82, time: 600, construct: "Addition und Subtraktion", subject: "Mathematik", archive: false,
+			student_access: true, info: "Addieren und Subtrahieren im Zahlenraum bis 100", shorthand: "ARTH", level: "Niveaustufe 3")
 it = addition.items.build(itemtext:"Hello", itemtype: -1, itemview: "items/studentbased/arithmetik/1halloArithmetik")
 it.save
 
 i = 0
 while i < all_items.length do
 	sum = 0
+	text = ''
 	if all_items[i][1].to_i == 1 
 		sum = all_items[i][0].to_i + all_items[i][2].to_i
+		text = all_items[i][0] + " + " + all_items[i][2] 
 	else
 		sum = all_items[i][0].to_i - all_items[i][2].to_i
+		text = all_items[i][0] + " - " + all_items[i][2] 
 	end
-	it = addition.items.build(itemtext: all_items[i].join(','), itemview: 'items/studentbased/arithmetik/2testItemArithmetik', 
+	it = addition.items.build(itemtext: text  , itemview: 'items/studentbased/arithmetik/2testItemArithmetik', 
 		itemtype: 0, shorthand: sum,
 		difficulty: all_items[i][3])
 	it.save

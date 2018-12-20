@@ -1,0 +1,255 @@
+<% test = Test.find(key)%>
+<% if online %>
+  <div class="dropdown text-right" id="p<%=key%>">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuPrint" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      <span class="glyphicon glyphicon-print" style="color:#337AB7"></span>
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuPrint">
+      <!-- Imitate a link-->
+      <li onclick="generatePDF(true, <%=key%>)"  style="padding: 3px 20px">Alles</li>
+      <li onclick="generatePDF(false, <%=key%>)" style="padding: 3px 20px">Nur Graph</li>
+    </ul>
+  </div>
+<% end %>
+
+<!-- Imitate a link-->
+<style>
+  li:hover{
+    background-color: #f5f5f5;
+    cursor: pointer;
+  }
+</style>
+
+<div id="chart<%=key%>"  >
+</div>
+
+
+
+
+<script type="text/javascript" charset="utf-8">
+  //Create a graph (svg-object)
+    var chart<%=key%> = c3.generate({
+        oninit: function() {
+            this.svg.attr('id', 'svgFor<%=key%>')
+        },
+        bindto: '#chart<%=key%>',
+        data: {
+            x: 'x',
+            columns: [
+                ['x',
+                    <% results.each do |r| %>
+                    '<%= r.measurement.date.to_date %>',
+                    <% end %>
+                ],
+                <% max = 1 %>
+                <% cats = test.get("cat_abbrev").uniq%>
+                <% cats.each do |x| %>
+                    ['<%= x %>',
+                        <% results.each do |r| %>
+                            <% if r.nil? || r.mean_cat(x).nil? %>
+                                null
+                            <% else %>
+                                <%=  r.mean_cat(x) %>
+                                <% max = r.mean_cat(x) if r.mean_cat(x) > max %>
+                            <% end %>,
+                        <% end %>
+                    ],
+                <% end %>
+            ]
+        },
+        color: {
+            pattern: [ '#208e38', '#ff0707','#2196F3', '#E040FB','#009688', '#FF9800','#F44336']
+        },
+        axis: {
+            x: {
+                type: 'timeseries',
+                tick: {
+                    fit: true,
+                    format: "%e %b %y"
+                },
+                label: {
+                    text: 'Testzeitpunkte',
+                    position: 'outer-left'
+                }
+            },
+            y: {
+                label: {
+                    text: 'Verhalten',
+                    position: 'outer-middle'
+                },
+                min: 0,
+                max: <%= max.nonzero? || 1 %>,
+                tick: {
+                    format: function(x) { return x % 1 === 0 ? x : ''; }
+                },
+                padding: {top: 0, bottom: 20}
+            }
+        },
+        line: {
+            connectNull: true
+        },
+        legend: {
+            hide: false
+        }
+    });
+</script>
+
+<% unless without_table %>
+    <div>
+        <% colors = [ '#208e38', '#ff0707','#2196F3', '#E040FB','#009688', '#FF9800',
+          '#F44336'] %>
+          <table class="table table-bordered table-striped text-center" id="table<%=key%>">
+            <thead>
+                <th></th>
+                <!-- Show the categories in the first header line in the table -->
+                <% categories = test.get("categories")%>
+                <% color = -1 %>
+                <% categories.uniq.each do |x| %>
+                <th colspan="<%= categories.count(x) + 1%>" style="color:<%= colors[color+=1] %>" >
+                    <div" "><span><%= x %></span></div>
+                </th>  
+                <% end %>
+            </thead>
+            <thead>
+              <th >Zeitpunkt</th>
+              <% cat_abbrev = test.get("cat_abbrev") %>
+              <% cat = cat_abbrev[0]%>
+              <% itemsA = test.content_items %>
+              <% itemsHash = itemsA.map{|x| x.attributes.symbolize_keys} %>
+              <!-- show the headers, e.g. Wut, Klassenregeln, etc.  -->
+              <% for it in 0..itemsA.length - 1 %>
+              <!-- cat to show the sum of items of each category -->
+              <% if cat != cat_abbrev[it]%> 
+              <th data-toggle="tooltip" title="" >
+                  <div><span><%= cat %></span></div>
+              </th >
+              <% cat = cat_abbrev[it] %>
+              <% end %>
+
+              <th data-toggle="tooltip" title="<%= itemsHash[it][:itemtext].split(';')[0] %>" >
+                  <div><%= itemsHash[it][:shorthand] %></div>
+              </th>
+              <% if it == itemsA.length - 1 %> <!-- just for the last one  -->
+              <th data-toggle="tooltip" title=""><%= cat %></th>
+              <% end %>
+              <% end %>
+              <!-- end of displaying the headers -->
+          </thead>
+
+          <tbody>
+              <% results.sort_by {|x| x.measurement.date}.each do |r| %>
+              <% unless r.score.nil? %>
+              <tr>
+                  <td><%= r.measurement.date.to_date.strftime("%d.%m.%Y")%></td>
+                              <% responses = r.responses.map { |e| e} %>
+                              <% sum = 0 %>
+                              <% cat_abbrev = test.get("cat_abbrev") %>
+                              <% current_cat = cat_abbrev[0] %>
+                              <% num_of_cat_items = 0 %>
+                              <% for i in 0..r.items.size-1 do %>
+                              <!-- print out the sum of each group -->
+                              <% if current_cat != cat_abbrev[i] %>
+                              <td style="font-weight: bold"><%= r.mean_cat(current_cat) %></td>
+                              <% sum = 0 %>
+                              <% num_of_cat_items = 0 %>
+                              <% current_cat = cat_abbrev[i] %>
+                              <% end %>
+
+                              <!-- just to sum the number of answered items -->
+                              <% if responses[i] > 0 %>
+                              <% num_of_cat_items +=1 %>
+                              <% end %>
+
+                              <!-- print out values of items -->
+                              <% sum = sum + responses[i].to_i %>
+                              <td><%= responses[i] %></td>  
+
+                              <!-- sum of the last one -->
+                              <% if i == r.items.size - 1 %>
+                              <td style="font-weight: bold"><%= r.mean_cat(current_cat) %></td>
+                              <% end %>
+
+                              <% end %>
+
+                          </tr>
+                          <% end %>
+                          <% end %>
+            </tbody>
+        </table>             
+    </div>
+<%end%>
+<script>
+    //generate pdf
+    function generatePDF(withTable, key) {
+        d3.selectAll("path").attr("fill", "none");
+        d3.selectAll(".tick line, path.domain").attr("stroke", "black");
+        d3.selectAll(".c3-line-student").attr("stroke-width", "3px");
+        d3.selectAll(".c3-line-n25").attr("stroke-dasharray", "10,10");
+        d3.selectAll(".c3-line-n50").attr("stroke-dasharray", "10,10");
+        d3.selectAll(".c3-line-n75").attr("stroke-dasharray", "10,10");
+        //Convert SVG to PNG
+        canvas = document.getElementById("drawingArea");
+        //Hier kann man versuchen das Bild noch etwas "klarer" zu machen
+        //temporary resize of svg, otherwise canvas and png is as big as svg
+        eval("chart"+key).resize({width:700, height:300});
+        canvg(canvas, $('#svgFor' + key)[0].outerHTML.trim());
+        eval("chart"+key).resize({height:320});
+        eval("chart"+key).resize();
+        var data = canvas.toDataURL("image/png");
+        //build pdf-content
+        var docDefinition = {
+            pageSize: 'A4',
+            content: [
+                {
+                    columns:[
+                        {
+                            width:'auto',
+                            stack:[
+                                {image: levumiPic,
+                                    width: 40
+                                }
+                            ]
+                        },
+                        {text:
+                            'Levumi Schüleransicht '+studentsCrypt['<%=@group.id%>'][<%=@student.id%>],
+                            fontSize: 15,
+                            margin: [0, 10, 0, 0]
+                        }
+                    ]
+                },
+                {text:
+                    '<%=test.name%> - <%=test.level%>',
+                    style: 'subheader'
+                },
+                {image: data,
+                    width: 480,
+                    height: 250,
+                    margin: [0,15,0,0]
+                }],
+            styles: {
+                subheader: {
+                    fontSize: 13,
+                    margin: [50, 0, 5, 5]
+                }
+            }
+        };
+
+        if(withTable){
+            generateTable(docDefinition, key, false);
+        }
+        //open PDF in new window
+        //Alternativen:
+        //print the PDF
+        //  pdfMake.createPdf(docDefinition).print();
+        //open PDF in viewer
+        //pdfMake.createPdf(docDefinition).open();
+        // download the PDF
+        pdfMake.createPdf(docDefinition).download('Schüleransicht von '+studentsCrypt['<%=@group.id%>'][<%=@student.id%>]+' - <%=test.name%>.pdf');
+
+    }
+</script>
+
+
+
+

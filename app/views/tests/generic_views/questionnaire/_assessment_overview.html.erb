@@ -1,0 +1,112 @@
+<!-- Imitate a link-->
+<style>
+  .myHover:hover{
+    cursor: pointer;
+  }
+</style>
+<% if online %>
+<p id="head" class="lead text-right">
+  <!-- Imitate a link-->
+  <span class="glyphicon glyphicon-print myHover" onclick="generatePDF()" style="color: #337ab7" title="Drucken"></span>
+
+  <%= link_to user_group_assessment_path(@user, @group, @assessment), :title => "Graph neu laden", :data => {:remote => true} do%>
+    <span class="glyphicon glyphicon-refresh"></span>
+  <% end %>
+
+</p>
+<% end %>
+
+<div id="chart"></div>
+
+<script type="text/javascript" charset="utf-8">
+    var students = JSON.parse(sessionStorage['students']);
+
+//create a chart(svg-element) with attribute id
+var chart = c3.generate({
+    oninit: function() {
+        this.svg.attr('id', 'svgOfAssessement')
+    },
+    bindto: '#chart',
+    data: {
+        x: 'x',
+        columns: [
+            ['x',
+                <% @assessment.measurements.each do |m| %>
+                '<%= m.date.to_date %>',
+                <% end %>
+            ],
+            <% max = 1 %>
+            <% @group.students.each do |student| %>
+            [students["<%=@group.id%>"][<%=student.id%>],
+                <% @assessment.measurements.each do |m| %>
+                <% r = m.results.find_by_student_id(student.id) %>
+                <% if r.nil? || r.score.nil?  %>
+                null
+                <% else %>
+                <% max = r.score if r.score > max %>
+                <%= r.score %>
+                <% end %>,
+                <% end %>
+            ],
+            <% end %>
+        ]
+    },
+    axis: {
+        x: {
+            type: 'timeseries',
+            tick: {
+                fit: true,
+                format: "%d.%m%.%y"
+            },
+            label: {
+                text: 'Testzeitpunkte',
+                position: 'outer-left'
+            }
+        },
+        y: {
+            label: {
+                text: 'Positives Verhalten',
+                position: 'outer-middle'
+            },
+            min: 0,
+            max: <%= max.nonzero? || 1  %>,
+            tick: {
+                format: function(x) { return x % 1 === 0 ? x : ''; }
+            },
+            padding: {top: 0, bottom: 20}
+        }
+    },
+    line: {
+        connectNull: true
+    },
+    tooltip: {
+        contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
+            var res = "<table border=0><tr>";
+            d.sort(function (a, b) {
+                return b.value - a.value
+            });
+            var s = 0;
+            while (s < d.length) {
+                res = res + "<td valign='top'><table class='table table-condensed' style='background-color:white'><thead><th></th>";
+                if (s == 0)
+                    res = res + "<th>Schüler/-in</th><th>Punkte</th><tbody>";
+                else
+                    res = res + "<th>&nbsp;</th><th>&nbsp;</th><tbody>";
+                var i = 0;
+                for (i = 0; i < 10; i++) {
+                    while (s < d.length && d[s].value == null)
+                      s++;
+                    if (s < d.length) {
+                        res = res + "<tr><td><span class='glyphicon glyphicon-stop' style='color:" + color(d[s]) + "'></span></td><td>" + d[s].name + "</td><td>" + d[s].value + "</td></tr>";
+                        s++;
+                    }
+                }
+                res = res + "</tbody></table></td>";
+            }
+            res = res + "</tr></table>";
+            return res;
+        }
+    }
+});
+
+</script>

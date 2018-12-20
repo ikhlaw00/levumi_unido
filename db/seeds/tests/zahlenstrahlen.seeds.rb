@@ -80,8 +80,8 @@ all_items = [
 
 lineLength = 10;
 
-math = TestZS.create(name: "Zahlenreihe bis 10", info:"", shorthand: "ZS1", len: 76, time: 90, subject: "Mathematik", 
-	construct: "Sarahs Tests", student_access: true, archive: false, level: "Niveaustufe 1-4")
+math = TestZS.create(name: "Zahlenstrahl ergänzen", info:"", shorthand: "ZS1", len: 76, time: 90, subject: "Mathematik", 
+	construct: "Zahlenstrahl", student_access: true, archive: false, level: "Niveaustufe 1")
 
 it = math.items.build(itemtext: "Hallo", itemtype: -1, shorthand: lineLength, itemview: "items/studentbased/zahlenstrahltest/1halloZahlenstrahl")
 it.save
@@ -183,8 +183,8 @@ all_items = [
 
 lineLength = 20;
 
-math = TestZS.create(name: "Zahlenreihe von 10 bis 20", info:"", shorthand: "ZS2", len: 82, time: 90, subject: "Mathematik", 
-	construct: "Sarahs Tests", student_access: true, archive: false, level: "Niveaustufe 1-4")
+math = TestZS.create(name: "Zahlenstrahl ergänzen", info:"", shorthand: "ZS2", len: 82, time: 90, subject: "Mathematik", 
+	construct: "Zahlenstrahl", student_access: true, archive: false, level: "Niveaustufe 2")
 
 it = math.items.build(itemtext: "Hallo1", itemtype: -2, shorthand: lineLength, itemview: "items/studentbased/zahlenstrahltest/1halloZahlenstrahl")
 it.save

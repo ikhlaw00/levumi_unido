@@ -1,14 +1,12 @@
 <%
-	numbers = item.itemtext.split(',')
+	numbers = item.itemtext.split(',') # numbers is: 47-40,5 , also first_numbher +/- second_number comma category
+	askedNumber = item.shorthand
 	zeichen = "+"
-	if numbers[1].to_i == 0
+	if numbers[0].include?('-')
 		zeichen = "-"
 	end
 %>
 <div class="container">
-	<div class="row text-center">
-		<h1>Addition</h1>
-	</div>
 	<br>
 	<br>
 	<div class="row" style="font-size: 50px;">
@@ -51,13 +49,14 @@
 	var p1 = document.getElementById("div1");
 	var p2 = document.getElementById("div3");
 	var p3 = document.getElementById("div5");
-	first_nr = parseInt(<%= numbers[0] %>);
-	second_nr = parseInt(<%= numbers[2] %>);
-	var askedNumber = 0
-	if (parseInt(<%= numbers[1] %>) == 1)
+	first_nr = parseInt(<%= numbers[0].split(zeichen)[0] %>);
+	second_nr = parseInt(<%= numbers[0].split(zeichen)[1] %>);
+	var askedNumber = parseInt(<%= askedNumber %>);
+	/**if (parseInt(<%= numbers[1] %>) == 1)
 		askedNumber = first_nr + second_nr;
 	else 
 		askedNumber = first_nr - second_nr;
+	**/
 	var answered = false;
 	var answer="";
 
