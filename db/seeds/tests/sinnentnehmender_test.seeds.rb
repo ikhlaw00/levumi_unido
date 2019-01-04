@@ -1092,7 +1092,8 @@ item_alternatives_n6 = [
 
 
 tN6 = TestSEL.create(name: "Sinnentnehmendes Lesen", len: 95, info: "Sinnentnehmendes Lesen N6", shorthand: "SEL6",
-										 subject: "Deutsch", construct: "Sinnentnehmendes Lesen", student_access:true, archive: false, level: "N6", time: 300)
+										 subject: "Deutsch", construct: "Sinnentnehmendes Lesen", student_access:true, archive: false, level: "N6", time: 300,
+										 :generic_views => {"student" => "sel/student_overview.html.erb"})
 i = tN6.items.build(itemtext: "Hallo", difficulty: 0, itemtype:-1, itemview: "items/studentbased/sinnentnehmender_lesetest/1hallo")
 i.save
 
