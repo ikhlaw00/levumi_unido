@@ -65,7 +65,14 @@
                     <% if tempItem.itemtype == 0 %>
                       <div class="form-group">
                         <p class="lead">
-                          <%= construct != "Arithmetik" ? tempItem.itemtext.split(';')[0] : tempItem.itemtext.split(';')[0] + " = " + tempItem.shorthand %>
+                        <% if construct == "Addition und Subtraktion" %>
+                          <%= tempItem.itemtext.split(';')[0] + " = " + tempItem.shorthand %>
+                        <% elsif construct == "Zahlenreihen" %>
+                          <% variables = tempItem.itemtext.split(',') %>
+                          <%= variables[0,4].join(',').sub!('-', "(" + variables[4] + ")") %>
+                        <% else %> 
+                          <%= tempItem.itemtext.split(';')[0] %>
+                        <% end %>
                         </p>
                         <!-- just for questionnaires, namely PIQ and DBR -->
                         <% if subject == "Fragebogen" %> 
@@ -89,7 +96,7 @@
                           </div>
                           <div class="radio">
                             <label>
-                              <%= radio_button_tag "results[#{r.student.id}[#{i}]]", '0', r.responses[index] == 0 %>Falsch <%= construct == "Arithmetik" ? ((answers.nil? || answers[index].nil? || r.responses[index] != 0) ? '' : "(" + answers[index] + ")") : '' %><br/> 
+                              <%= radio_button_tag "results[#{r.student.id}[#{i}]]", '0', r.responses[index] == 0 %>Falsch <%= construct ==  "Addition und Subtraktion" || construct == "Zahlenreihen" ? ((answers.nil? || answers[index].nil? || r.responses[index] != 0) ? '' : "(" + answers[index] + ")") : '' %><br/> 
                             </label>
                           </div>
                           <div class="radio">

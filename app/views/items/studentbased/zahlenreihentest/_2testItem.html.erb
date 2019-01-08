@@ -108,8 +108,9 @@
   function nextClicked() {
     entered = true;
     var tempAnswer = document.getElementById('answer');
-    actualAnswers = actualAnswers + tempAnswer.value + ',';
-    if(parseInt(tempAnswer.value)==(<%= correctAnswer%>)){
+    var res = tempAnswer.value.replace(/\s/g, '');
+    actualAnswers = actualAnswers + res + ',';
+    if(parseInt(res)==(<%= correctAnswer%>)){
       currentResult = currentResult + '1,';
     }
     else {
