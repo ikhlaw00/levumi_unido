@@ -81,7 +81,7 @@ Gesetzmäßigkeiten von Zahlenfolgen zu erkennen und die jeweils fehlende Zahl d
 dargebotenen Zahlenreihe zu identifizieren."
 
 test1 = TestZR.create(name: "Zahlenreihen fortsetzen", short_info: test_info, len: 72, time:600, subject: "Mathematik", 
-	student_access: true, construct: "Zahlenreihen",archive: false, shorthand: "ZR", level: "Niveaustufe 5a")
+	student_access: true, construct: "Zahlenreihen",archive: false, shorthand: "ZR", level: "Niveaustufe 5a", generic_views: {"student" => 'zahlenreihen/student_overview.html.erb'})
 it = test1.items.build(itemtext: "hallo", itemtype: -1,  itemview: "items/studentbased/zahlenreihentest/1hallo")
 it.save
 

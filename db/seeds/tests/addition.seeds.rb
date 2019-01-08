@@ -64,14 +64,14 @@ all_items=[
 
 
 addition = TestZS.create(name: "Zahlen addieren", len: 61, time: 90, construct: "Addition", subject: "Mathematik", archive: false,
-			student_access: true, info: "Addition 1-16", shorthand: "ADD", level: "Niveaustufe 2")
+			student_access: true, info: "Addition 1-16", shorthand: "ADD", level: "Niveaustufe 2", generic_views: {"student" => 'arithmetik/student_overview.html.erb'})
 it = addition.items.build(itemtext:"Hello", itemtype: -1, itemview: "items/studentbased/additiontest/1halloAddition")
 it.save
 
 i = 0
 while i < all_items.length do
-	num = all_items[i][0].to_i+all_items[i][1].to_i
-	it = addition.items.build(itemtext: all_items[i].join(','), itemview: 'items/studentbased/additiontest/2testItemAddition', 
+	num = all_items[i][0].to_i + all_items[i][1].to_i
+	it = addition.items.build(itemtext: all_items[i][0] + "+" + all_items[i][1], itemview: 'items/studentbased/additiontest/2testItemAddition', 
 		itemtype: 0, shorthand: num,
 		difficulty: all_items[i][2])
 	it.save

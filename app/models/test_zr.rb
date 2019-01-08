@@ -35,4 +35,8 @@ class TestZR < Test
 		end		
 		return [intro_items.map{|i| i.id}, itemset.map{|i| i.id}, outro_items.map{|i| i.id}]
 	end
+	def check_result(result)
+    #Alternativ:
+    return result.extra_data
+  end
 end

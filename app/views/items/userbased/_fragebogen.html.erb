@@ -2,6 +2,7 @@
   fragebogen = @measurement.assessment.test
   test_length = fragebogen.content_items.length
   cat_abbrev = fragebogen.get("categories")
+  group = @measurement.assessment.group_id
   difficulty = Item.where(:test_id => fragebogen.id).first.difficulty
 %>
 <h1 class="text-center"><%= fragebogen.name + " - " + fragebogen.level%></h1>
@@ -42,8 +43,19 @@
 <%end %>
  
 <script>
-  var currentStudent= <%= @student.id %>;
-  var currentStudentName = "<%= @student.name %>";
+    var currentStudentName= "<%= @student.login %>";
+  var realCurrentStudent= "<%= @student.id%>";
+  var studentsCrypt = JSON.parse(sessionStorage['students']);
+
+  //Enough to prevent possible race condition?
+  $(document).ready(function () {
+      //check first if class exist in hash
+      if("<%=group%>" in studentsCrypt){
+          Object.keys(studentsCrypt["<%=group%>"]).forEach(function(keyStudent) {
+              $('#'+ keyStudent).html(studentsCrypt["<%=group%>"][keyStudent]);
+          });
+      }
+  })
   var items = {
   	<% @measurement.assessment.test.items.each do |i| %>
   	<%= i.id %> : "<%= i.itemtext.split(';')[0] %>",
@@ -59,6 +71,5 @@
 	  	i = i+1;
   	}
   }
-  document.getElementById("hinweis").innerHTML = currentStudentName;
-  document.getElementById('hinweis').innerHTML = "Sie füllen den Fragenbogen für <strong>"+ currentStudentName +"</strong> aus.<br> ";
+  document.getElementById('hinweis').innerHTML = "Sie füllen den Fragenbogen für <strong>"+ studentsCrypt["<%=group%>"][realCurrentStudent] +"</strong> aus.<br> ";
 </script> 

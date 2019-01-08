@@ -1,5 +1,6 @@
 <% 
   fragebogen = @measurement.assessment.test
+  group = @measurement.assessment.group_id
   test_length = fragebogen.content_items.length
   cat_abbrev = fragebogen.get("categories")
   difficulty = Item.where(:test_id => fragebogen.id).first.difficulty
@@ -44,23 +45,33 @@ Wie geht es dem Schüler/der Schülerin in der Schule? Bitte lesen Sie jeden Sat
 <%end %>
  
 <script>
-  var currentStudent= <%= @student.id %>;
-  var currentStudentName = "<%= @student.name %>";
+  var currentStudentName= "<%= @student.login %>";
+  var realCurrentStudent= "<%= @student.id%>";
+  var studentsCrypt = JSON.parse(sessionStorage['students']);
+
+  //Enough to prevent possible race condition?
+  $(document).ready(function () {
+      //check first if class exist in hash
+      if("<%=group%>" in studentsCrypt){
+          Object.keys(studentsCrypt["<%=group%>"]).forEach(function(keyStudent) {
+              $('#'+ keyStudent).html(studentsCrypt["<%=group%>"][keyStudent]);
+          });
+      }
+  })
   var items = {
-  	<% @measurement.assessment.test.items.each do |i| %>
-  	<%= i.id %> : "<%= i.itemtext.split(';')[0] %>",
-  	<% end %>
+    <% @measurement.assessment.test.items.each do |i| %>
+    <%= i.id %> : "<%= i.itemtext.split(';')[0] %>",
+    <% end %>
   };
 
   var i = 1;
   for (key in items){
-  	if(items[key] == "hallo")
-  		delete items[key]
-  	else{
-		document.getElementById('item'+i).innerHTML = i + ")  "+items[key];
-	  	i = i+1;
-  	}
+    if(items[key] == "hallo")
+      delete items[key]
+    else{
+    document.getElementById('item'+i).innerHTML = i + ")  "+items[key];
+      i = i+1;
+    }
   }
-  document.getElementById("hinweis").innerHTML = currentStudentName;
-  document.getElementById('hinweis').innerHTML = "Sie füllen den Fragenbogen für <strong>"+ currentStudentName +"</strong> aus.<br> ";
+  document.getElementById('hinweis').innerHTML = "Sie füllen den Fragenbogen für <strong>"+ studentsCrypt["<%=group%>"][realCurrentStudent] +"</strong> aus.<br> ";
 </script> 

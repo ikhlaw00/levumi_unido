@@ -36,7 +36,7 @@
                       <%= text_field_tag "results[#{r.student.id}]", r.to_csv(true), class: "form-control", placeholder: "z.B. 1,0,0,NA"%>
                     </td>
                   </tr>
-              <% end %>
+              <% end %>g
               </tbody>
             </table>
             <%= submit_tag 'Speichern', :class => "btn btn-primary" %>
@@ -65,11 +65,18 @@
                     <% if tempItem.itemtype == 0 %>
                       <div class="form-group">
                         <p class="lead">
-                        <% if construct == "Addition und Subtraktion" %>
+                        <% if construct.include? "Addition" %>
                           <%= tempItem.itemtext.split(';')[0] + " = " + tempItem.shorthand %>
                         <% elsif construct == "Zahlenreihen" %>
                           <% variables = tempItem.itemtext.split(',') %>
                           <%= variables[0,4].join(',').sub!('-', "(" + variables[4] + ")") %>
+                        <% elsif construct == "Zahlzerlegung" %>
+                          <% variables = tempItem.itemtext.split(',') %>
+                          <%= variables[4] =="0" ? + "(" + variables[1] + ")+" + variables[2] + "=" + variables[0] : 
+                          variables[1] + "+(" + variables[2] + ")=" + variables[0] %>
+                        <% elsif construct == "Zahlenstrahl" %>
+                        <% diff = ["", "beziffert", "Nachfolger gesucht", "Vorgänger gesucht", "unbeziffert"] %>
+                          <%= tempItem.itemtext.split(',')[0] + " " + diff[tempItem.difficulty.to_i]  %>
                         <% else %> 
                           <%= tempItem.itemtext.split(';')[0] %>
                         <% end %>
@@ -96,7 +103,7 @@
                           </div>
                           <div class="radio">
                             <label>
-                              <%= radio_button_tag "results[#{r.student.id}[#{i}]]", '0', r.responses[index] == 0 %>Falsch <%= construct ==  "Addition und Subtraktion" || construct == "Zahlenreihen" ? ((answers.nil? || answers[index].nil? || r.responses[index] != 0) ? '' : "(" + answers[index] + ")") : '' %><br/> 
+                              <%= radio_button_tag "results[#{r.student.id}[#{i}]]", '0', r.responses[index] == 0 %>Falsch <%= (construct.include? "Addition") || construct == "Zahlenreihen" || construct == "Zahlzerlegung" ? ((answers.nil? || answers[index].nil? || r.responses[index] != 0) ? '' : "(" + answers[index] + ")") : '' %><br/> 
                             </label>
                           </div>
                           <div class="radio">

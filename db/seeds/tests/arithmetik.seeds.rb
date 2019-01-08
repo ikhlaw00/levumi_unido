@@ -88,7 +88,7 @@ all_items=[
 
 
 addition = TestArithmetik.create(name: "Zahlen addieren und subtrahieren", len: 82, time: 600, construct: "Addition und Subtraktion", subject: "Mathematik", archive: false,
-			student_access: true, info: "Addieren und Subtrahieren im Zahlenraum bis 100", shorthand: "ARTH", level: "Niveaustufe 3")
+			student_access: true, info: "Addieren und Subtrahieren im Zahlenraum bis 100", shorthand: "ARTH", level: "Niveaustufe 3", generic_views: {"student" => 'arithmetik/student_overview.html.erb'})
 it = addition.items.build(itemtext:"Hello", itemtype: -1, itemview: "items/studentbased/arithmetik/1halloArithmetik")
 it.save
 

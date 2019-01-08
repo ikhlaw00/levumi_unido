@@ -81,7 +81,7 @@ all_items = [
 lineLength = 10;
 
 math = TestZS.create(name: "Zahlenstrahl ergänzen", info:"", shorthand: "ZS1", len: 76, time: 90, subject: "Mathematik", 
-	construct: "Zahlenstrahl", student_access: true, archive: false, level: "Niveaustufe 1")
+	construct: "Zahlenstrahl", student_access: true, archive: false, level: "Niveaustufe 1", generic_views: {"student" => 'zahlenstrahlen/student_overview.html.erb'})
 
 it = math.items.build(itemtext: "Hallo", itemtype: -1, shorthand: lineLength, itemview: "items/studentbased/zahlenstrahltest/1halloZahlenstrahl")
 it.save
@@ -184,7 +184,7 @@ all_items = [
 lineLength = 20;
 
 math = TestZS.create(name: "Zahlenstrahl ergänzen", info:"", shorthand: "ZS2", len: 82, time: 90, subject: "Mathematik", 
-	construct: "Zahlenstrahl", student_access: true, archive: false, level: "Niveaustufe 2")
+	construct: "Zahlenstrahl", student_access: true, archive: false, level: "Niveaustufe 2" , generic_views: {"student" => 'zahlenstrahlen/student_overview.html.erb'})
 
 it = math.items.build(itemtext: "Hallo1", itemtype: -2, shorthand: lineLength, itemview: "items/studentbased/zahlenstrahltest/1halloZahlenstrahl")
 it.save

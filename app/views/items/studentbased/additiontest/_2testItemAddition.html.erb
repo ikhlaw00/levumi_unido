@@ -1,5 +1,6 @@
 <%
-	numbers = item.itemtext.split(',')
+	numbers = item.itemtext.split('+')
+	askedNumber = item.shorthand
 %>
 <div class="container">
 	<div class="row text-center">
@@ -47,7 +48,7 @@
 	var p1 = document.getElementById("div1");
 	var p2 = document.getElementById("div3");
 	var p3 = document.getElementById("div5");
-	var askedNumber = parseInt(<%= numbers[0] %>) + parseInt(<%= numbers[1] %>);
+	var askedNumber = parseInt(<%= item.shorthand %>);
 	var answered = false;
 	var answer="";
 

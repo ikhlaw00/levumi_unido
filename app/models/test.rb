@@ -120,4 +120,10 @@ class Test < ActiveRecord::Base
     count = temp.map{|x| x["anzahl"]}
     return Hash[ids.zip(count)]
   end
+
+  def check_result(result)
+    #Alternativ:
+    return result.extra_data
+  end
+
 end

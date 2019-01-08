@@ -42,7 +42,7 @@ items_zer = [
 ]
 
 math = TestZS.create(name: "Zahlzerlegung", info:"Zahlzerlegung", len: 40,shorthand: "ZZ1", time: 90, subject: "Mathematik",
- construct: "Zahlzerlegung", student_access: true, archive: false, level: "Niveaustufe 1")
+ construct: "Zahlzerlegung", student_access: true, archive: false, level: "Niveaustufe 1", generic_views: {"student" => 'zahlzerlegung/student_overview.html.erb'})
 it = math.items.build(itemtext: "hallo", itemtype: -1, shorthand: "5",  itemview: "items/studentbased/zahlzerlegungstest/1halloZer")
 it.save
 i = 0
@@ -155,7 +155,7 @@ all_items = [
 ]
 
 math = TestZS.create(name: "Zahlzerlegung", info:"Zahlzerlegung", len: 91,shorthand: "ZZ2", time: 90, subject: "Mathematik",
- construct: "Zahlzerlegung", student_access: true, archive: false, level: "Niveaustufe 2")
+ construct: "Zahlzerlegung", student_access: true, archive: false, level: "Niveaustufe 2", generic_views: {"student" => 'zahlzerlegung/student_overview.html.erb'})
 it = math.items.build(itemtext: "hallo", itemtype: -1, shorthand: 10, itemview: "items/studentbased/zahlzerlegungstest/1halloZer")
 it.save
 
