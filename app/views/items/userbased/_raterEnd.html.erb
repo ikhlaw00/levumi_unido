@@ -42,5 +42,5 @@
     }else{
       tempStatus.innerHTML = 'Sie haben ' + answers_c + ' richtige und ' + answers_f + ' falsche Antworten.';
     }
-    $('#mainModalHeader').html(students[currentStudent]);
+    $('#mainModalHeader').html(studentsCrypt["<%=@group.id%>"][realCurrentStudent]);
 </script>
