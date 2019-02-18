@@ -36,11 +36,13 @@
     currentResult.split('1').length > 0 ? answers_c = currentResult.split('1').length - 1 : '';
     currentResult.split('0').length > 0 ? answers_f = currentResult.split('0').length - 1 : '';
     if(answers_f == 0){
-      tempStatus.innerHTML = 'Sie haben alle Items richtig beantwortet.';
+      tempStatus.innerHTML = 'Sie haben alle vorgelesenen Wörter richtig bewertet.';
     }else if(answers_c == 0) {
-      tempStatus.innerHTML = 'Sie haben alle Items falsch beantwortet.';
+      tempStatus.innerHTML = 'Sie haben alle vorgelesenen Wörter falsch bewertet.';
     }else{
-      tempStatus.innerHTML = 'Sie haben ' + answers_c + ' richtige und ' + answers_f + ' falsche Antworten.';
+      var gesamt_anzahl = answers_f + answers_c
+      tempStatus.innerHTML = 'Sie haben ' + answers_c + ' von ' + gesamt_anzahl + ' vorgelesenen Wörtern richtig bewertet.' +
+                          "\nMehr Informationen finden Sie unter Schüler/in -> Lehrkraft";
     }
     $('#mainModalHeader').html(studentsCrypt["<%=@group.id%>"][realCurrentStudent]);
 </script>

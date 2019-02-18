@@ -25,7 +25,7 @@ class TestZR < Test
 				end
 				i = remaining.sample
 				count = 0
-				while ( count < 100) & (!pool.include? i.shorthand)
+				while ( count < 100) & (!pool.include? i.itemtext.split(',')[6].to_i)
 					i = remaining.sample
 					count = count + 1 
 				end

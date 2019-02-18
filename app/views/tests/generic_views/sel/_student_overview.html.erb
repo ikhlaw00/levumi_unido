@@ -167,8 +167,8 @@
       </p>
 
 
-      <table class="table table-striped" id="table<%=key%>">
-        <thead>
+      <table class="table table-striped table-bordered" id="table<%=key%>">
+        <thead class="text-center">
             <tr>
                 <th rowspan="2">
                   Zeitpunkt
@@ -199,7 +199,7 @@
                 <th>Pro Messzeitpunkt</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="text-center">
         <% results.sort_by {|x| x.measurement.date}.each do |r| %>
         <% dims = ['Komplexe Satzstrukturen', 'Inferenzen (Schlussfolgerungen)', 'Kohärenz (Zusammenhänge)'] %>
         <% difficulties = [1,2,3] %>
@@ -282,7 +282,7 @@
 <%end%>
 <script>
     //generate pdf
-    function generatePDF(withTable, key) {
+    function  generatePDF(withTable, key) {
         d3.selectAll("path").attr("fill", "none");
         d3.selectAll(".tick line, path.domain").attr("stroke", "black");
         d3.selectAll(".c3-line-student").attr("stroke-width", "3px");

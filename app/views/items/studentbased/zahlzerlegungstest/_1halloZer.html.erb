@@ -6,7 +6,7 @@
 		<h1>Zahlzerlegung</h1>
 	</div>
 </div>
-<h2 class="text-center" style="font-size: 50px"><strong>Beispiel</strong></h2><br>
+<h2 class="text-center" style="font-size: 50px" id='beispiel'><strong>Beispiel</strong></h2><br>
 <div class="row text-center" style="font-family: fibel_nordregular; font-size: 40px;">
 	<p>Welche Zahl passt?</p>
 </div>
@@ -75,8 +75,20 @@
 			draw(testLength,3,id);
 			document.getElementById("hinweis").innerHTML = "Keine Fragen mehr? Dann starte den Test.";
 		}
-	});
+	});	
 
+	$(document).keydown(function(e){
+		var b = document.getElementById('beispiel');
+		if(b != null){
+			var key = e.keyCode || e.charCode;
+			if(key > 47 && key < 54){
+				answer = key - 48;
+				draw(testLength, 3, answer);
+				document.getElementById("hinweis").innerHTML = "Keine Fragen mehr? Dann starte den Test.";		
+			}
+		}
+	});
+	
 	function weiter(){
 		if(answer == -1){
 			document.getElementById("hinweis").innerHTML = "Du musst ein Button klicken";

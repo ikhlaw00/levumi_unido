@@ -75,8 +75,9 @@
   }else{
     $("#option" + position_of_gap).after("<div class=\"col-md-3\"><input style=\"font-size:50px; width:100%;\" type=\"text\" name=\"result\" id=\"answer\" readonly></div>");
   }
+
   $('#answer').focus();
-  $('button').click(function(event){
+  function click_number(event){
     if(event.target.id == "delete"){
       result = result.slice(0,-1);
       result = result.replace(' ', '');
@@ -103,7 +104,13 @@
       var ans= document.getElementById("answer");
       ans.value = result;
     }
+  }
+
+  $('button').click(function(event){
+    click_number(event);
   });
+
+
 
   function nextClicked() {
     entered = true;

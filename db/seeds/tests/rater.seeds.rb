@@ -132,8 +132,9 @@ items = [
 	["zusu.mp3",1]
 ]
 
-rater = TestRater.create(name: "Rater", info: "", type_info:"", shorthand: "RTR", len: items.size + 2, 
-	time: 60, subject: "Deutsch", construct: "Rater", student_access:false, level: "3a_M", archive: false, :generic_views => {'student' => 'rater/student_overview.html.erb'})
+rater = TestRater.create(name: "Pseudowörter lesen", info: "", type_info:"", shorthand: "RTR", len: items.size + 2, 
+	time: 60, subject: "Lehrkraftübungen", construct: "Leseflüssigkeit", student_access:false, level: "N 3a_1", archive: false, :generic_views => {'student' => 'rater/student_overview.html.erb', 
+			'assessment' => 'rater/assessment_overview.html.erb'})
 
 it = rater.items.build(itemtext: "Hallo", difficulty: 0, itemtype:-1, itemview:"items/userbased/preparationUser")
 it.save
@@ -290,8 +291,9 @@ items = [
 	["zusu.mp3",1]
 ]
 
-rater = TestRater.create(name: "Rater", info: "", type_info:"", shorthand: "RTR", len: items.size + 2, 
-	time: 60, subject: "Deutsch", construct: "Rater", student_access:false, level: "3a_R", archive: false, :generic_views => {'student' => 'rater/student_overview.html.erb'})
+rater = TestRater.create(name: "Pseudowörter lesen", info: "", type_info:"", shorthand: "RTR", len: items.size + 2, 
+	time: 60, subject: "Lehrkraftübungen", construct: "Leseflüssigkeit", student_access:false, level: "N 3a_2", archive: false, :generic_views => {'student' => 'rater/student_overview.html.erb',
+		'assessment' => 'rater/assessment_overview.html.erb'})
 
 it = rater.items.build(itemtext: "Hallo", difficulty: 0, itemtype:-1, itemview:"items/userbased/preparationUser")
 it.save
@@ -497,8 +499,9 @@ items = [
 	["züvö.mp3",1]
 ]
 
-rater = TestRater.create(name: "Rater", info: "", type_info:"", shorthand: "RTR", len: items.size + 2, 
-	time: 60, subject: "Deutsch", construct: "Rater", student_access:false, level: "3b_M", archive: false, :generic_views => {'student' => 'rater/student_overview.html.erb'})
+rater = TestRater.create(name: "Pseudowörter lesen", info: "", type_info:"", shorthand: "RTR", len: items.size + 2, 
+	time: 60, subject: "Lehrkraftübungen", construct: "Leseflüssigkeit", student_access:false, level: "N 3b_1", archive: false, :generic_views => {'student' => 'rater/student_overview.html.erb',
+			'assessment' => 'rater/assessment_overview.html.erb'})
 
 it = rater.items.build(itemtext: "Hallo", difficulty: 0, itemtype:-1, itemview:"items/userbased/preparationUser")
 it.save
@@ -705,8 +708,9 @@ items = [
 	["zuzau.mp3",1]
 ]
 
-rater = TestRater.create(name: "Rater", info: "", type_info:"", shorthand: "RTR", len: items.size + 2, 
-	time: 60, subject: "Deutsch", construct: "Rater", student_access:false, level: "3b_R", archive: false, :generic_views => {'student' => 'rater/student_overview.html.erb'})
+rater = TestRater.create(name: "Pseudowörter lesen", info: "", type_info:"", shorthand: "RTR", len: items.size + 2, 
+	time: 60, subject: "Lehrkraftübungen", construct: "Leseflüssigkeit", student_access:false, level: "N 3b_2", archive: false, :generic_views => {'student' => 'rater/student_overview.html.erb',
+				'assessment' => 'rater/assessment_overview.html.erb'})
 
 it = rater.items.build(itemtext: "Hallo", difficulty: 0, itemtype:-1, itemview:"items/userbased/preparationUser")
 it.save

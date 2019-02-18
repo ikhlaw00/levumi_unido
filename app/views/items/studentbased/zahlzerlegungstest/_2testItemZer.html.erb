@@ -75,7 +75,8 @@ lengthOfTest = numbers[5]
 		ctx.fillText(left, 230,245);
 	}
 
-	$('button').click(function(event){
+	
+	function clicked(event){
 		var id = event.target.id;
 		if(id=="next"){
 			if(answered)
@@ -88,7 +89,24 @@ lengthOfTest = numbers[5]
 			links ? draw(topNumber,id,rightNumber) : draw(topNumber,leftNumber,id); 
 			$('#hinweis').text(' ');
 		}
+	}
+
+	$('button').click(function(e){
+		clicked(e);
 	});
+
+
+
+	$(document).keydown(function(e){
+		var key = e.keyCode || e.charCode;
+		if (key > 47 && key < 54){
+			answered = true;
+			answer = key - 48;
+			links ? draw(topNumber,answer,rightNumber) : draw(topNumber,leftNumber,answer); 
+			$('#hinweis').text(' ');
+		}
+	});
+
 
 	function weiter(){
 		actualAnswers =actualAnswers + answer + ',';
