@@ -87,7 +87,7 @@ class User < ActiveRecord::Base
       WHERE export = 't'
       GROUP BY user_id;")
     ids = temp.map{|x| x["user_id"]}
-    count = temp.map{|x| x["Anzahl"]}
+    count = temp.map{|x| x["anzahl"]}
     return Hash[ids.zip(count)]
   end
 
@@ -102,7 +102,7 @@ class User < ActiveRecord::Base
       GROUP BY user_id;
      ")
     ids = temp.map{|x| x["user_id"]}
-    count = temp.map{|x| x["Anzahl"]}
+    count = temp.map{|x| x["anzahl"]}
     return Hash[ids.zip(count)]
   end
 
@@ -118,7 +118,7 @@ class User < ActiveRecord::Base
         GROUP BY user_id;
     ")
     ids = temp.map{|x| x["user_id"]}
-    count = temp.map{|x| x["Anzahl"]}
+    count = temp.map{|x| x["anzahl"]}
     return Hash[ids.zip(count)]
   end
 

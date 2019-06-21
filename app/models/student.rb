@@ -72,7 +72,7 @@ class Student < ActiveRecord::Base
   end
 
   def to_a
-    return [id.to_s, name, group.id, group.name, group.user.id, get_account_type(group.user.account_type), get_gender(true), get_birthdate(true), get_specific_needs(true), get_migration(true)]
+    return [id.to_s, login, group.id, group.name, group.user.id, get_account_type(group.user.account_type), get_gender(true), get_birthdate(true), get_specific_needs(true), get_migration(true)]
   end
 
   def getResults

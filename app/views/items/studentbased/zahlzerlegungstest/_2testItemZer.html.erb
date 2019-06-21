@@ -76,8 +76,8 @@ lengthOfTest = numbers[5]
 	}
 
 	
-	function clicked(event){
-		var id = event.target.id;
+	function clicked(id){
+		var id = id;
 		if(id=="next"){
 			if(answered)
 				weiter();
@@ -92,7 +92,7 @@ lengthOfTest = numbers[5]
 	}
 
 	$('button').click(function(e){
-		clicked(e);
+		clicked(this.id);
 	});
 
 
@@ -102,6 +102,11 @@ lengthOfTest = numbers[5]
 		if (key > 47 && key < 54){
 			answered = true;
 			answer = key - 48;
+			links ? draw(topNumber,answer,rightNumber) : draw(topNumber,leftNumber,answer); 
+			$('#hinweis').text(' ');
+		}else if (key > 95 && key < 102){
+			answered = true;
+			answer = key - 96;
 			links ? draw(topNumber,answer,rightNumber) : draw(topNumber,leftNumber,answer); 
 			$('#hinweis').text(' ');
 		}

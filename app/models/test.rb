@@ -85,7 +85,7 @@ class Test < ActiveRecord::Base
       WHERE export = 't'
       GROUP BY test_id;
     ")
-    ids = temp.map{|x| x["test_id"]}
+    ids = temp.map{|x| x["test_id"]} 
     count = temp.map{|x| x["anzahl"]}
     return Hash[ids.zip(count)]
   end

@@ -36,7 +36,7 @@
                       <%= text_field_tag "results[#{r.student.id}]", r.to_csv(true), class: "form-control", placeholder: "z.B. 1,0,0,NA"%>
                     </td>
                   </tr>
-              <% end %>g
+              <% end %>
               </tbody>
             </table>
             <%= submit_tag 'Speichern', :class => "btn btn-primary" %>
@@ -143,7 +143,7 @@
             <% (@measurement.students).each do |s| %>
                 <div class="checkbox">
                   <label>
-                    <%= check_box_tag "results[students[#{s.name}]]", s.id, true %> <%= "#{s.name}" %><br/>
+                    <%= check_box_tag "results[students[#{s.name}]]", s.id, true %> <%= "#{s.login}" %><br/>
                   </label>
                 </div>
             <% end %>
@@ -154,7 +154,7 @@
             <% (@group.students - @measurement.students).each do |s| %>
                 <div class="checkbox">
                   <label>
-                    <%= check_box_tag "results[students[#{s.name}]]", s.id, false %> <%= "#{s.name}" %><br/>
+                    <%= check_box_tag "results[students[#{s.name}]]", s.id, false %> <%= "#{s.login}" %><br/>
                   </label>
                 </div>
             <% end %>

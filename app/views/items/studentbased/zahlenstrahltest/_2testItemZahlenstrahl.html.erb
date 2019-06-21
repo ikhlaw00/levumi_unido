@@ -230,16 +230,19 @@
 	  }
 
 	$('button').click(function(e){
-		implement_click(e.target.id);
+		var clickedId = event.target.id;
+		if(clickedId.length == 0) clickedId = this.id;
+		implement_click(clickedId);
 	});
 
 	$(document).keydown(function(e){
-		console.log('called');
 		var key = e.keyChar || e.keyCode;
 		if(key > 47 && key < 58){
 			implement_click(key-48, true);
 		}else if (key == 8){
 			implement_click('delete', false);
+		} else if(key > 95 && key < 106){
+			implement_click(key-96, true);
 		}
 	});
 

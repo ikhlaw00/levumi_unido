@@ -78,7 +78,9 @@
 
   $('#answer').focus();
   function click_number(event){
-    if(event.target.id == "delete"){
+    var clickedId = event.target.id;
+    if(clickedId.length == 0) clickedId = this.id;
+    if(clickedId == "delete"){
       result = result.slice(0,-1);
       result = result.replace(' ', '');
       var ans = document.getElementById("answer");
@@ -86,7 +88,7 @@
         result = result.substr(0,result.length-3) + " " + result.substr(result.length-3);
       ans.value = result;
       if(result.length == 0) entered = false;
-    }else if(event.target.id == "weiter"){
+    }else if(clickedId == "weiter"){
       if(entered){
         nextClicked();
       }else{
@@ -95,7 +97,7 @@
     }else{
       entered = true;
       $("#hinweis").html('');
-      var answer = event.target.id;
+      var answer = clickedId;
       result += answer;
       result = result.replace(' ', '');
       //result = result.match(/.{1,3}/g).join(' ');

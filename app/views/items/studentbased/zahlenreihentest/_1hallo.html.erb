@@ -118,6 +118,15 @@
       }
       else if (key == 8){
         document.getElementById('delete').click();
+      } else if (key > 95 && key < 106){
+        entered = true;
+        $('#hinweis').html('');
+        result += (key-96) + ''
+        result = result.replace(' ', '')
+        if(result.length > 3)
+          result = result.substr(0, result.length - 3) + " " + result.substr(result.length-3);
+        var ans = document.getElementById("answer")
+        ans.value = result;
       }
     });
  

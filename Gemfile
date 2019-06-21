@@ -56,3 +56,4 @@ gem 'spreadsheet'
 
 # Print html to pdf
 gem 'canvgjs'
+gem 'webrick', '~> 1.3.1', group: :development

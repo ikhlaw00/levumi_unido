@@ -44,7 +44,7 @@ items = [
 ]
 
 # DBR questionnaire
-t = Fragebogen.create(name:'Fragebogen Verhaltensmessung', student_access: false, archive: false, info: "", len: 20, shorthand: "FB", subject: "Fragebogen", 
+t = Fragebogen.create(name:'Fragebogen Verhaltensmessung', student_access: false, archive: false, info: "", len: 30, shorthand: "FB", subject: "Fragebogen", 
 	construct: "Verhalten", level:"Schule", :generic_views => {"assessment" => 'questionnaire/assessment_overview.html.erb', "student" => 'questionnaire/student_overview.html.erb'})
 
 # difficulty of this item means the dimension, also the answers will be [1,7]
